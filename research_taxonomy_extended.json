@@ -1,0 +1,1573 @@
+{
+  "categories": {
+    "人工智能": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "联邦与分布式学习",
+          "keywords": [
+            "federated learning",
+            "distributed training",
+            "communication efficiency"
+          ]
+        },
+        {
+          "name": "因果推断与决策",
+          "keywords": [
+            "causal inference",
+            "decision making",
+            "counterfactual"
+          ]
+        },
+        {
+          "name": "小样本与持续学习",
+          "keywords": [
+            "few-shot learning",
+            "continual learning",
+            "meta-learning"
+          ]
+        },
+        {
+          "name": "AI安全与对齐",
+          "keywords": [
+            "AI safety",
+            "alignment",
+            "jailbreak defense"
+          ]
+        }
+      ]
+    },
+    "计算机视觉": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "图像恢复与增强",
+          "keywords": [
+            "image restoration",
+            "low-light enhancement",
+            "denoising"
+          ]
+        },
+        {
+          "name": "深度与3D检测",
+          "keywords": [
+            "depth estimation",
+            "3D object detection",
+            "point cloud",
+            "rgb-d",
+            "light field",
+            "structure from motion"
+          ]
+        },
+        {
+          "name": "OCR与文档理解",
+          "keywords": [
+            "OCR",
+            "document understanding",
+            "layout analysis"
+          ]
+        },
+        {
+          "name": "事件相机视觉",
+          "keywords": [
+            "event camera",
+            "neuromorphic vision",
+            "high dynamic range"
+          ]
+        },
+        {
+          "name": "单目与双目深度估计",
+          "aliases": [
+            "单目深度估计",
+            "深度估计",
+            "单目深度",
+            "双目深度",
+            "monocular depth",
+            "depth estimation",
+            "stereo depth"
+          ],
+          "keywords": [
+            "monocular depth estimation",
+            "stereo depth",
+            "self-supervised depth",
+            "monocular depth",
+            "stereo matching",
+            "disparity",
+            "depth from images",
+            "video depth",
+            "metric depth",
+            "depth completion"
+          ]
+        },
+        {
+          "name": "三维重建与神经渲染",
+          "aliases": [
+            "三维重建",
+            "3D重建",
+            "神经渲染",
+            "NeRF",
+            "3DGS",
+            "新视角合成",
+            "novel view synthesis",
+            "Gaussian splatting"
+          ],
+          "keywords": [
+            "3D reconstruction",
+            "neural rendering",
+            "NeRF",
+            "Gaussian splatting",
+            "novel view synthesis"
+          ]
+        },
+        {
+          "name": "点云与3D目标检测",
+          "aliases": [
+            "点云",
+            "3D检测",
+            "点云分割",
+            "LiDAR",
+            "point cloud"
+          ],
+          "keywords": [
+            "point cloud",
+            "3D object detection",
+            "LiDAR",
+            "point cloud segmentation"
+          ]
+        },
+        {
+          "name": "6D位姿与场景理解",
+          "aliases": [
+            "6D位姿",
+            "位姿估计",
+            "场景理解",
+            "pose estimation",
+            "scene understanding"
+          ],
+          "keywords": [
+            "6D pose estimation",
+            "scene understanding",
+            "object pose"
+          ]
+        },
+        {
+          "name": "立体视觉与SLAM",
+          "aliases": [
+            "SLAM",
+            "视觉里程计",
+            "立体视觉",
+            "visual odometry",
+            "stereo vision"
+          ],
+          "keywords": [
+            "SLAM",
+            "visual odometry",
+            "stereo vision",
+            "visual localization"
+          ]
+        }
+      ]
+    },
+    "自然语言处理": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "语音识别与合成",
+          "keywords": [
+            "speech recognition",
+            "TTS",
+            "speech translation"
+          ]
+        },
+        {
+          "name": "低资源与多语言",
+          "keywords": [
+            "low-resource NLP",
+            "multilingual",
+            "cross-lingual"
+          ]
+        },
+        {
+          "name": "代码大模型",
+          "keywords": [
+            "code LLM",
+            "program synthesis",
+            "repository-level"
+          ]
+        },
+        {
+          "name": "对话安全",
+          "keywords": [
+            "dialogue safety",
+            "jailbreak",
+            "toxicity"
+          ]
+        }
+      ]
+    },
+    "数据挖掘与信息检索": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "时空数据挖掘",
+          "keywords": [
+            "spatio-temporal",
+            "trajectory",
+            "urban computing"
+          ]
+        },
+        {
+          "name": "多模态检索",
+          "keywords": [
+            "multimodal retrieval",
+            "cross-modal search"
+          ]
+        },
+        {
+          "name": "生成式推荐",
+          "keywords": [
+            "generative recommendation",
+            "LLM recommender"
+          ]
+        },
+        {
+          "name": "数据质量",
+          "keywords": [
+            "data cleaning",
+            "data integration",
+            "provenance"
+          ]
+        }
+      ]
+    },
+    "系统与网络": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "可观测性与可靠性",
+          "keywords": [
+            "observability",
+            "reliability",
+            "fault injection"
+          ]
+        },
+        {
+          "name": "虚拟化与容器",
+          "keywords": [
+            "virtualization",
+            "containers",
+            "isolation"
+          ]
+        },
+        {
+          "name": "绿色计算",
+          "keywords": [
+            "energy efficiency",
+            "carbon-aware computing"
+          ]
+        },
+        {
+          "name": "高性能存储",
+          "keywords": [
+            "storage systems",
+            "file systems",
+            "persistent memory"
+          ]
+        }
+      ]
+    },
+    "安全与隐私": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "网络空间安全",
+          "aliases": [
+            "网络安全",
+            "网络空间安全",
+            "信息安全",
+            "入侵检测",
+            "漏洞挖掘",
+            "恶意软件",
+            "渗透测试"
+          ],
+          "keywords": [
+            "cybersecurity",
+            "network security",
+            "intrusion detection",
+            "vulnerability",
+            "malware"
+          ]
+        },
+        {
+          "name": "密码学与协议安全",
+          "aliases": [
+            "密码学",
+            "密码分析",
+            "密码协议",
+            "零知识证明",
+            "同态加密",
+            "安全多方计算",
+            "公钥密码",
+            "对称密码"
+          ],
+          "keywords": [
+            "cryptography",
+            "protocol security",
+            "zero-knowledge",
+            "homomorphic encryption",
+            "secure multi-party computation"
+          ]
+        },
+        {
+          "name": "硬件安全",
+          "keywords": [
+            "hardware security",
+            "side-channel"
+          ]
+        },
+        {
+          "name": "IoT与嵌入式安全",
+          "keywords": [
+            "IoT security",
+            "embedded security"
+          ]
+        },
+        {
+          "name": "AI安全",
+          "keywords": [
+            "model stealing",
+            "adversarial ML",
+            "LLM security"
+          ]
+        },
+        {
+          "name": "软件供应链",
+          "keywords": [
+            "supply chain security",
+            "SBOM"
+          ]
+        },
+        {
+          "name": "后量子密码",
+          "keywords": [
+            "post-quantum cryptography"
+          ]
+        },
+        {
+          "name": "数字取证与事件响应",
+          "aliases": [
+            "数字取证",
+            "事件响应",
+            "forensics",
+            "incident response"
+          ],
+          "keywords": [
+            "digital forensics",
+            "incident response",
+            "threat hunting"
+          ]
+        },
+        {
+          "name": "系统与软件安全",
+          "aliases": [
+            "系统安全",
+            "软件安全",
+            "内核安全",
+            "沙箱",
+            "漏洞利用",
+            "提权"
+          ],
+          "keywords": [
+            "system security",
+            "software security",
+            "kernel security",
+            "sandbox",
+            "exploit",
+            "privilege escalation"
+          ]
+        },
+        {
+          "name": "Web与云安全",
+          "aliases": [
+            "Web安全",
+            "云安全",
+            "容器安全",
+            "Kubernetes安全",
+            "云原生安全"
+          ],
+          "keywords": [
+            "web security",
+            "cloud security",
+            "container security",
+            "kubernetes security",
+            "serverless security"
+          ]
+        },
+        {
+          "name": "身份认证与访问控制",
+          "aliases": [
+            "身份认证",
+            "身份鉴别",
+            "访问控制",
+            "零信任",
+            "单点登录"
+          ],
+          "keywords": [
+            "authentication",
+            "authorization",
+            "access control",
+            "zero trust",
+            "SSO",
+            "OAuth"
+          ]
+        },
+        {
+          "name": "恶意软件与威胁情报",
+          "aliases": [
+            "恶意软件分析",
+            "威胁情报",
+            "APT检测",
+            "勒索软件",
+            "病毒分析"
+          ],
+          "keywords": [
+            "malware analysis",
+            "threat intelligence",
+            "APT detection",
+            "ransomware",
+            "cyber threat intelligence"
+          ]
+        },
+        {
+          "name": "应用密码学与实现安全",
+          "aliases": [
+            "应用密码学",
+            "密码工程",
+            "密码实现",
+            "实现安全",
+            "TLS安全"
+          ],
+          "keywords": [
+            "applied cryptography",
+            "cryptographic engineering",
+            "implementation security",
+            "constant-time",
+            "TLS security"
+          ]
+        },
+        {
+          "name": "区块链与智能合约安全",
+          "aliases": [
+            "区块链安全",
+            "智能合约安全",
+            "智能合约",
+            "DeFi安全"
+          ],
+          "keywords": [
+            "blockchain security",
+            "smart contract security",
+            "DeFi security",
+            "consensus security"
+          ]
+        },
+        {
+          "name": "匿名通信与网络审查",
+          "aliases": [
+            "匿名通信",
+            "匿名网络",
+            "网络审查",
+            "审查规避",
+            "流量分析"
+          ],
+          "keywords": [
+            "anonymous communication",
+            "censorship resistance",
+            "traffic analysis",
+            "Tor",
+            "privacy network"
+          ]
+        },
+        {
+          "name": "形式化安全验证",
+          "aliases": [
+            "形式化安全",
+            "协议验证",
+            "可证明安全",
+            "安全形式化验证"
+          ],
+          "keywords": [
+            "formal security verification",
+            "protocol verification",
+            "provable security",
+            "formal methods",
+            "security proofs"
+          ]
+        },
+        {
+          "name": "工业控制与CPS安全",
+          "aliases": [
+            "工业控制系统安全",
+            "工控安全",
+            "CPS安全",
+            "SCADA安全"
+          ],
+          "keywords": [
+            "ICS security",
+            "SCADA security",
+            "cyber-physical security",
+            "industrial control security"
+          ]
+        },
+        {
+          "name": "安全可用性与人因",
+          "aliases": [
+            "安全可用性",
+            "可用安全",
+            "安全人因",
+            "钓鱼检测",
+            "欺骗攻击"
+          ],
+          "keywords": [
+            "usable security",
+            "human factors",
+            "phishing",
+            "social engineering",
+            "security behavior"
+          ]
+        },
+        {
+          "name": "无线与移动安全",
+          "aliases": [
+            "无线安全",
+            "移动安全",
+            "蓝牙安全",
+            "WiFi安全",
+            "5G安全"
+          ],
+          "keywords": [
+            "wireless security",
+            "mobile security",
+            "Bluetooth security",
+            "WiFi security",
+            "5G security"
+          ]
+        },
+        {
+          "name": "数据安全与合规",
+          "aliases": [
+            "数据安全",
+            "数据合规",
+            "隐私合规",
+            "数据治理安全",
+            "数据泄露防护"
+          ],
+          "keywords": [
+            "data security",
+            "data privacy",
+            "privacy compliance",
+            "data governance",
+            "DLP"
+          ]
+        }
+      ]
+    },
+    "软件工程": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "需求与架构",
+          "keywords": [
+            "requirements engineering",
+            "software architecture"
+          ]
+        },
+        {
+          "name": "代码Agent",
+          "keywords": [
+            "coding agents",
+            "repository-level code generation"
+          ]
+        },
+        {
+          "name": "程序合成",
+          "keywords": [
+            "program synthesis",
+            "program repair"
+          ]
+        },
+        {
+          "name": "DevSecOps",
+          "keywords": [
+            "CI/CD",
+            "security",
+            "supply chain"
+          ]
+        }
+      ]
+    },
+    "数据库与数据管理": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "数据湖与湖仓",
+          "keywords": [
+            "data lake",
+            "lakehouse"
+          ]
+        },
+        {
+          "name": "图数据库",
+          "keywords": [
+            "graph database",
+            "graph query"
+          ]
+        },
+        {
+          "name": "时序与流数据库",
+          "keywords": [
+            "time-series database",
+            "streaming database"
+          ]
+        },
+        {
+          "name": "AI4DB",
+          "keywords": [
+            "learned database",
+            "autonomous database"
+          ]
+        }
+      ]
+    },
+    "人机交互与图形学": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "可访问性",
+          "keywords": [
+            "accessibility",
+            "inclusive design"
+          ]
+        },
+        {
+          "name": "健康HCI",
+          "keywords": [
+            "health HCI",
+            "digital health"
+          ]
+        },
+        {
+          "name": "人机协作",
+          "keywords": [
+            "human-AI collaboration",
+            "trust"
+          ]
+        },
+        {
+          "name": "可穿戴与普适计算",
+          "keywords": [
+            "wearable",
+            "ubiquitous computing"
+          ]
+        }
+      ]
+    },
+    "理论与算法": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "学习理论",
+          "keywords": [
+            "learning theory",
+            "generalization"
+          ]
+        },
+        {
+          "name": "随机算法与数据结构",
+          "keywords": [
+            "randomized algorithms",
+            "data structures"
+          ]
+        },
+        {
+          "name": "密码学理论",
+          "keywords": [
+            "cryptographic theory",
+            "provable security"
+          ]
+        },
+        {
+          "name": "量子信息理论",
+          "keywords": [
+            "quantum information",
+            "quantum complexity"
+          ]
+        }
+      ]
+    },
+    "机器人与具身智能": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "操作与抓取",
+          "keywords": [
+            "manipulation",
+            "grasping"
+          ]
+        },
+        {
+          "name": "人形机器人",
+          "keywords": [
+            "humanoid",
+            "legged locomotion"
+          ]
+        },
+        {
+          "name": "多机器人系统",
+          "keywords": [
+            "multi-robot systems",
+            "swarm"
+          ]
+        },
+        {
+          "name": "医疗机器人",
+          "keywords": [
+            "medical robotics",
+            "surgical"
+          ]
+        }
+      ]
+    },
+    "交叉与AI4Science": {
+      "venues": [],
+      "subs": [
+        {
+          "name": "药物与蛋白质",
+          "keywords": [
+            "drug discovery",
+            "protein"
+          ]
+        },
+        {
+          "name": "计算神经科学",
+          "keywords": [
+            "computational neuroscience"
+          ]
+        },
+        {
+          "name": "气候与地球系统",
+          "keywords": [
+            "climate",
+            "earth system"
+          ]
+        },
+        {
+          "name": "科学基础模型",
+          "keywords": [
+            "scientific foundation model"
+          ]
+        }
+      ]
+    },
+    "网络与通信": {
+      "venues": [
+        "SIGCOMM",
+        "NSDI",
+        "MobiCom",
+        "INFOCOM",
+        "CoNEXT"
+      ],
+      "subs": [
+        {
+          "name": "网络协议与架构",
+          "keywords": [
+            "network protocol",
+            "programmable network"
+          ]
+        },
+        {
+          "name": "无线与移动网络",
+          "keywords": [
+            "wireless",
+            "mobile networks",
+            "6G"
+          ]
+        },
+        {
+          "name": "数据中心网络",
+          "keywords": [
+            "data center network",
+            "RDMA"
+          ]
+        },
+        {
+          "name": "网络测量与运维",
+          "keywords": [
+            "network measurement",
+            "telemetry"
+          ]
+        },
+        {
+          "name": "物联网与低功耗网络",
+          "keywords": [
+            "IoT",
+            "low-power network"
+          ]
+        },
+        {
+          "name": "卫星与空间网络",
+          "keywords": [
+            "satellite network",
+            "LEO"
+          ]
+        }
+      ]
+    },
+    "体系结构与高性能计算": {
+      "venues": [
+        "ISCA",
+        "MICRO",
+        "ASPLOS",
+        "SC",
+        "HPCA"
+      ],
+      "subs": [
+        {
+          "name": "处理器架构",
+          "keywords": [
+            "processor architecture",
+            "RISC-V",
+            "chip design"
+          ]
+        },
+        {
+          "name": "加速器与异构计算",
+          "keywords": [
+            "accelerator",
+            "GPU",
+            "heterogeneous computing"
+          ]
+        },
+        {
+          "name": "存储层次与内存",
+          "keywords": [
+            "cache",
+            "memory system"
+          ]
+        },
+        {
+          "name": "并行与分布式计算",
+          "keywords": [
+            "parallel computing",
+            "distributed computing",
+            "distributed and parallel computing",
+            "parallel computing systems"
+          ]
+        },
+        {
+          "name": "高性能计算与科学工程",
+          "keywords": [
+            "HPC",
+            "scientific computing"
+          ]
+        },
+        {
+          "name": "硬件可靠性与安全",
+          "keywords": [
+            "reliability",
+            "hardware security"
+          ]
+        }
+      ]
+    },
+    "量子计算与信息": {
+      "venues": [
+        "QIP",
+        "STOC",
+        "FOCS",
+        "Quantum",
+        "PRX Quantum"
+      ],
+      "subs": [
+        {
+          "name": "量子算法",
+          "keywords": [
+            "quantum algorithm"
+          ]
+        },
+        {
+          "name": "量子复杂性",
+          "keywords": [
+            "quantum complexity"
+          ]
+        },
+        {
+          "name": "量子纠错",
+          "keywords": [
+            "quantum error correction"
+          ]
+        },
+        {
+          "name": "量子机器学习",
+          "keywords": [
+            "quantum machine learning"
+          ]
+        },
+        {
+          "name": "量子网络与通信",
+          "keywords": [
+            "quantum network",
+            "quantum communication"
+          ]
+        }
+      ]
+    },
+    "计算与社会": {
+      "venues": [
+        "WWW",
+        "CSCW",
+        "CHI",
+        "KDD",
+        "FAccT"
+      ],
+      "subs": [
+        {
+          "name": "计算社会科学",
+          "keywords": [
+            "computational social science"
+          ]
+        },
+        {
+          "name": "教育计算",
+          "keywords": [
+            "computing education",
+            "learning analytics"
+          ]
+        },
+        {
+          "name": "计算金融",
+          "keywords": [
+            "computational finance",
+            "risk"
+          ]
+        },
+        {
+          "name": "法律与政务计算",
+          "keywords": [
+            "legal computing",
+            "government technology"
+          ]
+        },
+        {
+          "name": "可持续计算",
+          "keywords": [
+            "sustainability",
+            "green computing"
+          ]
+        },
+        {
+          "name": "数字健康",
+          "keywords": [
+            "digital health",
+            "health informatics"
+          ]
+        }
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "name": "智能座舱与车载",
+      "keywords": [
+        "smart cockpit",
+        "in-vehicle",
+        "driver monitoring"
+      ]
+    },
+    {
+      "name": "可穿戴与数字健康",
+      "keywords": [
+        "wearable",
+        "digital health",
+        "remote monitoring"
+      ]
+    },
+    {
+      "name": "水下与海洋工程",
+      "keywords": [
+        "underwater",
+        "marine engineering",
+        "ocean sensing"
+      ]
+    },
+    {
+      "name": "太空与卫星",
+      "keywords": [
+        "space",
+        "satellite",
+        "earth observation"
+      ]
+    },
+    {
+      "name": "灾害应急与韧性",
+      "keywords": [
+        "disaster response",
+        "resilience",
+        "emergency"
+      ]
+    },
+    {
+      "name": "数字孪生城市",
+      "keywords": [
+        "digital twin city",
+        "urban simulation"
+      ]
+    },
+    {
+      "name": "低空经济",
+      "keywords": [
+        "low-altitude economy",
+        "UAV traffic"
+      ]
+    },
+    {
+      "name": "法律与政务",
+      "keywords": [
+        "legal",
+        "government services",
+        "public policy"
+      ]
+    },
+    {
+      "name": "零售与电商",
+      "keywords": [
+        "retail",
+        "e-commerce",
+        "recommendation"
+      ]
+    },
+    {
+      "name": "游戏与娱乐",
+      "keywords": [
+        "gaming",
+        "entertainment",
+        "content creation"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "name": "元学习与少样本",
+      "keywords": [
+        "meta-learning",
+        "few-shot"
+      ]
+    },
+    {
+      "name": "持续学习",
+      "keywords": [
+        "continual learning",
+        "catastrophic forgetting"
+      ]
+    },
+    {
+      "name": "世界模型与规划",
+      "keywords": [
+        "world model",
+        "planning"
+      ]
+    },
+    {
+      "name": "多智能体学习",
+      "keywords": [
+        "multi-agent learning",
+        "cooperation"
+      ]
+    },
+    {
+      "name": "模型压缩与蒸馏",
+      "keywords": [
+        "compression",
+        "distillation",
+        "quantization"
+      ]
+    },
+    {
+      "name": "神经渲染与3DGS",
+      "keywords": [
+        "neural rendering",
+        "Gaussian splatting"
+      ]
+    },
+    {
+      "name": "事件相机与脉冲网络",
+      "keywords": [
+        "event camera",
+        "spiking neural network"
+      ]
+    },
+    {
+      "name": "合成数据与增强",
+      "keywords": [
+        "synthetic data",
+        "data augmentation"
+      ]
+    },
+    {
+      "name": "可信与可解释AI",
+      "keywords": [
+        "trustworthy AI",
+        "explainability"
+      ]
+    },
+    {
+      "name": "量子机器学习",
+      "keywords": [
+        "quantum machine learning"
+      ]
+    },
+    {
+      "name": "神经形态与生物启发",
+      "keywords": [
+        "neuromorphic",
+        "bio-inspired"
+      ]
+    },
+    {
+      "name": "软硬件协同设计",
+      "keywords": [
+        "hardware-software co-design"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "预测与回归",
+      "keywords": [
+        "prediction",
+        "regression"
+      ]
+    },
+    {
+      "name": "异常检测",
+      "keywords": [
+        "anomaly detection"
+      ]
+    },
+    {
+      "name": "姿态估计",
+      "keywords": [
+        "pose estimation"
+      ]
+    },
+    {
+      "name": "深度估计",
+      "keywords": [
+        "depth estimation"
+      ]
+    },
+    {
+      "name": "图像恢复",
+      "keywords": [
+        "image restoration",
+        "enhancement"
+      ]
+    },
+    {
+      "name": "OCR与文档理解",
+      "keywords": [
+        "OCR",
+        "document understanding"
+      ]
+    },
+    {
+      "name": "导航",
+      "keywords": [
+        "navigation"
+      ]
+    },
+    {
+      "name": "抓取与操作",
+      "keywords": [
+        "grasping",
+        "manipulation"
+      ]
+    },
+    {
+      "name": "漏洞检测",
+      "keywords": [
+        "vulnerability detection"
+      ]
+    },
+    {
+      "name": "对话与摘要",
+      "keywords": [
+        "dialogue",
+        "summarization"
+      ]
+    },
+    {
+      "name": "数据清洗",
+      "keywords": [
+        "data cleaning"
+      ]
+    },
+    {
+      "name": "硬件设计与验证",
+      "keywords": [
+        "hardware design",
+        "verification"
+      ]
+    },
+    {
+      "name": "多智能体协作",
+      "keywords": [
+        "multi-agent collaboration"
+      ]
+    }
+  ],
+  "modalities": [
+    {
+      "name": "事件相机与脉冲",
+      "keywords": [
+        "event camera",
+        "spikes"
+      ]
+    },
+    {
+      "name": "深度/RGB-D",
+      "keywords": [
+        "depth",
+        "RGB-D"
+      ]
+    },
+    {
+      "name": "毫米波雷达",
+      "keywords": [
+        "mmWave radar"
+      ]
+    },
+    {
+      "name": "卫星多光谱",
+      "keywords": [
+        "satellite multispectral"
+      ]
+    },
+    {
+      "name": "生物信号",
+      "keywords": [
+        "EEG",
+        "ECG",
+        "biosignals"
+      ]
+    },
+    {
+      "name": "3D网格/NeRF",
+      "keywords": [
+        "mesh",
+        "NeRF",
+        "3D scene"
+      ]
+    },
+    {
+      "name": "表格数据",
+      "keywords": [
+        "tabular data"
+      ]
+    },
+    {
+      "name": "多视角",
+      "keywords": [
+        "multi-view"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "name": "Princeton CS",
+      "url": "https://www.cs.princeton.edu/research",
+      "areas": "AI, theory, systems, security, graphics, HCI, computational biology"
+    },
+    {
+      "name": "UIUC CS",
+      "url": "https://cs.illinois.edu/research",
+      "areas": "AI, systems, databases, security, HCI, theory, scientific computing"
+    },
+    {
+      "name": "Michigan CSE",
+      "url": "https://cse.engin.umich.edu/research/",
+      "areas": "AI, robotics, systems, security, HCI, data science"
+    },
+    {
+      "name": "University of Washington CSE",
+      "url": "https://www.cs.washington.edu/research",
+      "areas": "AI, ML, NLP, vision, HCI, systems, theory, computational biology"
+    },
+    {
+      "name": "Cambridge CS",
+      "url": "https://www.cst.cam.ac.uk/research",
+      "areas": "AI, systems, theory, graphics, HCI, computational biology"
+    },
+    {
+      "name": "EPFL CS",
+      "url": "https://www.epfl.ch/schools/ic/research/",
+      "areas": "AI, systems, security, graphics, HCI, theory"
+    },
+    {
+      "name": "Shanghai Jiao Tong CS",
+      "url": "https://www.cs.sjtu.edu.cn/en/Research.html",
+      "areas": "AI, vision, systems, security, software, data"
+    },
+    {
+      "name": "Fudan CS",
+      "url": "https://cs.fudan.edu.cn/cs_en/",
+      "areas": "AI, NLP, vision, systems, security, software"
+    }
+  ],
+  "relations": {
+    "category_profiles": {
+      "人工智能": {
+        "联邦与分布式学习": "ml_method",
+        "因果推断与决策": "ml_method",
+        "小样本与持续学习": "ml_method",
+        "AI安全与对齐": "security"
+      },
+      "计算机视觉": {
+        "图像恢复与增强": "vision",
+        "深度与3D检测": "vision",
+        "OCR与文档理解": "vision",
+        "事件相机视觉": "vision",
+        "单目与双目深度估计": "vision",
+        "三维重建与神经渲染": "vision",
+        "点云与3D目标检测": "vision",
+        "6D位姿与场景理解": "vision",
+        "立体视觉与SLAM": "vision"
+      },
+      "自然语言处理": {
+        "语音识别与合成": "speech",
+        "低资源与多语言": "nlp",
+        "代码大模型": "se",
+        "对话安全": "security"
+      },
+      "数据挖掘与信息检索": {
+        "时空数据挖掘": "data",
+        "多模态检索": "data",
+        "生成式推荐": "data",
+        "数据质量": "data"
+      },
+      "系统与网络": {
+        "可观测性与可靠性": "systems",
+        "虚拟化与容器": "systems",
+        "绿色计算": "systems",
+        "高性能存储": "systems"
+      },
+      "安全与隐私": {
+        "网络空间安全": "security",
+        "密码学与协议安全": "security",
+        "硬件安全": "security",
+        "IoT与嵌入式安全": "security",
+        "AI安全": "security",
+        "软件供应链": "security",
+        "后量子密码": "security",
+        "数字取证与事件响应": "security",
+        "系统与软件安全": "security",
+        "Web与云安全": "security",
+        "身份认证与访问控制": "security",
+        "恶意软件与威胁情报": "security",
+        "应用密码学与实现安全": "security",
+        "区块链与智能合约安全": "security",
+        "匿名通信与网络审查": "security",
+        "形式化安全验证": "security",
+        "工业控制与CPS安全": "security",
+        "安全可用性与人因": "security",
+        "无线与移动安全": "security",
+        "数据安全与合规": "security"
+      },
+      "软件工程": {
+        "需求与架构": "se",
+        "代码Agent": "se",
+        "程序合成": "se",
+        "DevSecOps": "se"
+      },
+      "数据库与数据管理": {
+        "数据湖与湖仓": "db",
+        "图数据库": "db",
+        "时序与流数据库": "db",
+        "AI4DB": "db"
+      },
+      "人机交互与图形学": {
+        "可访问性": "hci",
+        "健康HCI": "hci",
+        "人机协作": "hci",
+        "可穿戴与普适计算": "hci"
+      },
+      "理论与算法": {
+        "学习理论": "theory",
+        "随机算法与数据结构": "theory",
+        "密码学理论": "theory",
+        "量子信息理论": "quantum"
+      },
+      "机器人与具身智能": {
+        "操作与抓取": "robotics",
+        "人形机器人": "robotics",
+        "多机器人系统": "robotics",
+        "医疗机器人": "robotics"
+      },
+      "交叉与AI4Science": {
+        "药物与蛋白质": "science",
+        "计算神经科学": "science",
+        "气候与地球系统": "science",
+        "科学基础模型": "science"
+      },
+      "网络与通信": {
+        "网络协议与架构": "networks",
+        "无线与移动网络": "networks",
+        "数据中心网络": "networks",
+        "网络测量与运维": "networks",
+        "物联网与低功耗网络": "networks",
+        "卫星与空间网络": "networks"
+      },
+      "体系结构与高性能计算": {
+        "处理器架构": "architecture",
+        "加速器与异构计算": "architecture",
+        "存储层次与内存": "architecture",
+        "并行与分布式计算": "architecture",
+        "高性能计算与科学工程": "architecture",
+        "硬件可靠性与安全": "architecture"
+      },
+      "量子计算与信息": {
+        "量子算法": "quantum",
+        "量子复杂性": "quantum",
+        "量子纠错": "quantum",
+        "量子机器学习": "quantum",
+        "量子网络与通信": "quantum"
+      },
+      "计算与社会": {
+        "计算社会科学": "social",
+        "教育计算": "social",
+        "计算金融": "data",
+        "法律与政务计算": "social",
+        "可持续计算": "social",
+        "数字健康": "science"
+      }
+    },
+    "profiles": {
+      "networks": {
+        "label": "网络与通信",
+        "importance": {
+          "scenario": 0.45,
+          "method": 0.7,
+          "task": 0.9,
+          "modality": 0.3
+        },
+        "scenarios": [
+          "云计算与数据中心",
+          "网络安全与攻防",
+          "空间、海洋与极端环境",
+          "低空经济"
+        ],
+        "methods": [
+          "系统优化与资源调度",
+          "边缘计算与硬件加速",
+          "仿真与数字孪生",
+          "形式化方法与验证"
+        ],
+        "tasks": [
+          "性能优化与资源管理",
+          "安全与隐私保护",
+          "测试与修复",
+          "编译与调度"
+        ],
+        "modalities": [
+          "网络与系统日志",
+          "图与时序"
+        ]
+      },
+      "architecture": {
+        "label": "体系结构/HPC",
+        "importance": {
+          "scenario": 0.3,
+          "method": 0.8,
+          "task": 0.9,
+          "modality": 0.3
+        },
+        "scenarios": [
+          "云计算与数据中心",
+          "能源与智能电网",
+          "智能座舱与车载"
+        ],
+        "methods": [
+          "边缘计算与硬件加速",
+          "仿真与数字孪生",
+          "形式化方法与验证",
+          "软硬件协同设计"
+        ],
+        "tasks": [
+          "性能优化与资源管理",
+          "编译与调度",
+          "硬件设计与验证",
+          "测试与修复"
+        ],
+        "modalities": [
+          "网络与系统日志",
+          "图与时序",
+          "代码与程序"
+        ]
+      },
+      "quantum": {
+        "label": "量子计算",
+        "importance": {
+          "scenario": 0.1,
+          "method": 0.9,
+          "task": 0.6,
+          "modality": 0.1
+        },
+        "scenarios": [],
+        "methods": [
+          "量子机器学习",
+          "优化与运筹",
+          "贝叶斯与概率建模",
+          "形式化方法与验证"
+        ],
+        "tasks": [
+          "推理与问答",
+          "评测与Benchmark",
+          "硬件设计与验证"
+        ],
+        "modalities": []
+      },
+      "speech": {
+        "label": "语音/音频",
+        "importance": {
+          "scenario": 0.5,
+          "method": 0.8,
+          "task": 0.85,
+          "modality": 0.85
+        },
+        "scenarios": [
+          "医疗健康与临床诊断",
+          "教育与学习分析",
+          "智能座舱与车载",
+          "可穿戴与数字健康"
+        ],
+        "methods": [
+          "深度学习与Transformer",
+          "自监督与对比学习",
+          "检索增强与对齐",
+          "多模态融合与对齐"
+        ],
+        "tasks": [
+          "识别与分类",
+          "生成",
+          "对话与摘要",
+          "评测与Benchmark"
+        ],
+        "modalities": [
+          "语音与音频",
+          "文本",
+          "视频",
+          "多模态传感器"
+        ]
+      }
+    }
+  }
+}

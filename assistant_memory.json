@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "红外目标检测": "Mamba多模态"
+  },
+  "history": [
+    {
+      "time": "2026-10-24T23:30",
+      "command": "下载最新的10篇红外目标检测论文，放到Mamba多模态",
+      "direction": "红外目标检测",
+      "query": "all:infrared AND all:\"object detection\"",
+      "category": "Mamba多模态",
+      "count": 1,
+      "downloaded": 1,
+      "ids": [
+        "2610.22434v1"
+      ]
+    }
+  ]
+}

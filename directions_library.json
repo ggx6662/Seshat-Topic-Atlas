@@ -1,0 +1,739 @@
+{
+  "人工智能": {
+    "venues": [
+      "NeurIPS",
+      "ICML",
+      "ICLR",
+      "AAAI",
+      "IJCAI",
+      "TPAMI"
+    ],
+    "subs": [
+      {
+        "name": "机器学习理论",
+        "keywords": [
+          "generalization",
+          "optimization",
+          "learning theory",
+          "sample complexity"
+        ]
+      },
+      {
+        "name": "深度学习架构",
+        "keywords": [
+          "transformer",
+          "state space model",
+          "efficient architecture",
+          "representation learning",
+          "mamba",
+          "mamba-yolo",
+          "mtmamba",
+          "vision mamba",
+          "vmunet",
+          "mamba2"
+        ]
+      },
+      {
+        "name": "强化学习",
+        "keywords": [
+          "reinforcement learning",
+          "policy optimization",
+          "world model",
+          "offline RL"
+        ]
+      },
+      {
+        "name": "生成模型",
+        "keywords": [
+          "diffusion model",
+          "generative model",
+          "flow matching",
+          "controllable generation"
+        ]
+      },
+      {
+        "name": "多模态学习",
+        "keywords": [
+          "multimodal learning",
+          "cross-modal alignment",
+          "vision-language model",
+          "fusion"
+        ]
+      },
+      {
+        "name": "可信与可解释AI",
+        "keywords": [
+          "explainable AI",
+          "robustness",
+          "fairness",
+          "uncertainty"
+        ]
+      }
+    ]
+  },
+  "计算机视觉": {
+    "venues": [
+      "CVPR",
+      "ICCV",
+      "ECCV",
+      "TPAMI",
+      "NeurIPS"
+    ],
+    "subs": [
+      {
+        "name": "目标检测",
+        "keywords": [
+          "object detection",
+          "open-vocabulary detection",
+          "small object",
+          "domain adaptation",
+          "yolo",
+          "yolov8",
+          "yolov12",
+          "rt-detr",
+          "small object detection"
+        ]
+      },
+      {
+        "name": "图像分割",
+        "keywords": [
+          "semantic segmentation",
+          "instance segmentation",
+          "panoptic segmentation",
+          "medical segmentation"
+        ]
+      },
+      {
+        "name": "目标跟踪",
+        "keywords": [
+          "visual tracking",
+          "multi-object tracking",
+          "RGB-T tracking",
+          "long-term tracking"
+        ]
+      },
+      {
+        "name": "3D与几何视觉",
+        "keywords": [
+          "3D reconstruction",
+          "NeRF",
+          "Gaussian splatting",
+          "depth estimation"
+        ]
+      },
+      {
+        "name": "视频理解",
+        "keywords": [
+          "video understanding",
+          "temporal modeling",
+          "action recognition",
+          "video generation",
+          "video depth",
+          "text-video retrieval",
+          "long sequence video"
+        ]
+      },
+      {
+        "name": "红外与低光视觉",
+        "keywords": [
+          "infrared vision",
+          "low-light enhancement",
+          "thermal imaging",
+          "RGB-IR fusion",
+          "infrared small target",
+          "infrared pedestrian",
+          "rgb-t fusion",
+          "cross-spectral fusion",
+          "thermal-infrared"
+        ]
+      }
+    ]
+  },
+  "自然语言处理": {
+    "venues": [
+      "ACL",
+      "EMNLP",
+      "NAACL",
+      "NeurIPS",
+      "TACL"
+    ],
+    "subs": [
+      {
+        "name": "大语言模型",
+        "keywords": [
+          "large language model",
+          "instruction tuning",
+          "reasoning",
+          "alignment"
+        ]
+      },
+      {
+        "name": "信息抽取",
+        "keywords": [
+          "information extraction",
+          "relation extraction",
+          "event extraction",
+          "named entity recognition"
+        ]
+      },
+      {
+        "name": "机器翻译",
+        "keywords": [
+          "machine translation",
+          "low-resource translation",
+          "multilingual model"
+        ]
+      },
+      {
+        "name": "对话与智能体",
+        "keywords": [
+          "dialogue system",
+          "agent",
+          "tool use",
+          "planning"
+        ]
+      },
+      {
+        "name": "检索增强生成",
+        "keywords": [
+          "retrieval-augmented generation",
+          "knowledge grounding",
+          "citation",
+          "long context"
+        ]
+      },
+      {
+        "name": "多模态语言模型",
+        "keywords": [
+          "vision-language model",
+          "multimodal reasoning",
+          "grounding",
+          "instruction following"
+        ]
+      }
+    ]
+  },
+  "数据挖掘与信息检索": {
+    "venues": [
+      "KDD",
+      "SIGIR",
+      "WWW",
+      "CIKM",
+      "TKDE"
+    ],
+    "subs": [
+      {
+        "name": "推荐系统",
+        "keywords": [
+          "recommender system",
+          "collaborative filtering",
+          "sequential recommendation",
+          "LLM recommendation"
+        ]
+      },
+      {
+        "name": "图挖掘",
+        "keywords": [
+          "graph mining",
+          "graph neural network",
+          "community detection",
+          "link prediction"
+        ]
+      },
+      {
+        "name": "时序挖掘",
+        "keywords": [
+          "time series",
+          "anomaly detection",
+          "forecasting",
+          "temporal pattern"
+        ]
+      },
+      {
+        "name": "检索与排序",
+        "keywords": [
+          "information retrieval",
+          "ranking",
+          "dense retrieval",
+          "reranking"
+        ]
+      },
+      {
+        "name": "知识图谱",
+        "keywords": [
+          "knowledge graph",
+          "entity alignment",
+          "reasoning",
+          "graph completion"
+        ]
+      }
+    ]
+  },
+  "系统与网络": {
+    "venues": [
+      "SOSP",
+      "OSDI",
+      "NSDI",
+      "SIGCOMM",
+      "EuroSys",
+      "ATC"
+    ],
+    "subs": [
+      {
+        "name": "分布式系统",
+        "keywords": [
+          "distributed system",
+          "consensus",
+          "fault tolerance",
+          "scalability"
+        ]
+      },
+      {
+        "name": "操作系统",
+        "keywords": [
+          "operating system",
+          "scheduling",
+          "memory management",
+          "virtualization"
+        ]
+      },
+      {
+        "name": "存储系统",
+        "keywords": [
+          "storage system",
+          "file system",
+          "key-value store",
+          "persistent memory",
+          "data storage technologies"
+        ]
+      },
+      {
+        "name": "云计算与边缘计算",
+        "keywords": [
+          "cloud computing",
+          "edge computing",
+          "serverless",
+          "resource scheduling"
+        ]
+      },
+      {
+        "name": "网络与协议",
+        "keywords": [
+          "network protocol",
+          "congestion control",
+          "data center network",
+          "RDMA"
+        ]
+      },
+      {
+        "name": "性能与能耗",
+        "keywords": [
+          "performance optimization",
+          "energy efficiency",
+          "profiling",
+          "latency"
+        ]
+      }
+    ]
+  },
+  "安全与隐私": {
+    "venues": [
+      "IEEE S&P",
+      "CCS",
+      "USENIX Security",
+      "NDSS",
+      "TDSC"
+    ],
+    "subs": [
+      {
+        "name": "系统安全",
+        "keywords": [
+          "system security",
+          "vulnerability",
+          "sandbox",
+          "kernel security"
+        ]
+      },
+      {
+        "name": "网络攻防",
+        "keywords": [
+          "network security",
+          "intrusion detection",
+          "malware",
+          "attack detection"
+        ]
+      },
+      {
+        "name": "隐私计算",
+        "keywords": [
+          "privacy-preserving",
+          "differential privacy",
+          "federated learning",
+          "secure computation"
+        ]
+      },
+      {
+        "name": "对抗与鲁棒性",
+        "keywords": [
+          "adversarial attack",
+          "adversarial defense",
+          "backdoor",
+          "robustness"
+        ]
+      },
+      {
+        "name": "密码学应用",
+        "keywords": [
+          "applied cryptography",
+          "zero-knowledge",
+          "homomorphic encryption",
+          "blockchain"
+        ]
+      }
+    ]
+  },
+  "软件工程": {
+    "venues": [
+      "ICSE",
+      "FSE",
+      "ASE",
+      "ISSTA",
+      "TSE"
+    ],
+    "subs": [
+      {
+        "name": "代码生成",
+        "keywords": [
+          "code generation",
+          "LLM for code",
+          "program synthesis",
+          "code completion"
+        ]
+      },
+      {
+        "name": "程序分析",
+        "keywords": [
+          "program analysis",
+          "static analysis",
+          "data flow",
+          "abstract interpretation"
+        ]
+      },
+      {
+        "name": "软件测试",
+        "keywords": [
+          "software testing",
+          "fuzzing",
+          "test generation",
+          "regression testing"
+        ]
+      },
+      {
+        "name": "缺陷与维护",
+        "keywords": [
+          "bug detection",
+          "defect prediction",
+          "program repair",
+          "maintenance"
+        ]
+      },
+      {
+        "name": "LLM4SE",
+        "keywords": [
+          "LLM software engineering",
+          "agentic coding",
+          "repository-level",
+          "developer productivity"
+        ]
+      }
+    ]
+  },
+  "数据库与数据管理": {
+    "venues": [
+      "SIGMOD",
+      "VLDB",
+      "ICDE",
+      "TODS"
+    ],
+    "subs": [
+      {
+        "name": "查询优化",
+        "keywords": [
+          "query optimization",
+          "query planning",
+          "cost model",
+          "execution engine",
+          "database systems",
+          "query processing",
+          "database management",
+          "sql",
+          "transaction processing"
+        ]
+      },
+      {
+        "name": "事务与一致性",
+        "keywords": [
+          "transaction processing",
+          "consistency",
+          "concurrency control",
+          "isolation"
+        ]
+      },
+      {
+        "name": "向量数据库",
+        "keywords": [
+          "vector database",
+          "ANN search",
+          "embedding index",
+          "hybrid search"
+        ]
+      },
+      {
+        "name": "流处理",
+        "keywords": [
+          "stream processing",
+          "real-time analytics",
+          "incremental computation",
+          "window query"
+        ]
+      },
+      {
+        "name": "数据治理",
+        "keywords": [
+          "data quality",
+          "data cleaning",
+          "provenance",
+          "data integration"
+        ]
+      }
+    ]
+  },
+  "人机交互与图形学": {
+    "venues": [
+      "CHI",
+      "UIST",
+      "CSCW",
+      "SIGGRAPH",
+      "TVCG"
+    ],
+    "subs": [
+      {
+        "name": "交互与可用性",
+        "keywords": [
+          "human-computer interaction",
+          "usability",
+          "user study",
+          "interaction technique"
+        ]
+      },
+      {
+        "name": "可视化",
+        "keywords": [
+          "visualization",
+          "visual analytics",
+          "perception",
+          "interactive exploration"
+        ]
+      },
+      {
+        "name": "VR与AR",
+        "keywords": [
+          "virtual reality",
+          "augmented reality",
+          "immersion",
+          "spatial interaction"
+        ]
+      },
+      {
+        "name": "渲染与几何",
+        "keywords": [
+          "rendering",
+          "geometry processing",
+          "physically based rendering",
+          "3D modeling"
+        ]
+      },
+      {
+        "name": "动画与仿真",
+        "keywords": [
+          "animation",
+          "simulation",
+          "motion synthesis",
+          "physics-based"
+        ]
+      }
+    ]
+  },
+  "理论与算法": {
+    "venues": [
+      "STOC",
+      "FOCS",
+      "SODA",
+      "ICALP",
+      "Algorithmica"
+    ],
+    "subs": [
+      {
+        "name": "算法设计",
+        "keywords": [
+          "algorithm design",
+          "approximation algorithm",
+          "randomized algorithm",
+          "data structure"
+        ]
+      },
+      {
+        "name": "计算复杂性",
+        "keywords": [
+          "computational complexity",
+          "lower bound",
+          "hardness",
+          "circuit complexity"
+        ]
+      },
+      {
+        "name": "组合优化",
+        "keywords": [
+          "combinatorial optimization",
+          "integer programming",
+          "graph algorithm",
+          "scheduling"
+        ]
+      },
+      {
+        "name": "博弈与机制设计",
+        "keywords": [
+          "game theory",
+          "mechanism design",
+          "auction",
+          "equilibrium"
+        ]
+      },
+      {
+        "name": "量子计算",
+        "keywords": [
+          "quantum computing",
+          "quantum algorithm",
+          "quantum complexity",
+          "quantum error correction"
+        ]
+      }
+    ]
+  },
+  "机器人与具身智能": {
+    "venues": [
+      "ICRA",
+      "IROS",
+      "RSS",
+      "CoRL",
+      "TRO"
+    ],
+    "subs": [
+      {
+        "name": "SLAM与定位",
+        "keywords": [
+          "SLAM",
+          "localization",
+          "mapping",
+          "visual-inertial odometry"
+        ]
+      },
+      {
+        "name": "运动规划",
+        "keywords": [
+          "motion planning",
+          "path planning",
+          "trajectory optimization",
+          "collision avoidance"
+        ]
+      },
+      {
+        "name": "机器人控制",
+        "keywords": [
+          "robot control",
+          "manipulation",
+          "impedance control",
+          "model predictive control"
+        ]
+      },
+      {
+        "name": "具身智能",
+        "keywords": [
+          "embodied AI",
+          "vision-language-action",
+          "robot learning",
+          "sim-to-real"
+        ]
+      },
+      {
+        "name": "自动驾驶",
+        "keywords": [
+          "autonomous driving",
+          "perception",
+          "planning",
+          "end-to-end driving"
+        ]
+      }
+    ]
+  },
+  "交叉与AI4Science": {
+    "venues": [
+      "Nature Machine Intelligence",
+      "NeurIPS",
+      "ICLR",
+      "MICCAI",
+      "KDD"
+    ],
+    "subs": [
+      {
+        "name": "生物信息",
+        "keywords": [
+          "bioinformatics",
+          "protein",
+          "genomics",
+          "computational biology"
+        ]
+      },
+      {
+        "name": "医学影像",
+        "keywords": [
+          "medical imaging",
+          "diagnosis",
+          "segmentation",
+          "clinical validation",
+          "medical image registration",
+          "mr-ct registration",
+          "deformable registration",
+          "medical segmentation"
+        ]
+      },
+      {
+        "name": "科学计算",
+        "keywords": [
+          "scientific computing",
+          "PDE",
+          "neural operator",
+          "simulation"
+        ]
+      },
+      {
+        "name": "材料与化学",
+        "keywords": [
+          "materials discovery",
+          "molecular generation",
+          "chemistry",
+          "AI4Science"
+        ]
+      },
+      {
+        "name": "遥感与地球观测",
+        "keywords": [
+          "remote sensing",
+          "earth observation",
+          "change detection",
+          "multispectral"
+        ]
+      }
+    ]
+  }
+}

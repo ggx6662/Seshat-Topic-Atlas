@@ -1,0 +1,1693 @@
+{
+  "aliases": [
+    {
+      "category": "人工智能",
+      "field": "机器学习理论",
+      "terms": [
+        "机器学习理论",
+        "learning theory",
+        "泛化理论",
+        "generalization theory"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "深度学习架构",
+      "terms": [
+        "深度学习架构",
+        "神经网络架构",
+        "transformer架构",
+        "视觉骨干",
+        "backbone",
+        "模型压缩",
+        "网络剪枝",
+        "剪枝",
+        "量化压缩",
+        "轻量化模型",
+        "推理加速",
+        "高效推理",
+        "知识蒸馏",
+        "量化"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "强化学习",
+      "terms": [
+        "强化学习",
+        "reinforcement learning",
+        "策略优化",
+        "policy optimization"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "生成模型",
+      "terms": [
+        "生成模型",
+        "扩散模型",
+        "diffusion model",
+        "flow matching",
+        "图像生成"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "多模态学习",
+      "terms": [
+        "多模态学习",
+        "multimodal learning",
+        "跨模态学习",
+        "vision-language"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "可信与可解释AI",
+      "terms": [
+        "可信AI",
+        "可解释",
+        "explainable AI",
+        "鲁棒性",
+        "不确定性"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "联邦与分布式学习",
+      "terms": [
+        "联邦学习",
+        "federated learning",
+        "分布式训练",
+        "distributed training"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "因果推断与决策",
+      "terms": [
+        "因果推断",
+        "causal inference",
+        "因果发现",
+        "决策优化"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "小样本与持续学习",
+      "terms": [
+        "小样本",
+        "few-shot",
+        "持续学习",
+        "continual learning",
+        "元学习",
+        "自我监督学习",
+        "自监督学习",
+        "无监督预训练",
+        "对比学习",
+        "自监督",
+        "表征学习",
+        "半监督学习"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "AI安全与对齐",
+      "terms": [
+        "AI安全",
+        "模型对齐",
+        "alignment",
+        "越狱",
+        "jailbreak",
+        "大模型微调",
+        "指令微调",
+        "对齐训练",
+        "RLHF",
+        "偏好对齐",
+        "对齐优化",
+        "SFT",
+        "越狱防御",
+        "安全对齐"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "目标检测",
+      "terms": [
+        "目标检测",
+        "object detection",
+        "检测器",
+        "detector",
+        "开放词汇检测",
+        "RGB-T检测"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "图像分割",
+      "terms": [
+        "图像分割",
+        "image segmentation",
+        "语义分割",
+        "实例分割",
+        "全景分割"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "目标跟踪",
+      "terms": [
+        "目标跟踪",
+        "visual tracking",
+        "多目标跟踪",
+        "MOT",
+        "RGB-T目标跟踪",
+        "RGB-T跟踪"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "3D与几何视觉",
+      "terms": [
+        "几何视觉",
+        "3D视觉",
+        "3D vision",
+        "多视图几何"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "视频理解",
+      "terms": [
+        "视频理解",
+        "video understanding",
+        "动作识别",
+        "action recognition"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "红外与低光视觉",
+      "terms": [
+        "红外视觉",
+        "低光增强",
+        "RGB-T",
+        "RGB-IR",
+        "热成像",
+        "thermal vision"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "图像恢复与增强",
+      "terms": [
+        "图像恢复",
+        "图像增强",
+        "去噪",
+        "去模糊",
+        "super resolution",
+        "超分辨率"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "OCR与文档理解",
+      "terms": [
+        "OCR",
+        "文档理解",
+        "文档图像",
+        "layout analysis",
+        "表格识别"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "事件相机视觉",
+      "terms": [
+        "事件相机",
+        "event camera",
+        "脉冲视觉",
+        "neuromorphic vision"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "单目与双目深度估计",
+      "terms": [
+        "单目深度估计",
+        "双目深度",
+        "单目深度",
+        "depth estimation",
+        "stereo depth",
+        "自监督深度"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "三维重建与神经渲染",
+      "terms": [
+        "三维重建",
+        "3D重建",
+        "神经渲染",
+        "NeRF",
+        "3DGS",
+        "Gaussian splatting",
+        "新视角合成"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "点云与3D目标检测",
+      "terms": [
+        "点云",
+        "point cloud",
+        "3D目标检测",
+        "LiDAR检测",
+        "点云分割",
+        "点云处理",
+        "三维点云",
+        "LiDAR"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "6D位姿与场景理解",
+      "terms": [
+        "6D位姿",
+        "位姿估计",
+        "pose estimation",
+        "场景理解",
+        "scene understanding"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "立体视觉与SLAM",
+      "terms": [
+        "视觉SLAM",
+        "立体视觉",
+        "stereo vision",
+        "视觉里程计",
+        "visual odometry",
+        "SLAM",
+        "建图定位",
+        "视觉定位"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "大语言模型",
+      "terms": [
+        "大语言模型",
+        "大模型",
+        "LLM",
+        "语言模型",
+        "foundation model",
+        "提示工程",
+        "上下文学习",
+        "思维链",
+        "CoT",
+        "大模型推理",
+        "提示词",
+        "prompt",
+        "预训练语言模型",
+        "基础模型"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "信息抽取",
+      "terms": [
+        "信息抽取",
+        "information extraction",
+        "命名实体识别",
+        "关系抽取",
+        "情感分析",
+        "立场识别",
+        "观点挖掘"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "机器翻译",
+      "terms": [
+        "机器翻译",
+        "machine translation",
+        "多语言翻译",
+        "跨语言翻译"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "对话与智能体",
+      "terms": [
+        "对话系统",
+        "智能体",
+        "agent",
+        "tool use",
+        "对话",
+        "问答系统",
+        "知识问答",
+        "开放域问答",
+        "智能问答"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "检索增强生成",
+      "terms": [
+        "检索增强生成",
+        "RAG",
+        "retrieval-augmented",
+        "知识增强",
+        "检索增强",
+        "知识增强生成"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "多模态语言模型",
+      "terms": [
+        "多模态语言模型",
+        "vision-language model",
+        "VLM",
+        "视觉语言模型"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "语音识别与合成",
+      "terms": [
+        "语音识别",
+        "语音合成",
+        "speech recognition",
+        "TTS",
+        "语音翻译",
+        "speech",
+        "说话人识别",
+        "声纹识别",
+        "语音增强",
+        "语音分离",
+        "声学事件"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "低资源与多语言",
+      "terms": [
+        "低资源",
+        "low-resource",
+        "多语言",
+        "multilingual"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "代码大模型",
+      "terms": [
+        "代码大模型",
+        "code LLM",
+        "代码生成模型",
+        "code generation model"
+      ]
+    },
+    {
+      "category": "自然语言处理",
+      "field": "对话安全",
+      "terms": [
+        "对话安全",
+        "越狱防御",
+        "toxicity",
+        "安全对齐"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "推荐系统",
+      "terms": [
+        "推荐系统",
+        "recommender system",
+        "推荐算法",
+        "生成式推荐",
+        "个性化推荐"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "图挖掘",
+      "terms": [
+        "图挖掘",
+        "graph mining",
+        "图神经网络",
+        "GNN",
+        "社交网络分析"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "时序挖掘",
+      "terms": [
+        "时序挖掘",
+        "time series",
+        "时间序列预测",
+        "异常检测"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "检索与排序",
+      "terms": [
+        "信息检索",
+        "information retrieval",
+        "检索排序",
+        "dense retrieval"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "知识图谱",
+      "terms": [
+        "知识图谱",
+        "knowledge graph",
+        "实体对齐",
+        "知识推理"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "时空数据挖掘",
+      "terms": [
+        "时空数据",
+        "时空预测",
+        "spatio-temporal",
+        "轨迹挖掘",
+        "城市计算"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "多模态检索",
+      "terms": [
+        "多模态检索",
+        "multimodal retrieval",
+        "跨模态检索"
+      ]
+    },
+    {
+      "category": "数据挖掘与信息检索",
+      "field": "数据质量",
+      "terms": [
+        "数据质量",
+        "数据清洗",
+        "data cleaning",
+        "数据治理"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "分布式系统",
+      "terms": [
+        "分布式系统",
+        "distributed system",
+        "共识",
+        "consensus"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "操作系统",
+      "terms": [
+        "操作系统",
+        "operating system",
+        "内核",
+        "kernel"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "存储系统",
+      "terms": [
+        "存储系统",
+        "分布式存储",
+        "storage system",
+        "文件系统",
+        "file system"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "云计算与边缘计算",
+      "terms": [
+        "云计算",
+        "边缘计算",
+        "cloud computing",
+        "edge computing",
+        "云边协同"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "网络与协议",
+      "terms": [
+        "网络协议",
+        "network protocol",
+        "RDMA"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "性能与能耗",
+      "terms": [
+        "性能优化",
+        "能耗",
+        "energy efficiency",
+        "latency"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "可观测性与可靠性",
+      "terms": [
+        "可观测性",
+        "observability",
+        "可靠性",
+        "reliability"
+      ]
+    },
+    {
+      "category": "系统与网络",
+      "field": "虚拟化与容器",
+      "terms": [
+        "容器调度",
+        "容器",
+        "virtualization",
+        "container"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "无线与移动网络",
+      "terms": [
+        "无线网络",
+        "移动网络",
+        "6G",
+        "wireless",
+        "MobiCom"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "数据中心网络",
+      "terms": [
+        "数据中心网络",
+        "data center network",
+        "RDMA网络"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "网络测量与运维",
+      "terms": [
+        "网络测量",
+        "network measurement",
+        "网络运维",
+        "telemetry"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "卫星与空间网络",
+      "terms": [
+        "卫星网络",
+        "satellite network",
+        "LEO",
+        "空间网络"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "网络协议与架构",
+      "terms": [
+        "网络协议",
+        "网络架构",
+        "网络切片",
+        "programmable network"
+      ]
+    },
+    {
+      "category": "体系结构与高性能计算",
+      "field": "处理器架构",
+      "terms": [
+        "处理器架构",
+        "芯片设计",
+        "RISC-V",
+        "processor architecture",
+        "CPU架构",
+        "处理器设计",
+        "SoC设计",
+        "体系结构"
+      ]
+    },
+    {
+      "category": "体系结构与高性能计算",
+      "field": "加速器与异构计算",
+      "terms": [
+        "加速器",
+        "accelerator",
+        "GPU",
+        "异构计算",
+        "AI芯片"
+      ]
+    },
+    {
+      "category": "体系结构与高性能计算",
+      "field": "高性能计算与科学工程",
+      "terms": [
+        "高性能计算",
+        "HPC",
+        "supercomputing",
+        "科学计算"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "隐私计算",
+      "terms": [
+        "隐私计算",
+        "privacy-preserving",
+        "差分隐私",
+        "联邦学习隐私",
+        "隐私保护",
+        "数据隐私",
+        "个人信息保护",
+        "用户隐私"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "对抗与鲁棒性",
+      "terms": [
+        "对抗攻击",
+        "adversarial attack",
+        "对抗防御",
+        "backdoor",
+        "对抗样本",
+        "投毒攻击",
+        "模型后门",
+        "对抗鲁棒",
+        "鲁棒性"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "后量子密码",
+      "terms": [
+        "后量子密码",
+        "post-quantum",
+        "PQC"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "软件供应链",
+      "terms": [
+        "软件供应链",
+        "供应链安全",
+        "supply chain security",
+        "SBOM"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "AI安全",
+      "terms": [
+        "模型窃取",
+        "model stealing",
+        "LLM安全",
+        "AI安全"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "网络空间安全",
+      "terms": [
+        "网络安全",
+        "网络空间安全",
+        "信息安全",
+        "入侵检测",
+        "漏洞挖掘",
+        "恶意软件",
+        "渗透测试",
+        "网络攻防"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "密码学与协议安全",
+      "terms": [
+        "密码学",
+        "密码分析",
+        "密码协议",
+        "零知识证明",
+        "零知识",
+        "同态加密",
+        "安全多方计算",
+        "公钥密码",
+        "对称密码"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "硬件安全",
+      "terms": [
+        "硬件安全",
+        "侧信道",
+        "side-channel",
+        "硬件木马"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "IoT与嵌入式安全",
+      "terms": [
+        "IoT安全",
+        "物联网安全",
+        "嵌入式安全",
+        "firmware security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "数字取证与事件响应",
+      "terms": [
+        "数字取证",
+        "事件响应",
+        "forensics",
+        "incident response"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "系统与软件安全",
+      "terms": [
+        "系统安全",
+        "软件安全",
+        "内核安全",
+        "沙箱",
+        "漏洞利用",
+        "提权",
+        "system security",
+        "kernel security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "Web与云安全",
+      "terms": [
+        "Web安全",
+        "云安全",
+        "容器安全",
+        "Kubernetes安全",
+        "云原生安全",
+        "web security",
+        "cloud security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "身份认证与访问控制",
+      "terms": [
+        "身份认证",
+        "身份鉴别",
+        "访问控制",
+        "零信任",
+        "单点登录",
+        "authentication",
+        "access control"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "恶意软件与威胁情报",
+      "terms": [
+        "恶意软件分析",
+        "威胁情报",
+        "APT检测",
+        "勒索软件",
+        "病毒分析",
+        "malware analysis",
+        "threat intelligence"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "应用密码学与实现安全",
+      "terms": [
+        "应用密码学",
+        "密码工程",
+        "密码实现",
+        "实现安全",
+        "TLS安全",
+        "applied cryptography",
+        "constant-time"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "区块链与智能合约安全",
+      "terms": [
+        "区块链安全",
+        "智能合约安全",
+        "智能合约",
+        "DeFi安全",
+        "blockchain security",
+        "smart contract"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "匿名通信与网络审查",
+      "terms": [
+        "匿名通信",
+        "匿名网络",
+        "网络审查",
+        "审查规避",
+        "流量分析",
+        "anonymous communication",
+        "censorship"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "形式化安全验证",
+      "terms": [
+        "形式化安全",
+        "协议验证",
+        "可证明安全",
+        "安全形式化验证",
+        "formal security",
+        "provable security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "工业控制与CPS安全",
+      "terms": [
+        "工业控制系统安全",
+        "工控安全",
+        "CPS安全",
+        "SCADA安全",
+        "ICS security",
+        "cyber-physical security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "安全可用性与人因",
+      "terms": [
+        "安全可用性",
+        "可用安全",
+        "安全人因",
+        "钓鱼检测",
+        "欺骗攻击",
+        "usable security",
+        "phishing"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "无线与移动安全",
+      "terms": [
+        "无线安全",
+        "移动安全",
+        "蓝牙安全",
+        "WiFi安全",
+        "5G安全",
+        "wireless security",
+        "mobile security"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "数据安全与合规",
+      "terms": [
+        "数据安全",
+        "数据合规",
+        "隐私合规",
+        "数据治理安全",
+        "数据泄露防护",
+        "data security",
+        "privacy compliance"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "代码生成",
+      "terms": [
+        "代码生成",
+        "code generation",
+        "代码补全",
+        "code completion",
+        "程序修复"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "程序分析",
+      "terms": [
+        "程序分析",
+        "program analysis",
+        "静态分析",
+        "static analysis",
+        "形式化验证"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "软件测试",
+      "terms": [
+        "软件测试",
+        "software testing",
+        "模糊测试",
+        "fuzzing"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "缺陷与维护",
+      "terms": [
+        "缺陷检测",
+        "bug detection",
+        "程序修复",
+        "program repair",
+        "缺陷预测",
+        "代码审查",
+        "软件维护"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "需求与架构",
+      "terms": [
+        "需求工程",
+        "requirements engineering",
+        "软件架构",
+        "software architecture"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "代码Agent",
+      "terms": [
+        "代码Agent",
+        "coding agent",
+        "repository-level",
+        "仓库级代码"
+      ]
+    },
+    {
+      "category": "数据库与数据管理",
+      "field": "查询优化",
+      "terms": [
+        "查询优化",
+        "query optimization",
+        "查询计划",
+        "query planning",
+        "数据库调优",
+        "执行计划"
+      ]
+    },
+    {
+      "category": "数据库与数据管理",
+      "field": "事务与一致性",
+      "terms": [
+        "事务处理",
+        "transaction",
+        "并发控制",
+        "一致性"
+      ]
+    },
+    {
+      "category": "数据库与数据管理",
+      "field": "向量数据库",
+      "terms": [
+        "向量数据库",
+        "vector database",
+        "ANN search",
+        "向量检索"
+      ]
+    },
+    {
+      "category": "数据库与数据管理",
+      "field": "流处理",
+      "terms": [
+        "流处理",
+        "stream processing",
+        "实时分析",
+        "streaming"
+      ]
+    },
+    {
+      "category": "数据库与数据管理",
+      "field": "数据湖与湖仓",
+      "terms": [
+        "数据湖",
+        "lakehouse",
+        "data lake",
+        "湖仓一体"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "交互与可用性",
+      "terms": [
+        "人机交互",
+        "HCI",
+        "可用性",
+        "交互设计"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "可视化",
+      "terms": [
+        "可视化",
+        "visualization",
+        "可视分析",
+        "visual analytics"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "VR与AR",
+      "terms": [
+        "VR",
+        "AR",
+        "虚拟现实",
+        "增强现实",
+        "数字人"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "渲染与几何",
+      "terms": [
+        "渲染",
+        "rendering",
+        "几何处理",
+        "3D建模"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "动画与仿真",
+      "terms": [
+        "动画",
+        "animation",
+        "物理仿真",
+        "physics simulation",
+        "虚拟人"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "可访问性",
+      "terms": [
+        "可访问性",
+        "accessibility",
+        "包容性设计"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "健康HCI",
+      "terms": [
+        "健康HCI",
+        "digital health",
+        "医疗交互"
+      ]
+    },
+    {
+      "category": "人机交互与图形学",
+      "field": "可穿戴与普适计算",
+      "terms": [
+        "可穿戴交互",
+        "可穿戴",
+        "普适计算",
+        "wearable"
+      ]
+    },
+    {
+      "category": "理论与算法",
+      "field": "算法设计",
+      "terms": [
+        "算法设计",
+        "algorithm design",
+        "近似算法",
+        "approximation algorithm"
+      ]
+    },
+    {
+      "category": "理论与算法",
+      "field": "计算复杂性",
+      "terms": [
+        "计算复杂性",
+        "computational complexity",
+        "复杂性理论"
+      ]
+    },
+    {
+      "category": "理论与算法",
+      "field": "学习理论",
+      "terms": [
+        "学习理论",
+        "learning theory",
+        "泛化界"
+      ]
+    },
+    {
+      "category": "理论与算法",
+      "field": "随机算法与数据结构",
+      "terms": [
+        "随机算法",
+        "randomized algorithm",
+        "数据结构",
+        "data structure"
+      ]
+    },
+    {
+      "category": "理论与算法",
+      "field": "量子信息理论",
+      "terms": [
+        "量子信息",
+        "quantum information",
+        "量子复杂性"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "SLAM与定位",
+      "terms": [
+        "SLAM",
+        "视觉定位",
+        "视觉里程计",
+        "localization"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "运动规划",
+      "terms": [
+        "运动规划",
+        "motion planning",
+        "路径规划",
+        "path planning"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "机器人控制",
+      "terms": [
+        "机器人控制",
+        "robot control",
+        "MPC",
+        "阻抗控制"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "具身智能",
+      "terms": [
+        "具身智能",
+        "embodied AI",
+        "vision-language-action",
+        "VLA"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "自动驾驶",
+      "terms": [
+        "自动驾驶",
+        "autonomous driving",
+        "端到端驾驶",
+        "无人驾驶",
+        "智能驾驶"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "操作与抓取",
+      "terms": [
+        "机器人操作",
+        "manipulation",
+        "抓取",
+        "grasping"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "医疗机器人",
+      "terms": [
+        "医疗机器人",
+        "medical robotics",
+        "手术机器人"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "多机器人系统",
+      "terms": [
+        "多机器人",
+        "multi-robot",
+        "swarm robotics"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "人形机器人",
+      "terms": [
+        "人形机器人",
+        "humanoid",
+        "双足机器人"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "药物与蛋白质",
+      "terms": [
+        "药物发现",
+        "drug discovery",
+        "蛋白质",
+        "protein design"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "医学影像",
+      "terms": [
+        "医学影像",
+        "医学图像分割",
+        "medical imaging",
+        "临床影像",
+        "MICCAI",
+        "医疗影像",
+        "影像诊断",
+        "影像分割",
+        "病灶检测"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "科学计算",
+      "terms": [
+        "科学计算",
+        "scientific computing",
+        "PDE",
+        "神经算子",
+        "数值模拟"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "材料与化学",
+      "terms": [
+        "材料发现",
+        "materials discovery",
+        "分子生成",
+        "化学",
+        "材料筛选",
+        "新材料",
+        "材料设计"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "遥感与地球观测",
+      "terms": [
+        "遥感",
+        "remote sensing",
+        "地球观测",
+        "变化检测",
+        "遥感影像",
+        "卫星图像",
+        "航拍图像",
+        "遥感解译",
+        "遥感检测",
+        "气象预测",
+        "天气预报",
+        "气候模拟"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "气候与地球系统",
+      "terms": [
+        "气候预测",
+        "climate",
+        "地球系统"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "科学基础模型",
+      "terms": [
+        "科学基础模型",
+        "scientific foundation model",
+        "AI4Science"
+      ]
+    },
+    {
+      "category": "量子计算与信息",
+      "field": "量子算法",
+      "terms": [
+        "量子算法",
+        "quantum algorithm"
+      ]
+    },
+    {
+      "category": "量子计算与信息",
+      "field": "量子纠错",
+      "terms": [
+        "量子纠错",
+        "quantum error correction",
+        "QEC"
+      ]
+    },
+    {
+      "category": "量子计算与信息",
+      "field": "量子机器学习",
+      "terms": [
+        "量子机器学习",
+        "quantum machine learning",
+        "QML"
+      ]
+    },
+    {
+      "category": "量子计算与信息",
+      "field": "量子网络与通信",
+      "terms": [
+        "量子网络",
+        "quantum network",
+        "量子通信"
+      ]
+    },
+    {
+      "category": "计算与社会",
+      "field": "计算社会科学",
+      "terms": [
+        "计算社会科学",
+        "computational social science",
+        "社会计算"
+      ]
+    },
+    {
+      "category": "计算与社会",
+      "field": "教育计算",
+      "terms": [
+        "教育数据挖掘",
+        "learning analytics",
+        "计算教育"
+      ]
+    },
+    {
+      "category": "计算与社会",
+      "field": "计算金融",
+      "terms": [
+        "计算金融",
+        "computational finance",
+        "金融风控",
+        "quantitative finance"
+      ]
+    },
+    {
+      "category": "计算与社会",
+      "field": "法律与政务计算",
+      "terms": [
+        "法律计算",
+        "legal computing",
+        "政务计算",
+        "government technology"
+      ]
+    },
+    {
+      "category": "计算与社会",
+      "field": "可持续计算",
+      "terms": [
+        "可持续计算",
+        "sustainability",
+        "绿色计算",
+        "carbon-aware"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "多智能体系统",
+      "terms": [
+        "多智能体系统",
+        "多智能体",
+        "智能体",
+        "AI Agent",
+        "Agent",
+        "智能体系统",
+        "自主智能体"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "联邦与去中心化系统",
+      "terms": [
+        "联邦与去中心化系统",
+        "联邦学习",
+        "分布式学习",
+        "隐私联邦训练",
+        "去中心化学习"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "AutoML与神经架构搜索",
+      "terms": [
+        "AutoML与神经架构搜索",
+        "AutoML",
+        "神经架构搜索",
+        "NAS",
+        "自动机器学习"
+      ]
+    },
+    {
+      "category": "人工智能",
+      "field": "概率图模型与贝叶斯推断",
+      "terms": [
+        "概率图模型与贝叶斯推断",
+        "因果推断",
+        "因果发现",
+        "反事实"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "区块链系统与共识",
+      "terms": [
+        "区块链系统与共识",
+        "区块链",
+        "联盟链",
+        "公有链",
+        "智能合约",
+        "DeFi"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "机密计算与可信执行环境",
+      "terms": [
+        "机密计算与可信执行环境",
+        "可信计算",
+        "可信执行环境",
+        "TEE",
+        "机密计算",
+        "安全芯片"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "网络攻防",
+      "terms": [
+        "网络攻防",
+        "入侵检测",
+        "恶意流量",
+        "网络攻击检测"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "漏洞生态与安全度量",
+      "terms": [
+        "漏洞生态与安全度量",
+        "漏洞挖掘",
+        "漏洞检测",
+        "恶意软件",
+        "固件分析"
+      ]
+    },
+    {
+      "category": "安全与隐私",
+      "field": "差分隐私与数据匿名化",
+      "terms": [
+        "差分隐私与数据匿名化",
+        "差分隐私",
+        "数据匿名化",
+        "隐私预算"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "工业视觉与缺陷检测",
+      "terms": [
+        "工业视觉与缺陷检测",
+        "工业质检",
+        "表面缺陷检测",
+        "缺陷识别",
+        "外观检测",
+        "瑕疵检测",
+        "工业视觉"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "人脸与生物特征识别",
+      "terms": [
+        "人脸与生物特征识别",
+        "人脸识别",
+        "人脸检测",
+        "人脸比对",
+        "活体检测",
+        "生物特征"
+      ]
+    },
+    {
+      "category": "计算机视觉",
+      "field": "人体与动作理解",
+      "terms": [
+        "人体与动作理解",
+        "姿态估计",
+        "人体姿态",
+        "动作识别",
+        "行为识别"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "分布式一致性与共识",
+      "terms": [
+        "分布式一致性与共识",
+        "分布式一致性",
+        "共识算法",
+        "Raft",
+        "Paxos"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "云原生与容器编排",
+      "terms": [
+        "云原生与容器编排",
+        "容器调度",
+        "Kubernetes",
+        "云原生调度",
+        "云原生"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "分布式机器学习系统",
+      "terms": [
+        "分布式机器学习系统",
+        "分布式训练",
+        "并行训练",
+        "大模型训练系统"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "5G与6G移动网络",
+      "terms": [
+        "5G与6G移动网络",
+        "无线通信",
+        "5G",
+        "6G",
+        "移动网络"
+      ]
+    },
+    {
+      "category": "网络与通信",
+      "field": "车联网与V2X",
+      "terms": [
+        "车联网与V2X",
+        "车联网",
+        "V2X"
+      ]
+    },
+    {
+      "category": "分布式与云计算",
+      "field": "GPU与异构并行计算",
+      "terms": [
+        "GPU与异构并行计算",
+        "异构计算",
+        "GPU加速",
+        "并行计算"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "柔性与仿生机器人",
+      "terms": [
+        "柔性与仿生机器人",
+        "人形机器人",
+        "双足机器人"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "机器人学习",
+      "terms": [
+        "机器人学习",
+        "机械臂抓取",
+        "操作学习",
+        "抓取规划",
+        "机械臂"
+      ]
+    },
+    {
+      "category": "机器人与具身智能",
+      "field": "无人机与自主导航",
+      "terms": [
+        "无人机与自主导航",
+        "无人机",
+        "UAV",
+        "自主导航"
+      ]
+    },
+    {
+      "category": "软件工程",
+      "field": "自动化测试与模糊测试",
+      "terms": [
+        "自动化测试与模糊测试",
+        "软件测试",
+        "自动化测试",
+        "模糊测试",
+        "测试用例生成"
+      ]
+    },
+    {
+      "category": "交叉与AI4Science",
+      "field": "生物信息",
+      "terms": [
+        "生物信息",
+        "蛋白质结构预测",
+        "蛋白质设计",
+        "分子建模"
+      ]
+    }
+  ]
+}

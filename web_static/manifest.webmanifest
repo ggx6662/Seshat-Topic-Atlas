@@ -1,0 +1,50 @@
+{
+  "name": "550W·知识库助手",
+  "short_name": "知识库助手",
+  "description": "科研选题工作台：选题候选、文献空白、导师院校、方向图谱、科研方法论",
+  "start_url": "/?v=topics&source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#061220",
+  "theme_color": "#061220",
+  "lang": "zh-CN",
+  "categories": ["productivity", "education"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "选题候选",
+      "url": "/?v=topics",
+      "description": "按研究方向生成候选题目"
+    },
+    {
+      "name": "文献空白",
+      "url": "/?v=gap",
+      "description": "看本地库里哪些方法×任务组合还没人做"
+    },
+    {
+      "name": "导师与院校",
+      "url": "/?v=advisors",
+      "description": "按方向找相关学者"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "principles": {
+    "summary": "强相关不是任意搭配，而由研究共同体共享的任务、数据模态、评价协议、典型方法、部署场景和目标 venue 共同决定。理论类可以不需要具体场景/模态；应用类通常由场景与模态约束方法；系统/安全/SE/DB 类主要由任务和评价约束。",
+    "strong_weight": 2.0,
+    "optional_weight": 0.5,
+    "dimension_importance_note": "每个领域画像给出场景/方法/任务/模态的相对重要性，0 表示可以选择忽略。"
+  },
+  "category_profiles": {
+    "人工智能": {"机器学习理论": "theory", "深度学习架构": "ml_method", "强化学习": "ml_method", "生成模型": "ml_method", "多模态学习": "ml_method", "可信与可解释AI": "ml_method"},
+    "计算机视觉": {"目标检测": "vision", "图像分割": "vision", "目标跟踪": "vision", "3D与几何视觉": "vision", "视频理解": "vision", "红外与低光视觉": "vision"},
+    "自然语言处理": {"大语言模型": "nlp", "信息抽取": "nlp", "机器翻译": "nlp", "对话与智能体": "nlp", "检索增强生成": "nlp", "多模态语言模型": "nlp"},
+    "数据挖掘与信息检索": {"推荐系统": "data", "图挖掘": "data", "时序挖掘": "data", "检索与排序": "data", "知识图谱": "data"},
+    "系统与网络": {"分布式系统": "systems", "操作系统": "systems", "存储系统": "systems", "云计算与边缘计算": "systems", "网络与协议": "systems", "性能与能耗": "systems"},
+    "安全与隐私": {"系统安全": "security", "网络攻防": "security", "隐私计算": "security", "对抗与鲁棒性": "security", "密码学应用": "security"},
+    "软件工程": {"代码生成": "se", "程序分析": "se", "软件测试": "se", "缺陷与维护": "se", "LLM4SE": "se"},
+    "数据库与数据管理": {"查询优化": "db", "事务与一致性": "db", "向量数据库": "db", "流处理": "db", "数据治理": "db"},
+    "人机交互与图形学": {"交互与可用性": "hci", "可视化": "hci", "VR与AR": "hci", "渲染与几何": "graphics", "动画与仿真": "graphics"},
+    "理论与算法": {"算法设计": "theory", "计算复杂性": "theory", "组合优化": "theory", "博弈与机制设计": "theory", "量子计算": "theory"},
+    "机器人与具身智能": {"SLAM与定位": "robotics", "运动规划": "robotics", "机器人控制": "robotics", "具身智能": "robotics", "自动驾驶": "robotics"},
+    "交叉与AI4Science": {"生物信息": "science", "医学影像": "science", "科学计算": "science", "材料与化学": "science", "遥感与地球观测": "science"}
+  },
+  "profiles": {
+    "theory": {
+      "label": "理论/算法",
+      "importance": {"scenario": 0.1, "method": 0.85, "task": 0.6, "modality": 0.1},
+      "scenarios": [],
+      "methods": ["优化与运筹", "贝叶斯与概率建模", "神经符号与逻辑推理", "强化学习与决策"],
+      "tasks": ["推理与问答", "评测与Benchmark", "程序分析与验证"],
+      "modalities": []
+    },
+    "ml_method": {
+      "label": "通用机器学习方法",
+      "importance": {"scenario": 0.4, "method": 0.9, "task": 0.75, "modality": 0.55},
+      "scenarios": ["科学与材料发现", "医疗健康与临床诊断", "金融与商业决策"],
+      "methods": ["深度学习与Transformer", "Mamba与状态空间模型", "扩散与生成模型", "强化学习与决策", "自监督与对比学习", "图学习与知识图谱", "因果推断", "贝叶斯与概率建模"],
+      "tasks": ["生成", "识别与分类", "推理与问答", "检测", "分割", "评测与Benchmark"],
+      "modalities": ["RGB图像", "视频", "文本", "图与时序", "多模态传感器"]
+    },
+    "vision": {
+      "label": "视觉/多模态感知",
+      "importance": {"scenario": 0.75, "method": 0.8, "task": 0.9, "modality": 0.9},
+      "scenarios": ["自动驾驶与智能交通", "无人机与遥感", "工业检测与智能制造", "智能安防与监控", "医疗健康与临床诊断", "机器人与具身智能", "AR/VR与数字人"],
+      "methods": ["深度学习与Transformer", "Mamba与状态空间模型", "扩散与生成模型", "自监督与对比学习", "多模态融合与对齐", "频域与小波方法", "边缘计算与硬件加速"],
+      "tasks": ["检测", "分割", "跟踪", "识别与分类", "生成", "评测与Benchmark"],
+      "modalities": ["RGB图像", "视频", "RGB-T/红外", "LiDAR与点云", "医学影像", "遥感与高光谱", "多模态传感器"]
+    },
+    "nlp": {
+      "label": "自然语言/语言模型",
+      "importance": {"scenario": 0.5, "method": 0.8, "task": 0.85, "modality": 0.8},
+      "scenarios": ["教育与学习分析", "金融与商业决策", "社交网络与数字社会", "医疗健康与临床诊断"],
+      "methods": ["深度学习与Transformer", "强化学习与决策", "检索增强与对齐", "因果推断", "贝叶斯与概率建模", "神经符号与逻辑推理"],
+      "tasks": ["生成", "检索与排序", "推理与问答", "识别与分类", "对齐与偏好优化", "评测与Benchmark"],
+      "modalities": ["文本", "语音与音频", "图与时序", "多模态传感器"]
+    },
+    "data": {
+      "label": "数据挖掘/信息检索",
+      "importance": {"scenario": 0.6, "method": 0.7, "task": 0.85, "modality": 0.6},
+      "scenarios": ["金融与商业决策", "社交网络与数字社会", "教育与学习分析", "工业检测与智能制造", "医疗健康与临床诊断"],
+      "methods": ["图学习与知识图谱", "深度学习与Transformer", "贝叶斯与概率建模", "优化与运筹", "联邦学习与隐私计算"],
+      "tasks": ["检索与排序", "识别与分类", "推理与问答", "评测与Benchmark"],
+      "modalities": ["图与时序", "文本", "多模态传感器"]
+    },
+    "systems": {
+      "label": "系统/网络",
+      "importance": {"scenario": 0.3, "method": 0.7, "task": 0.9, "modality": 0.2},
+      "scenarios": ["云计算与数据中心", "能源与智能电网", "空间、海洋与极端环境"],
+      "methods": ["边缘计算与硬件加速", "仿真与数字孪生", "系统优化与资源调度", "形式化方法与验证"],
+      "tasks": ["性能优化与资源管理", "编译与调度", "存储与查询", "测试与修复"],
+      "modalities": ["网络与系统日志", "图与时序"]
+    },
+    "security": {
+      "label": "安全/隐私",
+      "importance": {"scenario": 0.4, "method": 0.75, "task": 0.85, "modality": 0.4},
+      "scenarios": ["网络安全与攻防", "智能安防与监控", "云计算与数据中心", "金融与商业决策", "医疗健康与临床诊断"],
+      "methods": ["联邦学习与隐私计算", "形式化方法与验证", "对抗与鲁棒学习", "深度学习与Transformer"],
+      "tasks": ["安全与隐私保护", "测试与修复", "程序分析与验证", "评测与Benchmark"],
+      "modalities": ["网络与系统日志", "代码与程序", "文本", "视频"]
+    },
+    "se": {
+      "label": "软件工程",
+      "importance": {"scenario": 0.3, "method": 0.7, "task": 0.9, "modality": 0.3},
+      "scenarios": ["云计算与数据中心", "教育与学习分析", "工业检测与智能制造"],
+      "methods": ["深度学习与Transformer", "检索增强与对齐", "形式化方法与验证", "神经符号与逻辑推理"],
+      "tasks": ["程序分析与验证", "测试与修复", "生成", "编译与调度", "评测与Benchmark"],
+      "modalities": ["代码与程序", "文本", "网络与系统日志"]
+    },
+    "db": {
+      "label": "数据库/数据管理",
+      "importance": {"scenario": 0.4, "method": 0.7, "task": 0.9, "modality": 0.35},
+      "scenarios": ["云计算与数据中心", "金融与商业决策", "医疗健康与临床诊断", "工业检测与智能制造"],
+      "methods": ["优化与运筹", "图学习与知识图谱", "系统优化与资源调度", "边缘计算与硬件加速"],
+      "tasks": ["存储与查询", "检索与排序", "性能优化与资源管理", "评测与Benchmark"],
+      "modalities": ["图与时序", "文本"]
+    },
+    "hci": {
+      "label": "人机交互",
+      "importance": {"scenario": 0.9, "method": 0.4, "task": 0.8, "modality": 0.8},
+      "scenarios": ["医疗健康与临床诊断", "教育与学习分析", "AR/VR与数字人", "社交网络与数字社会", "金融与商业决策"],
+      "methods": ["人机交互与用户研究", "深度学习与Transformer", "仿真与数字孪生"],
+      "tasks": ["交互与可视化", "识别与分类", "生成", "评测与Benchmark"],
+      "modalities": ["视频", "文本", "语音与音频", "多模态传感器", "医学影像"]
+    },
+    "graphics": {
+      "label": "计算机图形学",
+      "importance": {"scenario": 0.5, "method": 0.85, "task": 0.8, "modality": 0.85},
+      "scenarios": ["AR/VR与数字人", "科学与材料发现", "工业检测与智能制造", "教育与学习分析"],
+      "methods": ["深度学习与Transformer", "扩散与生成模型", "仿真与数字孪生", "边缘计算与硬件加速"],
+      "tasks": ["生成", "交互与可视化", "识别与分类", "评测与Benchmark"],
+      "modalities": ["RGB图像", "视频", "LiDAR与点云", "多模态传感器"]
+    },
+    "robotics": {
+      "label": "机器人/具身智能",
+      "importance": {"scenario": 0.9, "method": 0.75, "task": 0.9, "modality": 0.9},
+      "scenarios": ["机器人与具身智能", "自动驾驶与智能交通", "无人机与遥感", "工业检测与智能制造", "空间、海洋与极端环境"],
+      "methods": ["强化学习与决策", "仿真与数字孪生", "优化与运筹", "多模态融合与对齐", "边缘计算与硬件加速"],
+      "tasks": ["规划与控制", "检测", "跟踪", "分割", "识别与分类"],
+      "modalities": ["RGB图像", "视频", "LiDAR与点云", "RGB-T/红外", "多模态传感器"]
+    },
+    "science": {
+      "label": "AI4Science/交叉",
+      "importance": {"scenario": 0.9, "method": 0.7, "task": 0.8, "modality": 0.9},
+      "scenarios": ["科学与材料发现", "生物信息与基因组", "医疗健康与临床诊断", "农业与环境", "能源与智能电网", "无人机与遥感"],
+      "methods": ["扩散与生成模型", "图学习与知识图谱", "贝叶斯与概率建模", "仿真与数字孪生", "优化与运筹"],
+      "tasks": ["生成", "推理与问答", "检测", "分割", "评测与Benchmark"],
+      "modalities": ["医学影像", "遥感与高光谱", "图与时序", "文本", "多模态传感器"]
+    },
+    "social": {
+      "label": "社会计算/可持续",
+      "importance": {"scenario": 0.8, "method": 0.6, "task": 0.75, "modality": 0.7},
+      "scenarios": ["社交网络与数字社会", "金融与商业决策", "教育与学习分析", "农业与环境", "能源与智能电网"],
+      "methods": ["因果推断", "图学习与知识图谱", "联邦学习与隐私计算", "深度学习与Transformer"],
+      "tasks": ["推理与问答", "检索与排序", "识别与分类", "评测与Benchmark"],
+      "modalities": ["文本", "图与时序", "多模态传感器"]
+    }
+  }
+}

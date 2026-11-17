@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 手机浏览器的地址栏取色：和 design_tokens 的 surface_nav 保持一致，
+     改配色时要一起改（或直接跑 CSS 里的 --surface-nav，浏览器读不到变量，只能写死） -->
+<meta name="theme-color" content="#111213">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="知识库助手">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<title>知识库助手 · 体验端</title>
+<!-- DESIGN_TOKENS：服务端从这里注入 design_tokens.py 的变量，必须排在样式表之前 -->
+<!-- DESIGN_TOKENS -->
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="logo">550W</span>
+    <span class="brand-txt">
+      <b>知识库助手</b>
+      <i>科研选题工作台 · 体验端</i>
+    </span>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-view="topics">选题候选</button>
+    <button class="tab" data-view="gap">文献空白</button>
+    <button class="tab" data-view="advisors">导师院校</button>
+    <button class="tab" data-view="map">方向图谱</button>
+    <button class="tab" data-view="skills">科研方法论</button>
+  </nav>
+</header>
+
+<main>
+  <section class="stats" id="stats">
+    <div class="stat"><span>文献</span><b id="s-papers">—</b><i>篇 PDF</i></div>
+    <div class="stat"><span>学者</span><b id="s-adv">—</b><i>位画像完整</i></div>
+    <div class="stat"><span>院校</span><b id="s-inst">—</b><i>所</i></div>
+    <div class="stat"><span>方向</span><b id="s-cat">—</b><i>个大类</i></div>
+  </section>
+
+  <section class="bar">
+    <input id="q" type="search" placeholder="输入研究方向，例如：红外小目标检测 / 单目深度估计 / 联邦学习"
+           autocomplete="off" enterkeyhint="search">
+    <button id="go" class="primary">分析</button>
+  </section>
+
+  <p class="hint" id="hint">选一个方向，下面给出三种视角：能做什么、哪里没人做、谁在做。</p>
+
+  <div id="out"></div>
+
+  <footer class="foot">
+    <p><b>体验端限制</b></p>
+    <ul>
+      <li>只读：可以看选题候选、文献空白、导师院校、方向图谱、科研方法论。</li>
+      <li>不开放：下载 PDF 到磁盘、大模型密钥、个人画像、本地文献全文检索、实时抓取新论文。这些要装桌面客户端。</li>
+      <li>数据来自预置的知识库快照，不是实时。导师数据截至本地索引生成时间。</li>
+    </ul>
+  </footer>
+</main>
+
+<script src="/app.js"></script>
+<script>
+// PWA：注册 service worker + 提示「可安装到桌面」。
+// 只在 https 或 localhost 下可用 —— 手机用 http://192.168.x.x 打开时，
+// 浏览器按规范不会注册 SW，所以下面会明确告诉用户「装不了，直接用浏览器」，
+// 而不是让「添加到主屏幕」按钮点了没反应。
+(function () {
+  var canPWA = location.protocol === "https:" || location.hostname === "localhost"
+            || location.hostname === "127.0.0.1";
+  if (!canPWA) {
+    window.__kbPWA = { supported: false,
+      reason: "手机通过局域网 IP 打开时浏览器不注册 Service Worker（需 HTTPS）。仍可正常使用，或手动「添加到主屏幕」。" };
+    return;
+  }
+  if (!("serviceWorker" in navigator)) {
+    window.__kbPWA = { supported: false, reason: "这个浏览器不支持 Service Worker。" };
+    return;
+  }
+  var prompt = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    prompt = e;
+    window.__kbPWA = Object.assign(window.__kbPWA || {}, { canInstall: true, prompt: e });
+    document.dispatchEvent(new CustomEvent("kb-installable"));
+  });
+  navigator.serviceWorker.register("/sw.js").then(function (reg) {
+    window.__kbPWA = Object.assign(window.__kbPWA || {}, { supported: true, reg: reg });
+  }).catch(function (err) {
+    window.__kbPWA = { supported: false, reason: "Service Worker 注册失败：" + err.message };
+  });
+  window.__kbInstall = function () {
+    if (!prompt) return Promise.resolve(false);
+    prompt.prompt();
+    return prompt.userChoice.then(function (c) { return c.outcome === "accepted"; });
+  };
+})();
+</script>
+</body>
+</html>

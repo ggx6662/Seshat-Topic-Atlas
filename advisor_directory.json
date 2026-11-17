@@ -1,0 +1,1103 @@
+{
+  "disclaimer": "代表性研究者/课题组样本，基于公开研究方向页面整理；不代表招生名额、导师意愿或最新隶属关系，使用前请以机构官网核验。",
+  "advisors": [
+    {
+      "name": "Fei-Fei Li",
+      "institution": "Stanford CS",
+      "lab": "Vision & Learning Lab",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "多模态学习",
+        "具身智能"
+      ],
+      "keywords": [
+        "computer vision",
+        "vision-language",
+        "embodied AI"
+      ],
+      "cited_by_count": 223768,
+      "works_count": 612,
+      "orcid": "https://orcid.org/0000-0002-7481-0810"
+    },
+    {
+      "name": "Chelsea Finn",
+      "institution": "Stanford CS",
+      "lab": "IRIS Lab",
+      "category": "机器人与具身智能",
+      "fields": [
+        "具身智能",
+        "机器人控制",
+        "小样本与持续学习"
+      ],
+      "keywords": [
+        "robot learning",
+        "meta-learning",
+        "manipulation"
+      ],
+      "cited_by_count": 36563,
+      "works_count": 384,
+      "orcid": "https://orcid.org/0000-0001-6298-0874"
+    },
+    {
+      "name": "Percy Liang",
+      "institution": "Stanford CS",
+      "lab": "Foundation Models Lab",
+      "category": "自然语言处理",
+      "fields": [
+        "大语言模型",
+        "检索增强生成",
+        "多模态语言模型"
+      ],
+      "keywords": [
+        "foundation models",
+        "evaluation",
+        "reasoning"
+      ],
+      "cited_by_count": 49908,
+      "works_count": 462,
+      "orcid": "https://orcid.org/0000-0002-0458-6139"
+    },
+    {
+      "name": "Michael I. Jordan",
+      "institution": "UC Berkeley EECS",
+      "lab": "AI/ML",
+      "category": "人工智能",
+      "fields": [
+        "机器学习理论",
+        "贝叶斯与概率建模"
+      ],
+      "keywords": [
+        "machine learning",
+        "statistics",
+        "optimization"
+      ],
+      "cited_by_count": 213939,
+      "works_count": 1424,
+      "orcid": "https://orcid.org/0000-0001-8935-817X"
+    },
+    {
+      "name": "Bernhard Schölkopf",
+      "institution": "Max Planck Institute for Intelligent Systems",
+      "lab": "Empirical Inference",
+      "category": "人工智能",
+      "fields": [
+        "机器学习理论",
+        "因果推断与决策"
+      ],
+      "keywords": [
+        "causal inference",
+        "kernel methods",
+        "representation learning"
+      ],
+      "cited_by_count": 168027,
+      "works_count": 1886,
+      "orcid": "https://orcid.org/0000-0002-8177-0925"
+    },
+    {
+      "name": "Ruslan Salakhutdinov",
+      "institution": "CMU SCS",
+      "lab": "Machine Learning Department",
+      "category": "人工智能",
+      "fields": [
+        "深度学习架构",
+        "生成模型",
+        "多模态学习"
+      ],
+      "keywords": [
+        "deep learning",
+        "generative models",
+        "multimodal"
+      ],
+      "cited_by_count": 142921,
+      "works_count": 453,
+      "orcid": "https://orcid.org/0000-0002-3752-2756"
+    },
+    {
+      "name": "Zoubin Ghahramani",
+      "institution": "Cambridge CS",
+      "lab": "Machine Learning Group",
+      "category": "人工智能",
+      "fields": [
+        "贝叶斯与概率建模",
+        "深度学习架构"
+      ],
+      "keywords": [
+        "Bayesian",
+        "probabilistic models",
+        "deep learning"
+      ],
+      "cited_by_count": 0,
+      "works_count": 1,
+      "orcid": ""
+    },
+    {
+      "name": "Antonio Torralba",
+      "institution": "MIT CSAIL",
+      "lab": "Computer Vision Group",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "图像分割",
+        "多模态语言模型"
+      ],
+      "keywords": [
+        "computer vision",
+        "scene understanding",
+        "vision-language"
+      ],
+      "cited_by_count": 107970,
+      "works_count": 581,
+      "orcid": "https://orcid.org/0000-0003-4915-0256"
+    },
+    {
+      "name": "Alexei Efros",
+      "institution": "UC Berkeley EECS",
+      "lab": "AI/Visual Computing",
+      "category": "计算机视觉",
+      "fields": [
+        "图像恢复与增强",
+        "生成模型",
+        "视频理解"
+      ],
+      "keywords": [
+        "visual computing",
+        "image translation",
+        "generative vision"
+      ],
+      "cited_by_count": 113,
+      "works_count": 38,
+      "orcid": ""
+    },
+    {
+      "name": "Trevor Darrell",
+      "institution": "UC Berkeley EECS",
+      "lab": "Berkeley AI Research",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "视觉语言导航",
+        "多模态学习"
+      ],
+      "keywords": [
+        "vision-language",
+        "detection",
+        "navigation"
+      ],
+      "cited_by_count": 224837,
+      "works_count": 995,
+      "orcid": "https://orcid.org/0000-0001-5453-8533"
+    },
+    {
+      "name": "Marc Pollefeys",
+      "institution": "ETH Zurich D-INFK",
+      "lab": "Computer Vision and Geometry",
+      "category": "计算机视觉",
+      "fields": [
+        "3D与几何视觉",
+        "深度与3D检测",
+        "SLAM与定位"
+      ],
+      "keywords": [
+        "3D vision",
+        "SLAM",
+        "geometry"
+      ],
+      "cited_by_count": 53293,
+      "works_count": 852,
+      "orcid": "https://orcid.org/0000-0003-2448-2318"
+    },
+    {
+      "name": "Philip Torr",
+      "institution": "Oxford CS",
+      "lab": "Torr Vision Group",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "图像分割",
+        "视频理解"
+      ],
+      "keywords": [
+        "computer vision",
+        "segmentation",
+        "video understanding"
+      ],
+      "cited_by_count": 59033,
+      "works_count": 479,
+      "orcid": "https://orcid.org/0009-0006-0259-5732"
+    },
+    {
+      "name": "Jia Deng",
+      "institution": "Princeton CS",
+      "lab": "Vision and Learning Lab",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "3D与几何视觉",
+        "识别与分类"
+      ],
+      "keywords": [
+        "object recognition",
+        "3D vision",
+        "benchmark"
+      ],
+      "cited_by_count": 136586,
+      "works_count": 183,
+      "orcid": "https://orcid.org/0000-0001-9594-4554"
+    },
+    {
+      "name": "Olga Russakovsky",
+      "institution": "Princeton CS",
+      "lab": "Vision and Learning Lab",
+      "category": "计算机视觉",
+      "fields": [
+        "图像分割",
+        "可信与可解释AI",
+        "评测与Benchmark"
+      ],
+      "keywords": [
+        "visual recognition",
+        "fairness",
+        "benchmark"
+      ],
+      "cited_by_count": 46190,
+      "works_count": 255,
+      "orcid": "https://orcid.org/0000-0001-5272-3241"
+    },
+    {
+      "name": "Xiaogang Wang",
+      "institution": "Peking University CS",
+      "lab": "Visual Technology",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "目标跟踪",
+        "视频理解"
+      ],
+      "keywords": [
+        "detection",
+        "tracking",
+        "video analysis"
+      ],
+      "cited_by_count": 117814,
+      "works_count": 370,
+      "orcid": "https://orcid.org/0000-0002-7929-5889"
+    },
+    {
+      "name": "Yizhou Wang",
+      "institution": "Peking University CS",
+      "lab": "Visual Technology",
+      "category": "计算机视觉",
+      "fields": [
+        "图像分割",
+        "多模态学习",
+        "具身智能"
+      ],
+      "keywords": [
+        "vision",
+        "multimodal",
+        "embodied AI"
+      ],
+      "cited_by_count": 10175,
+      "works_count": 323,
+      "orcid": "https://orcid.org/0000-0001-9888-6409"
+    },
+    {
+      "name": "Jiwen Lu",
+      "institution": "Tsinghua CS",
+      "lab": "Vision and Learning",
+      "category": "计算机视觉",
+      "fields": [
+        "目标检测",
+        "目标跟踪",
+        "深度与3D检测"
+      ],
+      "keywords": [
+        "vision",
+        "detection",
+        "tracking"
+      ],
+      "cited_by_count": 31459,
+      "works_count": 562,
+      "orcid": "https://orcid.org/0000-0002-6121-5529"
+    },
+    {
+      "name": "Svetlana Lazebnik",
+      "institution": "UIUC CS",
+      "lab": "Computer Vision",
+      "category": "计算机视觉",
+      "fields": [
+        "图像分割",
+        "多模态检索",
+        "图像恢复与增强"
+      ],
+      "keywords": [
+        "vision",
+        "segmentation",
+        "multimodal retrieval"
+      ],
+      "cited_by_count": 29782,
+      "works_count": 157,
+      "orcid": ""
+    },
+    {
+      "name": "Cewu Lu",
+      "institution": "Shanghai Jiao Tong CS",
+      "lab": "MVIG",
+      "category": "机器人与具身智能",
+      "fields": [
+        "具身智能",
+        "操作与抓取",
+        "3D与几何视觉"
+      ],
+      "keywords": [
+        "robot vision",
+        "manipulation",
+        "3D perception"
+      ],
+      "cited_by_count": 22592,
+      "works_count": 431,
+      "orcid": "https://orcid.org/0000-0003-1533-8576"
+    },
+    {
+      "name": "Christopher Manning",
+      "institution": "Stanford CS",
+      "lab": "NLP Group",
+      "category": "自然语言处理",
+      "fields": [
+        "大语言模型",
+        "信息抽取",
+        "多模态语言模型"
+      ],
+      "keywords": [
+        "NLP",
+        "language models",
+        "information extraction"
+      ],
+      "cited_by_count": 185828,
+      "works_count": 780,
+      "orcid": "https://orcid.org/0000-0001-6155-649X"
+    },
+    {
+      "name": "Graham Neubig",
+      "institution": "CMU SCS",
+      "lab": "Language Technologies Institute",
+      "category": "自然语言处理",
+      "fields": [
+        "机器翻译",
+        "低资源与多语言",
+        "对话与智能体"
+      ],
+      "keywords": [
+        "NLP",
+        "machine translation",
+        "agents"
+      ],
+      "cited_by_count": 26731,
+      "works_count": 630,
+      "orcid": "https://orcid.org/0000-0002-2072-3789"
+    },
+    {
+      "name": "Regina Barzilay",
+      "institution": "MIT CSAIL",
+      "lab": "NLP and AI for Science",
+      "category": "自然语言处理",
+      "fields": [
+        "大语言模型",
+        "药物与蛋白质",
+        "科学基础模型"
+      ],
+      "keywords": [
+        "NLP",
+        "AI4Science",
+        "drug discovery"
+      ],
+      "cited_by_count": 36486,
+      "works_count": 420,
+      "orcid": "https://orcid.org/0000-0002-2921-8201"
+    },
+    {
+      "name": "Luke Zettlemoyer",
+      "institution": "University of Washington CSE",
+      "lab": "NLP",
+      "category": "自然语言处理",
+      "fields": [
+        "大语言模型",
+        "检索增强生成",
+        "多模态语言模型"
+      ],
+      "keywords": [
+        "NLP",
+        "LLM",
+        "grounding"
+      ],
+      "cited_by_count": 82771,
+      "works_count": 520,
+      "orcid": "https://orcid.org/0009-0008-8296-0764"
+    },
+    {
+      "name": "Pascale Fung",
+      "institution": "HKUST CSE",
+      "lab": "Center for AI Research",
+      "category": "自然语言处理",
+      "fields": [
+        "语音识别与合成",
+        "机器翻译",
+        "对话安全"
+      ],
+      "keywords": [
+        "speech",
+        "NLP",
+        "multilingual"
+      ],
+      "cited_by_count": 20620,
+      "works_count": 577,
+      "orcid": "https://orcid.org/0000-0002-0628-7132"
+    },
+    {
+      "name": "Maosong Sun",
+      "institution": "Tsinghua CS",
+      "lab": "NLP Lab",
+      "category": "自然语言处理",
+      "fields": [
+        "大语言模型",
+        "信息抽取",
+        "低资源与多语言"
+      ],
+      "keywords": [
+        "NLP",
+        "language model",
+        "Chinese NLP"
+      ],
+      "cited_by_count": 40990,
+      "works_count": 736,
+      "orcid": "https://orcid.org/0000-0002-6011-6115"
+    },
+    {
+      "name": "Min-Yen Kan",
+      "institution": "NUS Computing",
+      "lab": "Web IR / NLP Group",
+      "category": "数据挖掘与信息检索",
+      "fields": [
+        "检索与排序",
+        "多模态检索",
+        "信息抽取"
+      ],
+      "keywords": [
+        "IR",
+        "NLP",
+        "scholarly data"
+      ],
+      "cited_by_count": 27,
+      "works_count": 1,
+      "orcid": ""
+    },
+    {
+      "name": "Jure Leskovec",
+      "institution": "Stanford CS",
+      "lab": "SNAP Group",
+      "category": "数据挖掘与信息检索",
+      "fields": [
+        "图挖掘",
+        "知识图谱",
+        "计算社会科学"
+      ],
+      "keywords": [
+        "graph mining",
+        "social networks",
+        "knowledge graph"
+      ],
+      "cited_by_count": 135052,
+      "works_count": 732,
+      "orcid": "https://orcid.org/0000-0002-5411-923X"
+    },
+    {
+      "name": "Jiawei Han",
+      "institution": "UIUC CS",
+      "lab": "Data Mining Group",
+      "category": "数据挖掘与信息检索",
+      "fields": [
+        "数据挖掘",
+        "时空数据挖掘",
+        "知识图谱"
+      ],
+      "keywords": [
+        "data mining",
+        "graph mining",
+        "text mining"
+      ],
+      "cited_by_count": 96022,
+      "works_count": 1115,
+      "orcid": "https://orcid.org/0000-0002-3629-2696"
+    },
+    {
+      "name": "Tat-Seng Chua",
+      "institution": "NUS Computing",
+      "lab": "NExT Research Center",
+      "category": "数据挖掘与信息检索",
+      "fields": [
+        "多模态检索",
+        "多模态学习",
+        "推荐系统"
+      ],
+      "keywords": [
+        "multimodal retrieval",
+        "recommendation",
+        "vision-language"
+      ],
+      "cited_by_count": 156,
+      "works_count": 11,
+      "orcid": ""
+    },
+    {
+      "name": "Qiang Yang",
+      "institution": "HKUST CSE",
+      "lab": "AI/Data Science",
+      "category": "人工智能",
+      "fields": [
+        "联邦与分布式学习",
+        "迁移学习",
+        "数据挖掘"
+      ],
+      "keywords": [
+        "federated learning",
+        "transfer learning",
+        "data mining"
+      ],
+      "cited_by_count": 118509,
+      "works_count": 1197,
+      "orcid": "https://orcid.org/0000-0001-5059-8360"
+    },
+    {
+      "name": "Matei Zaharia",
+      "institution": "UC Berkeley EECS",
+      "lab": "Sky Computing / Spark",
+      "category": "系统与网络",
+      "fields": [
+        "分布式系统",
+        "云计算与边缘计算",
+        "数据湖与湖仓"
+      ],
+      "keywords": [
+        "distributed systems",
+        "cloud",
+        "data systems"
+      ],
+      "cited_by_count": 55145,
+      "works_count": 425,
+      "orcid": "https://orcid.org/0000-0002-7547-7204"
+    },
+    {
+      "name": "Ion Stoica",
+      "institution": "UC Berkeley EECS",
+      "lab": "Sky Computing",
+      "category": "系统与网络",
+      "fields": [
+        "云计算与边缘计算",
+        "分布式系统",
+        "机器学习系统"
+      ],
+      "keywords": [
+        "cloud",
+        "distributed systems",
+        "ML systems"
+      ],
+      "cited_by_count": 1856,
+      "works_count": 2,
+      "orcid": ""
+    },
+    {
+      "name": "Frans Kaashoek",
+      "institution": "MIT CSAIL",
+      "lab": "Systems",
+      "category": "系统与网络",
+      "fields": [
+        "操作系统",
+        "分布式系统",
+        "可观测性与可靠性"
+      ],
+      "keywords": [
+        "systems",
+        "OS",
+        "distributed systems"
+      ],
+      "cited_by_count": 1,
+      "works_count": 29,
+      "orcid": ""
+    },
+    {
+      "name": "Timothy Roscoe",
+      "institution": "ETH Zurich D-INFK",
+      "lab": "Systems Group",
+      "category": "系统与网络",
+      "fields": [
+        "操作系统",
+        "网络协议与架构",
+        "可观测性与可靠性"
+      ],
+      "keywords": [
+        "systems",
+        "networking",
+        "OS"
+      ],
+      "cited_by_count": 9528,
+      "works_count": 301,
+      "orcid": "https://orcid.org/0000-0002-8298-1126"
+    },
+    {
+      "name": "Jennifer Rexford",
+      "institution": "Princeton CS",
+      "lab": "Networking",
+      "category": "网络与通信",
+      "fields": [
+        "网络协议与架构",
+        "网络测量与运维",
+        "数据中心网络"
+      ],
+      "keywords": [
+        "networking",
+        "routing",
+        "network management"
+      ],
+      "cited_by_count": 46014,
+      "works_count": 617,
+      "orcid": "https://orcid.org/0000-0002-0231-8165"
+    },
+    {
+      "name": "Rachid Guerraoui",
+      "institution": "EPFL CS",
+      "lab": "Distributed Computing",
+      "category": "系统与网络",
+      "fields": [
+        "分布式系统",
+        "并行与分布式计算",
+        "可观测性与可靠性"
+      ],
+      "keywords": [
+        "distributed computing",
+        "fault tolerance"
+      ],
+      "cited_by_count": 22552,
+      "works_count": 1068,
+      "orcid": "https://orcid.org/0000-0002-4794-8902"
+    },
+    {
+      "name": "Krste Asanovic",
+      "institution": "UC Berkeley EECS",
+      "lab": "Architecture",
+      "category": "体系结构与高性能计算",
+      "fields": [
+        "处理器架构",
+        "加速器与异构计算",
+        "硬件可靠性与安全"
+      ],
+      "keywords": [
+        "computer architecture",
+        "RISC-V",
+        "accelerators"
+      ],
+      "cited_by_count": 19584,
+      "works_count": 435,
+      "orcid": "https://orcid.org/0000-0003-0754-3975"
+    },
+    {
+      "name": "David Patterson",
+      "institution": "UC Berkeley EECS",
+      "lab": "Architecture",
+      "category": "体系结构与高性能计算",
+      "fields": [
+        "处理器架构",
+        "加速器与异构计算",
+        "高性能计算与科学工程"
+      ],
+      "keywords": [
+        "architecture",
+        "RISC-V",
+        "HPC"
+      ],
+      "cited_by_count": 13515,
+      "works_count": 167,
+      "orcid": "https://orcid.org/0000-0002-3530-5686"
+    },
+    {
+      "name": "Markus Püschel",
+      "institution": "ETH Zurich D-INFK",
+      "lab": "Compiler/Architecture",
+      "category": "体系结构与高性能计算",
+      "fields": [
+        "加速器与异构计算",
+        "软硬件协同设计",
+        "高性能计算与科学工程"
+      ],
+      "keywords": [
+        "compilers",
+        "hardware-software",
+        "performance"
+      ],
+      "cited_by_count": 8009,
+      "works_count": 391,
+      "orcid": "https://orcid.org/0000-0001-8834-8551"
+    },
+    {
+      "name": "Dan Boneh",
+      "institution": "Stanford CS",
+      "lab": "Applied Cryptography",
+      "category": "安全与隐私",
+      "fields": [
+        "密码学应用",
+        "后量子密码",
+        "隐私计算"
+      ],
+      "keywords": [
+        "cryptography",
+        "security",
+        "privacy"
+      ],
+      "cited_by_count": 82253,
+      "works_count": 598,
+      "orcid": "https://orcid.org/0000-0003-0820-0421"
+    },
+    {
+      "name": "Dawn Song",
+      "institution": "UC Berkeley EECS",
+      "lab": "Security",
+      "category": "安全与隐私",
+      "fields": [
+        "AI安全",
+        "系统安全",
+        "隐私计算"
+      ],
+      "keywords": [
+        "security",
+        "privacy",
+        "adversarial ML"
+      ],
+      "cited_by_count": 3718,
+      "works_count": 15,
+      "orcid": ""
+    },
+    {
+      "name": "Martin Vechev",
+      "institution": "ETH Zurich D-INFK",
+      "lab": "Secure, Reliable and Intelligent Systems",
+      "category": "安全与隐私",
+      "fields": [
+        "系统安全",
+        "程序分析与验证",
+        "AI安全"
+      ],
+      "keywords": [
+        "security",
+        "program analysis",
+        "AI safety"
+      ],
+      "cited_by_count": 11854,
+      "works_count": 407,
+      "orcid": "https://orcid.org/0000-0002-0054-9568"
+    },
+    {
+      "name": "Carmela Troncoso",
+      "institution": "EPFL CS",
+      "lab": "SPRING Lab",
+      "category": "安全与隐私",
+      "fields": [
+        "隐私计算",
+        "后量子密码",
+        "数据治理"
+      ],
+      "keywords": [
+        "privacy",
+        "security",
+        "differential privacy"
+      ],
+      "cited_by_count": 4121,
+      "works_count": 184,
+      "orcid": "https://orcid.org/0000-0002-2374-2248"
+    },
+    {
+      "name": "Alex Aiken",
+      "institution": "Stanford CS",
+      "lab": "Programming Systems",
+      "category": "软件工程",
+      "fields": [
+        "程序分析与验证",
+        "编译与调度",
+        "程序合成"
+      ],
+      "keywords": [
+        "programming languages",
+        "compilers",
+        "verification"
+      ],
+      "cited_by_count": 21579,
+      "works_count": 506,
+      "orcid": "https://orcid.org/0000-0002-3723-9555"
+    },
+    {
+      "name": "Armando Solar-Lezama",
+      "institution": "MIT CSAIL",
+      "lab": "Program Synthesis",
+      "category": "软件工程",
+      "fields": [
+        "程序合成",
+        "程序分析与验证",
+        "代码Agent"
+      ],
+      "keywords": [
+        "program synthesis",
+        "PL",
+        "verification"
+      ],
+      "cited_by_count": 8479,
+      "works_count": 247,
+      "orcid": "https://orcid.org/0000-0001-7604-8252"
+    },
+    {
+      "name": "Shing-Chi Cheung",
+      "institution": "HKUST CSE",
+      "lab": "Software Engineering",
+      "category": "软件工程",
+      "fields": [
+        "软件测试",
+        "缺陷与维护",
+        "DevSecOps"
+      ],
+      "keywords": [
+        "software engineering",
+        "testing",
+        "repair"
+      ],
+      "cited_by_count": 9057,
+      "works_count": 482,
+      "orcid": "https://orcid.org/0000-0002-3508-7172"
+    },
+    {
+      "name": "Kian-Lee Tan",
+      "institution": "NUS Computing",
+      "lab": "Database Systems",
+      "category": "数据库与数据管理",
+      "fields": [
+        "查询优化",
+        "数据湖与湖仓",
+        "AI4DB"
+      ],
+      "keywords": [
+        "database",
+        "query processing",
+        "data systems"
+      ],
+      "cited_by_count": 18163,
+      "works_count": 547,
+      "orcid": "https://orcid.org/0000-0001-9315-4057"
+    },
+    {
+      "name": "Magdalena Balazinska",
+      "institution": "University of Washington CSE",
+      "lab": "Database Group",
+      "category": "数据库与数据管理",
+      "fields": [
+        "数据湖与湖仓",
+        "流处理",
+        "AI4DB"
+      ],
+      "keywords": [
+        "data management",
+        "streaming",
+        "cloud data"
+      ],
+      "cited_by_count": 11393,
+      "works_count": 291,
+      "orcid": "https://orcid.org/0000-0002-6805-0325"
+    },
+    {
+      "name": "Maneesh Agrawala",
+      "institution": "Stanford CS",
+      "lab": "Graphics/HCI",
+      "category": "人机交互与图形学",
+      "fields": [
+        "交互与可用性",
+        "可视化",
+        "渲染与几何"
+      ],
+      "keywords": [
+        "graphics",
+        "HCI",
+        "visualization"
+      ],
+      "cited_by_count": 23127,
+      "works_count": 410,
+      "orcid": "https://orcid.org/0000-0002-8996-7327"
+    },
+    {
+      "name": "Michael Bernstein",
+      "institution": "Stanford CS",
+      "lab": "HCI Group",
+      "category": "人机交互与图形学",
+      "fields": [
+        "交互与可用性",
+        "众包与社会计算",
+        "人机协作"
+      ],
+      "keywords": [
+        "HCI",
+        "crowdsourcing",
+        "human-AI collaboration"
+      ],
+      "cited_by_count": 66630,
+      "works_count": 354,
+      "orcid": "https://orcid.org/0000-0001-8020-9434"
+    },
+    {
+      "name": "Katherine Kuchenbecker",
+      "institution": "Max Planck Institute for Intelligent Systems",
+      "lab": "Haptic Intelligence",
+      "category": "机器人与具身智能",
+      "fields": [
+        "机器人控制",
+        "人机协作",
+        "具身智能"
+      ],
+      "keywords": [
+        "haptics",
+        "robotics",
+        "human-robot interaction"
+      ],
+      "cited_by_count": 8082,
+      "works_count": 352,
+      "orcid": "https://orcid.org/0000-0002-5004-0313"
+    },
+    {
+      "name": "Daniela Rus",
+      "institution": "MIT CSAIL",
+      "lab": "Distributed Robotics",
+      "category": "机器人与具身智能",
+      "fields": [
+        "多机器人系统",
+        "具身智能",
+        "操作与抓取"
+      ],
+      "keywords": [
+        "robotics",
+        "multi-robot",
+        "manipulation"
+      ],
+      "cited_by_count": 70999,
+      "works_count": 1375,
+      "orcid": "https://orcid.org/0000-0001-5473-3566"
+    },
+    {
+      "name": "Russ Tedrake",
+      "institution": "MIT CSAIL",
+      "lab": "Robot Locomotion",
+      "category": "机器人与具身智能",
+      "fields": [
+        "机器人控制",
+        "运动规划",
+        "人形机器人"
+      ],
+      "keywords": [
+        "robotics",
+        "control",
+        "planning"
+      ],
+      "cited_by_count": 17433,
+      "works_count": 325,
+      "orcid": "https://orcid.org/0000-0002-8712-7092"
+    },
+    {
+      "name": "Dieter Fox",
+      "institution": "University of Washington CSE",
+      "lab": "Robotics",
+      "category": "机器人与具身智能",
+      "fields": [
+        "SLAM与定位",
+        "具身智能",
+        "操作与抓取"
+      ],
+      "keywords": [
+        "robotics",
+        "SLAM",
+        "manipulation"
+      ],
+      "cited_by_count": 45244,
+      "works_count": 405,
+      "orcid": "https://orcid.org/0009-0009-4694-9127"
+    },
+    {
+      "name": "Metin Sitti",
+      "institution": "Max Planck Institute for Intelligent Systems",
+      "lab": "Physical Intelligence",
+      "category": "机器人与具身智能",
+      "fields": [
+        "医疗机器人",
+        "多机器人系统",
+        "具身智能"
+      ],
+      "keywords": [
+        "microrobotics",
+        "medical robotics",
+        "physical intelligence"
+      ],
+      "cited_by_count": 59423,
+      "works_count": 864,
+      "orcid": "https://orcid.org/0000-0001-8249-3854"
+    },
+    {
+      "name": "Umesh Vazirani",
+      "institution": "UC Berkeley EECS",
+      "lab": "Quantum Computing",
+      "category": "量子计算与信息",
+      "fields": [
+        "量子算法",
+        "量子复杂性",
+        "量子信息理论"
+      ],
+      "keywords": [
+        "quantum computing",
+        "algorithms",
+        "complexity"
+      ],
+      "cited_by_count": 8,
+      "works_count": 1,
+      "orcid": ""
+    },
+    {
+      "name": "Andrew Yao",
+      "institution": "Tsinghua CS",
+      "lab": "Institute for Interdisciplinary Information Sciences",
+      "category": "理论与算法",
+      "fields": [
+        "量子算法",
+        "计算复杂性",
+        "密码学理论"
+      ],
+      "keywords": [
+        "theory",
+        "quantum",
+        "cryptography"
+      ],
+      "cited_by_count": 30499,
+      "works_count": 276,
+      "orcid": "https://orcid.org/0000-0002-3648-5594"
+    },
+    {
+      "name": "Moritz Hardt",
+      "institution": "Max Planck Institute for Intelligent Systems",
+      "lab": "Social Foundations of Computation",
+      "category": "计算与社会",
+      "fields": [
+        "计算社会科学",
+        "可信与可解释AI",
+        "因果推断与决策"
+      ],
+      "keywords": [
+        "fairness",
+        "social computing",
+        "causal inference"
+      ],
+      "cited_by_count": 20765,
+      "works_count": 152,
+      "orcid": "https://orcid.org/0009-0000-7694-3038"
+    }
+  ]
+}

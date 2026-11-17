@@ -1,0 +1,3550 @@
+{
+  "version": "1.0",
+  "basis": [
+    "ACM/IEEE-CS/AAAI Computer Science Curricula 2023 knowledge areas",
+    "CCF technical committees and active research directions",
+    "OpenAlex publication-topic mappings in the local advisor index"
+  ],
+  "references": [
+    "https://csed.acm.org/knowledge-areas",
+    "https://www.ccf.org.cn/Chapters/TC/TC_Listing/TCHPC",
+    "https://api.openalex.org"
+  ],
+  "categories": {
+    "人工智能": {
+      "venues": [
+        "NeurIPS",
+        "ICML",
+        "ICLR",
+        "AAAI",
+        "IJCAI",
+        "TPAMI"
+      ],
+      "subs": [
+        {
+          "name": "知识表示与推理",
+          "aliases": [
+            "知识表示",
+            "推理"
+          ],
+          "keywords": [
+            "knowledge representation",
+            "reasoning"
+          ]
+        },
+        {
+          "name": "规划与搜索",
+          "aliases": [
+            "自动规划",
+            "路径规划"
+          ],
+          "keywords": [
+            "planning",
+            "search"
+          ]
+        },
+        {
+          "name": "概率图模型与贝叶斯推断",
+          "aliases": [
+            "概率图模型",
+            "贝叶斯网络"
+          ],
+          "keywords": [
+            "probabilistic graphical model",
+            "Bayesian inference"
+          ]
+        },
+        {
+          "name": "多智能体系统",
+          "aliases": [
+            "多智能体"
+          ],
+          "keywords": [
+            "multi-agent system",
+            "multiagent"
+          ]
+        },
+        {
+          "name": "神经符号人工智能",
+          "aliases": [
+            "神经符号"
+          ],
+          "keywords": [
+            "neuro-symbolic",
+            "symbolic AI"
+          ]
+        },
+        {
+          "name": "AutoML与神经架构搜索",
+          "aliases": [
+            "神经架构搜索"
+          ],
+          "keywords": [
+            "AutoML",
+            "NAS",
+            "neural architecture search"
+          ]
+        },
+        {
+          "name": "智能体与世界模型",
+          "aliases": [],
+          "keywords": [
+            "AI智能体",
+            "agent",
+            "world model",
+            "world models"
+          ]
+        },
+        {
+          "name": "AI评测与基准",
+          "aliases": [
+            "模型评测"
+          ],
+          "keywords": [
+            "AI评测",
+            "benchmark",
+            "evaluation"
+          ]
+        },
+        {
+          "name": "类脑与神经形态智能",
+          "aliases": [
+            "类脑计算"
+          ],
+          "keywords": [
+            "neuromorphic",
+            "spiking intelligence"
+          ]
+        }
+      ]
+    },
+    "计算机视觉": {
+      "venues": [
+        "CVPR",
+        "ICCV",
+        "ECCV",
+        "TPAMI",
+        "IJCV"
+      ],
+      "subs": [
+        {
+          "name": "视觉语言与开放词汇视觉",
+          "aliases": [
+            "视觉语言模型",
+            "开放词汇"
+          ],
+          "keywords": [
+            "VLM",
+            "vision-language",
+            "open-vocabulary"
+          ]
+        },
+        {
+          "name": "指代分割与视觉定位",
+          "aliases": [
+            "指代分割",
+            "视觉定位"
+          ],
+          "keywords": [
+            "referring segmentation",
+            "visual grounding"
+          ]
+        },
+        {
+          "name": "人体与动作理解",
+          "aliases": [
+            "人体姿态",
+            "动作识别"
+          ],
+          "keywords": [
+            "human pose",
+            "action recognition",
+            "micro-expression",
+            "pedestrian attribute",
+            "expression recognition"
+          ]
+        },
+        {
+          "name": "人脸与生物特征识别",
+          "aliases": [
+            "人脸识别",
+            "生物特征"
+          ],
+          "keywords": [
+            "face recognition",
+            "biometrics"
+          ]
+        },
+        {
+          "name": "视频生成与世界模型",
+          "aliases": [
+            "视频生成"
+          ],
+          "keywords": [
+            "video generation",
+            "video world model"
+          ]
+        },
+        {
+          "name": "生成式视觉与扩散模型",
+          "aliases": [
+            "图像生成",
+            "扩散模型"
+          ],
+          "keywords": [
+            "diffusion model",
+            "generative vision"
+          ]
+        },
+        {
+          "name": "医学图像分析",
+          "aliases": [
+            "医学图像",
+            "医学影像"
+          ],
+          "keywords": [
+            "medical image analysis"
+          ]
+        },
+        {
+          "name": "遥感与航空视觉",
+          "aliases": [
+            "遥感影像",
+            "航空视觉"
+          ],
+          "keywords": [
+            "remote sensing",
+            "aerial vision"
+          ]
+        },
+        {
+          "name": "工业视觉与缺陷检测",
+          "aliases": [
+            "工业视觉",
+            "缺陷检测"
+          ],
+          "keywords": [
+            "industrial vision",
+            "defect detection"
+          ]
+        },
+        {
+          "name": "多相机与全景视觉",
+          "aliases": [
+            "多相机",
+            "全景视觉"
+          ],
+          "keywords": [
+            "multi-camera",
+            "omnidirectional vision"
+          ]
+        }
+      ]
+    },
+    "自然语言处理": {
+      "venues": [
+        "ACL",
+        "EMNLP",
+        "NAACL",
+        "TACL",
+        "COLING"
+      ],
+      "subs": [
+        {
+          "name": "语法分析与语言结构",
+          "aliases": [
+            "句法分析",
+            "语言结构"
+          ],
+          "keywords": [
+            "syntax",
+            "parsing"
+          ]
+        },
+        {
+          "name": "语义理解与知识增强",
+          "aliases": [
+            "语义理解",
+            "知识增强"
+          ],
+          "keywords": [
+            "semantic understanding",
+            "knowledge-enhanced NLP"
+          ]
+        },
+        {
+          "name": "问答与推理",
+          "aliases": [
+            "问答系统"
+          ],
+          "keywords": [
+            "question answering",
+            "reasoning"
+          ]
+        },
+        {
+          "name": "可控文本生成",
+          "aliases": [
+            "可控生成"
+          ],
+          "keywords": [
+            "text generation",
+            "controllable generation"
+          ]
+        },
+        {
+          "name": "对话系统与工具智能体",
+          "aliases": [
+            "对话系统"
+          ],
+          "keywords": [
+            "tool agent",
+            "dialogue system"
+          ]
+        },
+        {
+          "name": "大模型安全与对齐",
+          "aliases": [
+            "大模型安全"
+          ],
+          "keywords": [
+            "LLM safety",
+            "LLM alignment"
+          ]
+        },
+        {
+          "name": "语音增强与声学事件",
+          "aliases": [
+            "语音增强",
+            "声学事件"
+          ],
+          "keywords": [
+            "speech enhancement",
+            "acoustic event"
+          ]
+        },
+        {
+          "name": "情感分析与立场识别",
+          "aliases": [
+            "情感分析",
+            "立场识别"
+          ],
+          "keywords": [
+            "sentiment analysis",
+            "stance detection"
+          ]
+        }
+      ]
+    },
+    "数据挖掘与信息检索": {
+      "venues": [
+        "KDD",
+        "SIGIR",
+        "WWW",
+        "WSDM",
+        "CIKM",
+        "TKDE"
+      ],
+      "subs": [
+        {
+          "name": "图神经网络与图学习",
+          "aliases": [
+            "图神经网络"
+          ],
+          "keywords": [
+            "GNN",
+            "graph learning"
+          ]
+        },
+        {
+          "name": "序列与因果推荐",
+          "aliases": [
+            "序列推荐",
+            "因果推荐"
+          ],
+          "keywords": [
+            "sequential recommendation",
+            "causal recommendation"
+          ]
+        },
+        {
+          "name": "神经信息检索",
+          "aliases": [
+            "神经检索"
+          ],
+          "keywords": [
+            "neural IR",
+            "dense retrieval"
+          ]
+        },
+        {
+          "name": "知识图谱推理",
+          "aliases": [
+            "知识图谱"
+          ],
+          "keywords": [
+            "knowledge graph reasoning"
+          ]
+        },
+        {
+          "name": "社会网络分析",
+          "aliases": [
+            "社会网络"
+          ],
+          "keywords": [
+            "social network analysis"
+          ]
+        },
+        {
+          "name": "数据流挖掘",
+          "aliases": [
+            "流数据挖掘"
+          ],
+          "keywords": [
+            "data stream mining"
+          ]
+        },
+        {
+          "name": "表格数据学习",
+          "aliases": [
+            "表格学习"
+          ],
+          "keywords": [
+            "tabular learning",
+            "tabular data"
+          ]
+        },
+        {
+          "name": "隐私保护数据挖掘",
+          "aliases": [
+            "隐私保护挖掘"
+          ],
+          "keywords": [
+            "privacy-preserving data mining"
+          ]
+        }
+      ]
+    },
+    "系统与网络": {
+      "venues": [
+        "SOSP",
+        "OSDI",
+        "EuroSys",
+        "USENIX ATC",
+        "ASPLOS"
+      ],
+      "subs": [
+        {
+          "name": "操作系统内核与调度",
+          "aliases": [
+            "操作系统",
+            "内核",
+            "内核调度"
+          ],
+          "keywords": [
+            "OS kernel",
+            "scheduler"
+          ]
+        },
+        {
+          "name": "内存管理与文件系统",
+          "aliases": [
+            "内存管理",
+            "文件系统"
+          ],
+          "keywords": [
+            "memory management",
+            "file system"
+          ]
+        },
+        {
+          "name": "实时与嵌入式系统",
+          "aliases": [
+            "实时系统"
+          ],
+          "keywords": [
+            "real-time system",
+            "embedded OS"
+          ]
+        },
+        {
+          "name": "容错与崩溃一致性",
+          "aliases": [
+            "容错",
+            "崩溃一致性"
+          ],
+          "keywords": [
+            "fault tolerance",
+            "crash consistency",
+            "high availability"
+          ]
+        },
+        {
+          "name": "系统性能建模",
+          "aliases": [
+            "系统性能",
+            "性能建模"
+          ],
+          "keywords": [
+            "system performance",
+            "performance modeling"
+          ]
+        },
+        {
+          "name": "eBPF与内核可观测性",
+          "aliases": [
+            "内核可观测性"
+          ],
+          "keywords": [
+            "eBPF",
+            "kernel observability"
+          ]
+        },
+        {
+          "name": "系统形式化验证",
+          "aliases": [
+            "系统验证"
+          ],
+          "keywords": [
+            "system verification",
+            "formal systems"
+          ]
+        },
+        {
+          "name": "机器学习系统",
+          "aliases": [
+            "机器学习系统"
+          ],
+          "keywords": [
+            "MLSys",
+            "ML systems"
+          ]
+        },
+        {
+          "name": "系统软件与运行时",
+          "aliases": [
+            "系统软件"
+          ],
+          "keywords": [
+            "system software",
+            "runtime system"
+          ]
+        }
+      ]
+    },
+    "安全与隐私": {
+      "venues": [
+        "IEEE S&P",
+        "CCS",
+        "USENIX Security",
+        "NDSS",
+        "TDSC"
+      ],
+      "subs": [
+        {
+          "name": "机密计算与可信执行环境",
+          "aliases": [
+            "机密计算"
+          ],
+          "keywords": [
+            "TEE",
+            "confidential computing",
+            "trusted execution"
+          ]
+        },
+        {
+          "name": "差分隐私与数据匿名化",
+          "aliases": [
+            "差分隐私",
+            "数据匿名化"
+          ],
+          "keywords": [
+            "differential privacy",
+            "anonymization"
+          ]
+        },
+        {
+          "name": "密码协议分析",
+          "aliases": [
+            "密码协议分析"
+          ],
+          "keywords": [
+            "protocol analysis",
+            "cryptographic protocol"
+          ]
+        },
+        {
+          "name": "漏洞生态与安全度量",
+          "aliases": [
+            "漏洞生态",
+            "安全度量"
+          ],
+          "keywords": [
+            "vulnerability ecosystem",
+            "security metrics"
+          ]
+        },
+        {
+          "name": "安全治理与风险管理",
+          "aliases": [
+            "安全治理",
+            "风险管理"
+          ],
+          "keywords": [
+            "security governance",
+            "risk management"
+          ]
+        },
+        {
+          "name": "安全评测与基准",
+          "aliases": [
+            "安全评测",
+            "安全基准"
+          ],
+          "keywords": [
+            "security benchmark",
+            "security evaluation"
+          ]
+        }
+      ]
+    },
+    "软件工程": {
+      "venues": [
+        "ICSE",
+        "FSE",
+        "ASE",
+        "ISSTA",
+        "TSE",
+        "EMSE"
+      ],
+      "subs": [
+        {
+          "name": "软件架构与设计",
+          "aliases": [
+            "软件架构"
+          ],
+          "keywords": [
+            "software architecture",
+            "software design"
+          ]
+        },
+        {
+          "name": "模型驱动工程",
+          "aliases": [
+            "模型驱动"
+          ],
+          "keywords": [
+            "MDE",
+            "model-driven engineering"
+          ]
+        },
+        {
+          "name": "软件仓库挖掘",
+          "aliases": [
+            "仓库挖掘"
+          ],
+          "keywords": [
+            "repository mining",
+            "mining software repositories"
+          ]
+        },
+        {
+          "name": "软件演化与维护",
+          "aliases": [
+            "软件演化",
+            "软件维护"
+          ],
+          "keywords": [
+            "software evolution",
+            "software maintenance"
+          ]
+        },
+        {
+          "name": "DevOps与持续交付",
+          "aliases": [
+            "持续交付"
+          ],
+          "keywords": [
+            "DevOps",
+            "continuous delivery",
+            "CI CD"
+          ]
+        },
+        {
+          "name": "可信软件与形式化验证",
+          "aliases": [
+            "可信软件",
+            "软件验证"
+          ],
+          "keywords": [
+            "trustworthy software",
+            "software verification"
+          ]
+        },
+        {
+          "name": "自动化测试与模糊测试",
+          "aliases": [
+            "自动化测试",
+            "模糊测试"
+          ],
+          "keywords": [
+            "automated testing",
+            "fuzzing"
+          ]
+        },
+        {
+          "name": "人本软件工程",
+          "aliases": [
+            "人本软件工程"
+          ],
+          "keywords": [
+            "human aspects",
+            "human-centered software engineering"
+          ]
+        },
+        {
+          "name": "实证软件工程",
+          "aliases": [
+            "实证研究"
+          ],
+          "keywords": [
+            "empirical software engineering"
+          ]
+        },
+        {
+          "name": "移动与Web应用工程",
+          "aliases": [
+            "移动应用工程"
+          ],
+          "keywords": [
+            "Web工程",
+            "mobile software engineering",
+            "web engineering"
+          ]
+        },
+        {
+          "name": "软件开发基础与程序设计",
+          "aliases": [
+            "软件开发基础",
+            "程序设计"
+          ],
+          "keywords": [
+            "software development fundamentals",
+            "program design"
+          ]
+        }
+      ]
+    },
+    "数据库与数据管理": {
+      "venues": [
+        "SIGMOD",
+        "VLDB",
+        "ICDE",
+        "TODS",
+        "VLDBJ"
+      ],
+      "subs": [
+        {
+          "name": "关系数据库与查询处理",
+          "aliases": [
+            "关系数据库",
+            "查询处理"
+          ],
+          "keywords": [
+            "relational database",
+            "query processing"
+          ]
+        },
+        {
+          "name": "分布式与云数据库",
+          "aliases": [
+            "分布式数据库",
+            "云数据库"
+          ],
+          "keywords": [
+            "distributed database",
+            "cloud database"
+          ]
+        },
+        {
+          "name": "事务处理与并发控制",
+          "aliases": [
+            "事务处理",
+            "并发控制"
+          ],
+          "keywords": [
+            "transaction processing",
+            "concurrency control"
+          ]
+        },
+        {
+          "name": "数据仓库与OLAP",
+          "aliases": [
+            "数据仓库"
+          ],
+          "keywords": [
+            "OLAP",
+            "data warehouse",
+            "analytical processing"
+          ]
+        },
+        {
+          "name": "数据集成与ETL",
+          "aliases": [
+            "数据集成"
+          ],
+          "keywords": [
+            "ETL",
+            "data integration"
+          ]
+        },
+        {
+          "name": "数据血缘与版本管理",
+          "aliases": [
+            "数据血缘",
+            "版本管理"
+          ],
+          "keywords": [
+            "data lineage",
+            "data versioning"
+          ]
+        },
+        {
+          "name": "隐私保护数据库",
+          "aliases": [
+            "隐私数据库"
+          ],
+          "keywords": [
+            "privacy-preserving database"
+          ]
+        },
+        {
+          "name": "嵌入式与边缘数据管理",
+          "aliases": [
+            "嵌入式数据库",
+            "边缘数据管理"
+          ],
+          "keywords": [
+            "edge data management"
+          ]
+        },
+        {
+          "name": "高性能数据管理与存储",
+          "aliases": [
+            "高性能数据管理",
+            "存储引擎"
+          ],
+          "keywords": [
+            "high-performance data management",
+            "storage engine"
+          ]
+        }
+      ]
+    },
+    "人机交互与图形学": {
+      "venues": [
+        "CHI",
+        "UIST",
+        "CSCW",
+        "IEEE TVCG",
+        "TOCHI"
+      ],
+      "subs": [
+        {
+          "name": "交互设计与用户研究",
+          "aliases": [
+            "交互设计",
+            "用户研究"
+          ],
+          "keywords": [
+            "interaction design",
+            "user study"
+          ]
+        },
+        {
+          "name": "可用性与可访问性",
+          "aliases": [
+            "可用性",
+            "可访问性"
+          ],
+          "keywords": [
+            "usability",
+            "accessibility"
+          ]
+        },
+        {
+          "name": "社会计算与协同",
+          "aliases": [
+            "社会计算",
+            "协同计算"
+          ],
+          "keywords": [
+            "social computing",
+            "collaborative computing"
+          ]
+        },
+        {
+          "name": "智能用户界面",
+          "aliases": [
+            "智能界面"
+          ],
+          "keywords": [
+            "intelligent user interface",
+            "adaptive UI"
+          ]
+        },
+        {
+          "name": "多模态与具身交互",
+          "aliases": [
+            "多模态交互",
+            "具身交互"
+          ],
+          "keywords": [
+            "multimodal interaction",
+            "embodied interaction"
+          ]
+        },
+        {
+          "name": "用户建模与个性化",
+          "aliases": [
+            "用户建模",
+            "个性化"
+          ],
+          "keywords": [
+            "user modeling",
+            "personalization"
+          ]
+        },
+        {
+          "name": "计算行为科学",
+          "aliases": [
+            "计算行为科学"
+          ],
+          "keywords": [
+            "behavioural computing",
+            "behavioral science"
+          ]
+        },
+        {
+          "name": "移动与普适HCI",
+          "aliases": [
+            "移动交互",
+            "普适计算"
+          ],
+          "keywords": [
+            "mobile HCI",
+            "ubiquitous HCI"
+          ]
+        }
+      ]
+    },
+    "理论与算法": {
+      "venues": [
+        "STOC",
+        "FOCS",
+        "SODA",
+        "ICALP",
+        "ACM TALG"
+      ],
+      "subs": [
+        {
+          "name": "近似算法与在线算法",
+          "aliases": [
+            "近似算法",
+            "在线算法"
+          ],
+          "keywords": [
+            "approximation algorithms",
+            "online algorithms"
+          ]
+        },
+        {
+          "name": "图论与离散优化",
+          "aliases": [
+            "图论",
+            "离散优化"
+          ],
+          "keywords": [
+            "graph theory",
+            "discrete optimization"
+          ]
+        },
+        {
+          "name": "自动机与形式语言",
+          "aliases": [
+            "自动机",
+            "形式语言"
+          ],
+          "keywords": [
+            "automata",
+            "formal languages"
+          ]
+        },
+        {
+          "name": "程序逻辑与类型论",
+          "aliases": [
+            "程序逻辑",
+            "类型论"
+          ],
+          "keywords": [
+            "program logic",
+            "type theory"
+          ]
+        },
+        {
+          "name": "模型检查与程序验证",
+          "aliases": [
+            "模型检查",
+            "程序验证"
+          ],
+          "keywords": [
+            "model checking",
+            "program verification"
+          ]
+        },
+        {
+          "name": "自动定理证明",
+          "aliases": [
+            "定理证明"
+          ],
+          "keywords": [
+            "automated theorem proving",
+            "theorem prover"
+          ]
+        },
+        {
+          "name": "信息论与编码理论",
+          "aliases": [
+            "信息论",
+            "编码理论"
+          ],
+          "keywords": [
+            "information theory",
+            "coding theory"
+          ]
+        },
+        {
+          "name": "计算几何",
+          "aliases": [
+            "计算几何"
+          ],
+          "keywords": [
+            "computational geometry"
+          ]
+        },
+        {
+          "name": "数据结构与算法基础",
+          "aliases": [
+            "数据结构",
+            "算法基础"
+          ],
+          "keywords": [
+            "data structures",
+            "algorithm foundations"
+          ]
+        }
+      ]
+    },
+    "机器人与具身智能": {
+      "venues": [
+        "ICRA",
+        "IROS",
+        "RSS",
+        "CoRL",
+        "T-RO"
+      ],
+      "subs": [
+        {
+          "name": "机器人感知与定位",
+          "aliases": [
+            "机器人感知",
+            "定位"
+          ],
+          "keywords": [
+            "robot perception",
+            "localization"
+          ]
+        },
+        {
+          "name": "机器人学习",
+          "aliases": [
+            "机器人强化学习"
+          ],
+          "keywords": [
+            "robot learning",
+            "imitation learning",
+            "grasp detection",
+            "language-driven grasp",
+            "decision transformer"
+          ]
+        },
+        {
+          "name": "柔性与仿生机器人",
+          "aliases": [
+            "柔性机器人",
+            "仿生机器人"
+          ],
+          "keywords": [
+            "soft robotics",
+            "biomimetic robotics"
+          ]
+        },
+        {
+          "name": "人机协作与交互",
+          "aliases": [
+            "人机协作"
+          ],
+          "keywords": [
+            "human-robot interaction",
+            "HRI"
+          ]
+        },
+        {
+          "name": "机器人安全与可信",
+          "aliases": [
+            "机器人安全"
+          ],
+          "keywords": [
+            "robot safety",
+            "trustworthy robotics"
+          ]
+        },
+        {
+          "name": "无人机与自主导航",
+          "aliases": [
+            "无人机"
+          ],
+          "keywords": [
+            "UAV",
+            "aerial robotics",
+            "autonomous navigation"
+          ]
+        },
+        {
+          "name": "工业与农业机器人",
+          "aliases": [
+            "工业机器人",
+            "农业机器人"
+          ],
+          "keywords": [
+            "industrial robot",
+            "agricultural robotics"
+          ]
+        }
+      ]
+    },
+    "交叉与AI4Science": {
+      "venues": [
+        "NeurIPS",
+        "ICML",
+        "Nature Machine Intelligence",
+        "Bioinformatics",
+        "JAMIA"
+      ],
+      "subs": [
+        {
+          "name": "AI for Physics",
+          "aliases": [],
+          "keywords": [
+            "AI物理",
+            "physics-informed machine learning",
+            "AI for science physics"
+          ]
+        },
+        {
+          "name": "AI for Chemistry",
+          "aliases": [],
+          "keywords": [
+            "AI化学",
+            "computational chemistry",
+            "AI for chemistry"
+          ]
+        },
+        {
+          "name": "基因组学与单细胞分析",
+          "aliases": [
+            "基因组学",
+            "单细胞"
+          ],
+          "keywords": [
+            "genomics",
+            "single-cell analysis"
+          ]
+        },
+        {
+          "name": "临床与转化医学",
+          "aliases": [
+            "转化医学"
+          ],
+          "keywords": [
+            "临床AI",
+            "clinical AI",
+            "translational medicine"
+          ]
+        },
+        {
+          "name": "自动化实验室",
+          "aliases": [
+            "自驱动实验室"
+          ],
+          "keywords": [
+            "self-driving lab",
+            "automated laboratory"
+          ]
+        },
+        {
+          "name": "科学软件与可复现计算",
+          "aliases": [
+            "科学软件",
+            "可复现计算"
+          ],
+          "keywords": [
+            "scientific software",
+            "reproducible computing"
+          ]
+        },
+        {
+          "name": "数学发现与推理",
+          "aliases": [],
+          "keywords": [
+            "AI数学",
+            "automated mathematical discovery",
+            "math reasoning"
+          ]
+        },
+        {
+          "name": "生态与农业智能",
+          "aliases": [
+            "生态智能",
+            "农业智能"
+          ],
+          "keywords": [
+            "ecological intelligence",
+            "agricultural AI"
+          ]
+        }
+      ]
+    },
+    "网络与通信": {
+      "venues": [
+        "SIGCOMM",
+        "NSDI",
+        "MobiCom",
+        "INFOCOM",
+        "CoNEXT"
+      ],
+      "subs": [
+        {
+          "name": "SDN与可编程网络",
+          "aliases": [
+            "可编程网络"
+          ],
+          "keywords": [
+            "SDN",
+            "programmable network"
+          ]
+        },
+        {
+          "name": "5G与6G移动网络",
+          "aliases": [],
+          "keywords": [
+            "5G",
+            "6G",
+            "mobile network"
+          ]
+        },
+        {
+          "name": "车联网与V2X",
+          "aliases": [
+            "车联网"
+          ],
+          "keywords": [
+            "V2X",
+            "vehicular network"
+          ]
+        },
+        {
+          "name": "自组网与无线传感网",
+          "aliases": [
+            "自组网",
+            "无线传感网"
+          ],
+          "keywords": [
+            "ad hoc network",
+            "wireless sensor network"
+          ]
+        },
+        {
+          "name": "P2P与内容分发网络",
+          "aliases": [
+            "内容分发"
+          ],
+          "keywords": [
+            "P2P",
+            "CDN",
+            "content delivery network"
+          ]
+        },
+        {
+          "name": "网络经济与路由博弈",
+          "aliases": [
+            "网络经济",
+            "路由博弈"
+          ],
+          "keywords": [
+            "network economics",
+            "routing game"
+          ]
+        },
+        {
+          "name": "网络智能运维与AIOps",
+          "aliases": [
+            "网络智能运维"
+          ],
+          "keywords": [
+            "AIOps",
+            "network intelligence"
+          ]
+        },
+        {
+          "name": "确定性网络与TSN",
+          "aliases": [
+            "确定性网络"
+          ],
+          "keywords": [
+            "TSN",
+            "deterministic networking",
+            "time-sensitive networking"
+          ]
+        },
+        {
+          "name": "互联网体系结构与协议",
+          "aliases": [
+            "互联网体系结构"
+          ],
+          "keywords": [
+            "Internet architecture",
+            "Internet protocols"
+          ]
+        }
+      ]
+    },
+    "体系结构与高性能计算": {
+      "venues": [
+        "ISCA",
+        "MICRO",
+        "HPCA",
+        "ASPLOS",
+        "SC"
+      ],
+      "subs": [
+        {
+          "name": "CPU微架构",
+          "aliases": [
+            "微架构"
+          ],
+          "keywords": [
+            "CPU architecture",
+            "microarchitecture"
+          ]
+        },
+        {
+          "name": "GPU与AI加速器",
+          "aliases": [],
+          "keywords": [
+            "GPU架构",
+            "AI加速器",
+            "GPU architecture",
+            "AI accelerator"
+          ]
+        },
+        {
+          "name": "Chiplet与3D封装",
+          "aliases": [],
+          "keywords": [
+            "Chiplet",
+            "3D封装",
+            "3D packaging"
+          ]
+        },
+        {
+          "name": "内存与缓存架构",
+          "aliases": [
+            "缓存架构"
+          ],
+          "keywords": [
+            "memory architecture",
+            "cache architecture"
+          ]
+        },
+        {
+          "name": "存储架构与持久内存",
+          "aliases": [
+            "存储架构",
+            "持久内存"
+          ],
+          "keywords": [
+            "storage architecture",
+            "persistent memory"
+          ]
+        },
+        {
+          "name": "FPGA与可重构计算",
+          "aliases": [
+            "可重构计算"
+          ],
+          "keywords": [
+            "FPGA",
+            "reconfigurable computing"
+          ]
+        },
+        {
+          "name": "硬件验证与形式化",
+          "aliases": [
+            "硬件验证"
+          ],
+          "keywords": [
+            "hardware verification",
+            "formal hardware"
+          ]
+        },
+        {
+          "name": "RISC-V与开放指令集",
+          "aliases": [
+            "开放指令集"
+          ],
+          "keywords": [
+            "RISC-V",
+            "open ISA"
+          ]
+        },
+        {
+          "name": "计算机系统仿真",
+          "aliases": [
+            "系统仿真"
+          ],
+          "keywords": [
+            "architecture simulation",
+            "computer architecture simulator"
+          ]
+        }
+      ]
+    },
+    "量子计算与信息": {
+      "venues": [
+        "QIP",
+        "STOC",
+        "FOCS",
+        "Quantum",
+        "PRX Quantum"
+      ],
+      "subs": [
+        {
+          "name": "量子硬件与量子比特",
+          "aliases": [
+            "量子硬件",
+            "量子比特"
+          ],
+          "keywords": [
+            "quantum hardware",
+            "qubit"
+          ]
+        },
+        {
+          "name": "量子控制与校准",
+          "aliases": [
+            "量子控制",
+            "量子校准"
+          ],
+          "keywords": [
+            "quantum control",
+            "quantum calibration"
+          ]
+        },
+        {
+          "name": "量子模拟",
+          "aliases": [
+            "量子仿真"
+          ],
+          "keywords": [
+            "quantum simulation"
+          ]
+        },
+        {
+          "name": "量子软件与编译",
+          "aliases": [
+            "量子软件",
+            "量子编译"
+          ],
+          "keywords": [
+            "quantum software",
+            "quantum compiler"
+          ]
+        },
+        {
+          "name": "量子密码",
+          "aliases": [
+            "量子密钥分发"
+          ],
+          "keywords": [
+            "quantum cryptography",
+            "QKD"
+          ]
+        },
+        {
+          "name": "容错量子计算",
+          "aliases": [
+            "容错量子计算"
+          ],
+          "keywords": [
+            "fault-tolerant quantum computing"
+          ]
+        },
+        {
+          "name": "量子体系结构",
+          "aliases": [
+            "量子架构"
+          ],
+          "keywords": [
+            "quantum architecture"
+          ]
+        }
+      ]
+    },
+    "计算与社会": {
+      "venues": [
+        "FAccT",
+        "CSCW",
+        "CHI",
+        "WWW",
+        "AIES"
+      ],
+      "subs": [
+        {
+          "name": "AI伦理与公平",
+          "aliases": [
+            "算法公平"
+          ],
+          "keywords": [
+            "AI伦理",
+            "AI ethics",
+            "algorithmic fairness"
+          ]
+        },
+        {
+          "name": "算法治理与问责",
+          "aliases": [
+            "算法治理",
+            "算法问责"
+          ],
+          "keywords": [
+            "algorithm governance",
+            "accountability"
+          ]
+        },
+        {
+          "name": "数据治理与隐私政策",
+          "aliases": [
+            "数据治理",
+            "隐私政策"
+          ],
+          "keywords": [
+            "data governance",
+            "privacy policy"
+          ]
+        },
+        {
+          "name": "平台治理与内容审核",
+          "aliases": [
+            "平台治理",
+            "内容审核"
+          ],
+          "keywords": [
+            "platform governance",
+            "content moderation"
+          ]
+        },
+        {
+          "name": "虚假信息与信息生态",
+          "aliases": [
+            "虚假信息",
+            "错误信息"
+          ],
+          "keywords": [
+            "misinformation",
+            "information ecosystem"
+          ]
+        },
+        {
+          "name": "开源软件与数字劳动",
+          "aliases": [
+            "开源软件",
+            "数字劳动"
+          ],
+          "keywords": [
+            "open source",
+            "digital labor"
+          ]
+        },
+        {
+          "name": "数字公平与数字鸿沟",
+          "aliases": [
+            "数字公平",
+            "数字鸿沟"
+          ],
+          "keywords": [
+            "digital equity",
+            "digital divide"
+          ]
+        },
+        {
+          "name": "科技政策与法律",
+          "aliases": [
+            "科技政策",
+            "计算法学"
+          ],
+          "keywords": [
+            "technology policy",
+            "computational law"
+          ]
+        },
+        {
+          "name": "人本技术评估",
+          "aliases": [
+            "技术评估"
+          ],
+          "keywords": [
+            "human-centered evaluation",
+            "responsible innovation"
+          ]
+        },
+        {
+          "name": "计算经济学与机制设计",
+          "aliases": [
+            "计算经济学",
+            "机制设计"
+          ],
+          "keywords": [
+            "computational economics",
+            "mechanism design"
+          ]
+        }
+      ]
+    },
+    "编程语言与编译": {
+      "venues": [
+        "PLDI",
+        "POPL",
+        "OOPSLA",
+        "ICFP",
+        "CAV",
+        "TOPLAS"
+      ],
+      "profile": "pl",
+      "subs": [
+        {
+          "name": "程序语言理论",
+          "aliases": [
+            "语言理论",
+            "程序语言理论"
+          ],
+          "keywords": [
+            "programming language theory"
+          ]
+        },
+        {
+          "name": "类型系统与程序逻辑",
+          "aliases": [
+            "类型系统"
+          ],
+          "keywords": [
+            "type system",
+            "program logic"
+          ]
+        },
+        {
+          "name": "形式语义与程序验证",
+          "aliases": [
+            "形式语义",
+            "程序验证"
+          ],
+          "keywords": [
+            "formal semantics",
+            "program verification"
+          ]
+        },
+        {
+          "name": "编译器优化与代码生成",
+          "aliases": [
+            "编译器",
+            "编译优化"
+          ],
+          "keywords": [
+            "code generation",
+            "compiler optimization"
+          ]
+        },
+        {
+          "name": "JIT与运行时系统",
+          "aliases": [
+            "即时编译"
+          ],
+          "keywords": [
+            "JIT",
+            "runtime system"
+          ]
+        },
+        {
+          "name": "程序分析与抽象解释",
+          "aliases": [
+            "程序分析",
+            "抽象解释"
+          ],
+          "keywords": [
+            "abstract interpretation"
+          ]
+        },
+        {
+          "name": "并发与内存模型",
+          "aliases": [
+            "内存模型",
+            "并发语义"
+          ],
+          "keywords": [
+            "memory model",
+            "concurrency semantics"
+          ]
+        },
+        {
+          "name": "程序合成与程序修复",
+          "aliases": [
+            "程序合成",
+            "自动修复"
+          ],
+          "keywords": [
+            "program synthesis",
+            "program repair"
+          ]
+        },
+        {
+          "name": "语言设计与领域语言",
+          "aliases": [
+            "语言设计"
+          ],
+          "keywords": [
+            "DSL",
+            "language design",
+            "domain-specific language"
+          ]
+        },
+        {
+          "name": "模型检查与软件验证",
+          "aliases": [
+            "模型检查"
+          ],
+          "keywords": [
+            "model checking",
+            "software verification"
+          ]
+        },
+        {
+          "name": "安全编译与内存安全",
+          "aliases": [
+            "安全编译",
+            "内存安全"
+          ],
+          "keywords": [
+            "safe compilation",
+            "memory safety"
+          ]
+        },
+        {
+          "name": "概率、可逆与量子编程",
+          "aliases": [
+            "概率编程",
+            "可逆计算"
+          ],
+          "keywords": [
+            "quantum programming",
+            "probabilistic programming"
+          ]
+        }
+      ]
+    },
+    "计算机图形学与多媒体": {
+      "venues": [
+        "SIGGRAPH",
+        "SIGGRAPH Asia",
+        "ACM MM",
+        "IEEE TVCG",
+        "TOG"
+      ],
+      "profile": "graphics",
+      "subs": [
+        {
+          "name": "真实感渲染",
+          "aliases": [
+            "渲染"
+          ],
+          "keywords": [
+            "physically based rendering",
+            "realistic rendering"
+          ]
+        },
+        {
+          "name": "实时渲染与游戏引擎",
+          "aliases": [
+            "实时渲染",
+            "游戏引擎"
+          ],
+          "keywords": [
+            "real-time rendering",
+            "game engine"
+          ]
+        },
+        {
+          "name": "几何建模与处理",
+          "aliases": [
+            "几何建模"
+          ],
+          "keywords": [
+            "geometry processing",
+            "computational geometry graphics"
+          ]
+        },
+        {
+          "name": "动画与物理仿真",
+          "aliases": [
+            "动画",
+            "物理仿真"
+          ],
+          "keywords": [
+            "computer animation",
+            "physics simulation"
+          ]
+        },
+        {
+          "name": "计算摄影",
+          "aliases": [
+            "计算成像"
+          ],
+          "keywords": [
+            "computational photography"
+          ]
+        },
+        {
+          "name": "图像与视频编码",
+          "aliases": [
+            "视频编码"
+          ],
+          "keywords": [
+            "image coding",
+            "video compression"
+          ]
+        },
+        {
+          "name": "多媒体内容理解",
+          "aliases": [
+            "多媒体理解"
+          ],
+          "keywords": [
+            "multimedia understanding"
+          ]
+        },
+        {
+          "name": "虚拟现实与增强现实",
+          "aliases": [],
+          "keywords": [
+            "VR",
+            "AR",
+            "virtual reality",
+            "augmented reality"
+          ]
+        },
+        {
+          "name": "可视化与可视分析",
+          "aliases": [
+            "可视化"
+          ],
+          "keywords": [
+            "visual analytics",
+            "information visualization"
+          ]
+        },
+        {
+          "name": "生成式图形与神经渲染",
+          "aliases": [
+            "生成式图形"
+          ],
+          "keywords": [
+            "neural rendering",
+            "3D generation"
+          ]
+        },
+        {
+          "name": "数字人与人体建模",
+          "aliases": [
+            "数字人"
+          ],
+          "keywords": [
+            "digital human",
+            "human modeling"
+          ]
+        },
+        {
+          "name": "触觉与多感官媒体",
+          "aliases": [
+            "触觉媒体",
+            "多感官"
+          ],
+          "keywords": [
+            "haptic media",
+            "multisensory media"
+          ]
+        },
+        {
+          "name": "媒体取证与生成检测",
+          "aliases": [
+            "媒体取证"
+          ],
+          "keywords": [
+            "deepfake detection",
+            "multimedia forensics"
+          ]
+        },
+        {
+          "name": "三维重建与场景捕获",
+          "aliases": [
+            "场景捕获"
+          ],
+          "keywords": [
+            "3D capture",
+            "scene reconstruction"
+          ]
+        }
+      ]
+    },
+    "分布式与云计算": {
+      "venues": [
+        "SOSP",
+        "OSDI",
+        "NSDI",
+        "EuroSys",
+        "ASPLOS",
+        "SC"
+      ],
+      "profile": "distributed",
+      "subs": [
+        {
+          "name": "分布式一致性与共识",
+          "aliases": [
+            "共识算法",
+            "分布式一致性"
+          ],
+          "keywords": [
+            "consensus",
+            "distributed consistency"
+          ]
+        },
+        {
+          "name": "容错与高可用系统",
+          "aliases": [
+            "容错系统",
+            "高可用"
+          ],
+          "keywords": [
+            "fault-tolerant system",
+            "high availability"
+          ]
+        },
+        {
+          "name": "云原生与容器编排",
+          "aliases": [
+            "云原生",
+            "容器编排"
+          ],
+          "keywords": [
+            "cloud native",
+            "Kubernetes"
+          ]
+        },
+        {
+          "name": "无服务器计算",
+          "aliases": [
+            "无服务器"
+          ],
+          "keywords": [
+            "Serverless",
+            "function as a service"
+          ]
+        },
+        {
+          "name": "边缘与雾计算",
+          "aliases": [
+            "边缘计算",
+            "雾计算"
+          ],
+          "keywords": [
+            "edge computing",
+            "fog computing"
+          ]
+        },
+        {
+          "name": "分布式存储与文件系统",
+          "aliases": [
+            "分布式存储"
+          ],
+          "keywords": [
+            "distributed storage",
+            "distributed file system"
+          ]
+        },
+        {
+          "name": "并行算法与编程模型",
+          "aliases": [
+            "并行算法"
+          ],
+          "keywords": [
+            "parallel algorithm",
+            "parallel programming model"
+          ]
+        },
+        {
+          "name": "GPU与异构并行计算",
+          "aliases": [
+            "异构并行"
+          ],
+          "keywords": [
+            "GPU计算",
+            "heterogeneous parallelism"
+          ]
+        },
+        {
+          "name": "数据中心资源调度",
+          "aliases": [
+            "数据中心",
+            "资源调度"
+          ],
+          "keywords": [
+            "datacenter scheduling"
+          ]
+        },
+        {
+          "name": "联邦与去中心化系统",
+          "aliases": [
+            "联邦系统",
+            "去中心化"
+          ],
+          "keywords": [
+            "federated system",
+            "decentralized system"
+          ]
+        },
+        {
+          "name": "区块链系统与共识",
+          "aliases": [
+            "区块链系统"
+          ],
+          "keywords": [
+            "blockchain system",
+            "consensus protocol"
+          ]
+        },
+        {
+          "name": "分布式机器学习系统",
+          "aliases": [
+            "分布式训练"
+          ],
+          "keywords": [
+            "distributed training",
+            "ML systems"
+          ]
+        },
+        {
+          "name": "服务计算与微服务",
+          "aliases": [
+            "服务计算",
+            "微服务"
+          ],
+          "keywords": [
+            "service computing",
+            "microservices"
+          ]
+        }
+      ]
+    },
+    "嵌入式、物联网与CPS": {
+      "venues": [
+        "SenSys",
+        "IPSN",
+        "RTSS",
+        "EMSOFT",
+        "MobiSys",
+        "IoTDI"
+      ],
+      "profile": "embedded",
+      "subs": [
+        {
+          "name": "嵌入式系统与实时调度",
+          "aliases": [
+            "嵌入式系统",
+            "实时调度"
+          ],
+          "keywords": [
+            "embedded system",
+            "real-time scheduling"
+          ]
+        },
+        {
+          "name": "嵌入式操作系统与固件",
+          "aliases": [
+            "嵌入式操作系统"
+          ],
+          "keywords": [
+            "RTOS",
+            "firmware",
+            "real-time operating system"
+          ]
+        },
+        {
+          "name": "物联网系统与边缘感知",
+          "aliases": [
+            "物联网"
+          ],
+          "keywords": [
+            "IoT",
+            "edge sensing"
+          ]
+        },
+        {
+          "name": "无线传感网络",
+          "aliases": [
+            "无线传感网"
+          ],
+          "keywords": [
+            "wireless sensor network",
+            "WSN"
+          ]
+        },
+        {
+          "name": "信息物理系统",
+          "aliases": [
+            "信息物理系统"
+          ],
+          "keywords": [
+            "CPS",
+            "cyber-physical system"
+          ]
+        },
+        {
+          "name": "工业控制系统",
+          "aliases": [
+            "工控"
+          ],
+          "keywords": [
+            "industrial control system",
+            "ICS"
+          ]
+        },
+        {
+          "name": "智能硬件与可穿戴设备",
+          "aliases": [
+            "智能硬件",
+            "可穿戴"
+          ],
+          "keywords": [
+            "wearable device",
+            "smart hardware"
+          ]
+        },
+        {
+          "name": "车联网与智能汽车",
+          "aliases": [
+            "车联网",
+            "智能汽车"
+          ],
+          "keywords": [
+            "connected vehicle",
+            "V2X"
+          ]
+        },
+        {
+          "name": "无人机与低空系统",
+          "aliases": [
+            "无人机系统"
+          ],
+          "keywords": [
+            "UAV system",
+            "low-altitude system"
+          ]
+        },
+        {
+          "name": "机器人操作系统",
+          "aliases": [],
+          "keywords": [
+            "ROS",
+            "robot operating system"
+          ]
+        },
+        {
+          "name": "低功耗与能量采集",
+          "aliases": [
+            "低功耗",
+            "能量采集"
+          ],
+          "keywords": [
+            "low-power computing",
+            "energy harvesting"
+          ]
+        },
+        {
+          "name": "嵌入式安全与可信启动",
+          "aliases": [
+            "可信启动"
+          ],
+          "keywords": [
+            "secure boot",
+            "embedded security"
+          ]
+        },
+        {
+          "name": "恶劣环境与高可靠计算",
+          "aliases": [
+            "抗恶劣环境",
+            "高可靠计算"
+          ],
+          "keywords": [
+            "harsh-environment computing",
+            "high-assurance computing"
+          ]
+        }
+      ]
+    },
+    "计算教育与专业实践": {
+      "venues": [
+        "SIGCSE",
+        "ITiCSE",
+        "ICER",
+        "TOCE",
+        "FIE"
+      ],
+      "profile": "education",
+      "subs": [
+        {
+          "name": "计算教育研究",
+          "aliases": [
+            "计算机教育"
+          ],
+          "keywords": [
+            "computing education",
+            "CS education"
+          ]
+        },
+        {
+          "name": "编程学习分析",
+          "aliases": [
+            "编程学习"
+          ],
+          "keywords": [
+            "programming learning",
+            "learning analytics"
+          ]
+        },
+        {
+          "name": "自动评测与反馈",
+          "aliases": [
+            "自动评测"
+          ],
+          "keywords": [
+            "automatic assessment",
+            "automated feedback"
+          ]
+        },
+        {
+          "name": "计算机课程与知识模型",
+          "aliases": [
+            "课程体系"
+          ],
+          "keywords": [
+            "CS2023",
+            "computing curriculum"
+          ]
+        },
+        {
+          "name": "软件工程职业实践",
+          "aliases": [
+            "职业实践"
+          ],
+          "keywords": [
+            "professional practice",
+            "software professionalism"
+          ]
+        },
+        {
+          "name": "科研可复现性",
+          "aliases": [
+            "可复现研究"
+          ],
+          "keywords": [
+            "reproducibility",
+            "replicability"
+          ]
+        },
+        {
+          "name": "科研软件与开放科学",
+          "aliases": [
+            "科研软件"
+          ],
+          "keywords": [
+            "research software",
+            "open science"
+          ]
+        },
+        {
+          "name": "AI辅助教育与学习",
+          "aliases": [],
+          "keywords": [
+            "AI教育",
+            "LLM教育",
+            "AI for education",
+            "AI-assisted learning"
+          ]
+        },
+        {
+          "name": "计算思维与K12教育",
+          "aliases": [
+            "计算思维"
+          ],
+          "keywords": [
+            "computational thinking",
+            "K-12 computing"
+          ]
+        },
+        {
+          "name": "工程伦理与团队协作",
+          "aliases": [
+            "工程伦理",
+            "团队协作"
+          ],
+          "keywords": [
+            "engineering ethics",
+            "teamwork"
+          ]
+        }
+      ]
+    },
+    "电子设计自动化与计算机工程": {
+      "venues": [
+        "DAC",
+        "ICCAD",
+        "DATE",
+        "ISCA",
+        "MICRO",
+        "IEEE TCAD"
+      ],
+      "profile": "eda",
+      "subs": [
+        {
+          "name": "电子设计自动化",
+          "aliases": [],
+          "keywords": [
+            "EDA",
+            "electronic design automation"
+          ]
+        },
+        {
+          "name": "超大规模集成电路设计",
+          "aliases": [
+            "集成电路设计"
+          ],
+          "keywords": [
+            "VLSI",
+            "chip design"
+          ]
+        },
+        {
+          "name": "处理器与芯片设计",
+          "aliases": [
+            "处理器设计"
+          ],
+          "keywords": [
+            "processor design",
+            "SoC"
+          ]
+        },
+        {
+          "name": "芯片验证与测试",
+          "aliases": [
+            "芯片验证"
+          ],
+          "keywords": [
+            "hardware verification",
+            "chip testing"
+          ]
+        },
+        {
+          "name": "FPGA与可重构硬件",
+          "aliases": [],
+          "keywords": [
+            "FPGA",
+            "reconfigurable hardware"
+          ]
+        },
+        {
+          "name": "嵌入式处理器与SoC",
+          "aliases": [],
+          "keywords": [
+            "SoC",
+            "system on chip",
+            "embedded processor"
+          ]
+        },
+        {
+          "name": "模拟与混合信号电路",
+          "aliases": [
+            "模拟电路"
+          ],
+          "keywords": [
+            "mixed-signal circuit"
+          ]
+        },
+        {
+          "name": "硬件软件协同设计",
+          "aliases": [
+            "软硬件协同"
+          ],
+          "keywords": [
+            "hardware-software co-design"
+          ]
+        },
+        {
+          "name": "芯片可靠性与安全",
+          "aliases": [
+            "硬件可靠性"
+          ],
+          "keywords": [
+            "chip reliability",
+            "hardware security"
+          ]
+        },
+        {
+          "name": "光电子与量子硬件",
+          "aliases": [
+            "光计算"
+          ],
+          "keywords": [
+            "photonic computing",
+            "quantum hardware"
+          ]
+        },
+        {
+          "name": "芯片互连与Chiplet",
+          "aliases": [],
+          "keywords": [
+            "Chiplet",
+            "die-to-die interconnect",
+            "advanced packaging"
+          ]
+        },
+        {
+          "name": "低功耗芯片设计",
+          "aliases": [
+            "低功耗设计"
+          ],
+          "keywords": [
+            "low-power VLSI"
+          ]
+        },
+        {
+          "name": "数字逻辑与计算机组成",
+          "aliases": [
+            "数字逻辑",
+            "计算机组成"
+          ],
+          "keywords": [
+            "digital logic",
+            "computer organization"
+          ]
+        }
+      ]
+    },
+    "数据科学与数据工程": {
+      "venues": [
+        "KDD",
+        "VLDB",
+        "SIGMOD",
+        "ICDE",
+        "JMLR",
+        "TKDE"
+      ],
+      "profile": "data",
+      "subs": [
+        {
+          "name": "大数据系统与分析",
+          "aliases": [
+            "大数据"
+          ],
+          "keywords": [
+            "big data",
+            "large-scale analytics"
+          ]
+        },
+        {
+          "name": "数据清洗与数据准备",
+          "aliases": [
+            "数据清洗"
+          ],
+          "keywords": [
+            "data preparation",
+            "data wrangling"
+          ]
+        },
+        {
+          "name": "数据集成与数据湖",
+          "aliases": [
+            "数据集成"
+          ],
+          "keywords": [
+            "data lake",
+            "data integration"
+          ]
+        },
+        {
+          "name": "数据版本、血缘与可复现性",
+          "aliases": [
+            "数据版本"
+          ],
+          "keywords": [
+            "data lineage",
+            "data versioning"
+          ]
+        },
+        {
+          "name": "数据治理与质量管理",
+          "aliases": [
+            "数据治理"
+          ],
+          "keywords": [
+            "data quality",
+            "data governance"
+          ]
+        },
+        {
+          "name": "数据密集型机器学习",
+          "aliases": [
+            "数据驱动机器学习"
+          ],
+          "keywords": [
+            "data-centric ML"
+          ]
+        },
+        {
+          "name": "流式数据分析",
+          "aliases": [
+            "流式计算"
+          ],
+          "keywords": [
+            "stream analytics",
+            "streaming data"
+          ]
+        },
+        {
+          "name": "时空与轨迹数据分析",
+          "aliases": [
+            "轨迹数据"
+          ],
+          "keywords": [
+            "spatio-temporal analytics"
+          ]
+        },
+        {
+          "name": "科学数据管理",
+          "aliases": [],
+          "keywords": [
+            "scientific data management",
+            "research data"
+          ]
+        },
+        {
+          "name": "数据市场与数据定价",
+          "aliases": [],
+          "keywords": [
+            "data market",
+            "data pricing"
+          ]
+        },
+        {
+          "name": "信息系统与业务流程",
+          "aliases": [
+            "信息系统",
+            "业务流程管理"
+          ],
+          "keywords": [
+            "information systems",
+            "business process management"
+          ]
+        }
+      ]
+    },
+    "数学与统计基础": {
+      "venues": [
+        "STOC",
+        "FOCS",
+        "SODA",
+        "JMLR",
+        "Annals of Statistics"
+      ],
+      "profile": "math",
+      "subs": [
+        {
+          "name": "离散数学与组合学",
+          "aliases": [
+            "离散数学"
+          ],
+          "keywords": [
+            "combinatorics",
+            "discrete mathematics"
+          ]
+        },
+        {
+          "name": "概率论与随机过程",
+          "aliases": [
+            "概率论",
+            "随机过程"
+          ],
+          "keywords": [
+            "probability theory",
+            "stochastic process"
+          ]
+        },
+        {
+          "name": "统计推断与高维统计",
+          "aliases": [
+            "统计推断",
+            "高维统计"
+          ],
+          "keywords": [
+            "statistical inference",
+            "high-dimensional statistics"
+          ]
+        },
+        {
+          "name": "最优化理论与算法",
+          "aliases": [
+            "最优化"
+          ],
+          "keywords": [
+            "optimization theory",
+            "convex optimization"
+          ]
+        },
+        {
+          "name": "数值分析与科学计算",
+          "aliases": [
+            "数值分析"
+          ],
+          "keywords": [
+            "numerical analysis",
+            "scientific computing"
+          ]
+        },
+        {
+          "name": "线性代数与矩阵计算",
+          "aliases": [
+            "矩阵计算"
+          ],
+          "keywords": [
+            "linear algebra",
+            "matrix computation"
+          ]
+        },
+        {
+          "name": "信息论与统计学习",
+          "aliases": [
+            "信息论"
+          ],
+          "keywords": [
+            "information theory",
+            "statistical learning"
+          ]
+        },
+        {
+          "name": "博弈论与机制设计",
+          "aliases": [
+            "博弈论"
+          ],
+          "keywords": [
+            "game theory",
+            "mechanism design"
+          ]
+        }
+      ]
+    }
+  },
+  "category_profiles": {
+    "人工智能": {
+      "知识表示与推理": "ml_method",
+      "规划与搜索": "ml_method",
+      "概率图模型与贝叶斯推断": "ml_method",
+      "多智能体系统": "ml_method",
+      "神经符号人工智能": "ml_method",
+      "AutoML与神经架构搜索": "ml_method",
+      "智能体与世界模型": "ml_method",
+      "AI评测与基准": "ml_method",
+      "类脑与神经形态智能": "ml_method"
+    },
+    "计算机视觉": {
+      "视觉语言与开放词汇视觉": "vision",
+      "指代分割与视觉定位": "vision",
+      "人体与动作理解": "vision",
+      "人脸与生物特征识别": "vision",
+      "视频生成与世界模型": "vision",
+      "生成式视觉与扩散模型": "vision",
+      "医学图像分析": "vision",
+      "遥感与航空视觉": "vision",
+      "工业视觉与缺陷检测": "vision",
+      "多相机与全景视觉": "vision"
+    },
+    "自然语言处理": {
+      "语法分析与语言结构": "nlp",
+      "语义理解与知识增强": "nlp",
+      "问答与推理": "nlp",
+      "可控文本生成": "nlp",
+      "对话系统与工具智能体": "nlp",
+      "大模型安全与对齐": "nlp",
+      "语音增强与声学事件": "nlp",
+      "情感分析与立场识别": "nlp"
+    },
+    "数据挖掘与信息检索": {
+      "图神经网络与图学习": "data",
+      "序列与因果推荐": "data",
+      "神经信息检索": "data",
+      "知识图谱推理": "data",
+      "社会网络分析": "data",
+      "数据流挖掘": "data",
+      "表格数据学习": "data",
+      "隐私保护数据挖掘": "data"
+    },
+    "系统与网络": {
+      "操作系统内核与调度": "systems",
+      "内存管理与文件系统": "systems",
+      "实时与嵌入式系统": "systems",
+      "容错与崩溃一致性": "systems",
+      "系统性能建模": "systems",
+      "eBPF与内核可观测性": "systems",
+      "系统形式化验证": "systems",
+      "机器学习系统": "systems",
+      "系统软件与运行时": "systems"
+    },
+    "安全与隐私": {
+      "机密计算与可信执行环境": "security",
+      "差分隐私与数据匿名化": "security",
+      "密码协议分析": "security",
+      "漏洞生态与安全度量": "security",
+      "安全治理与风险管理": "security",
+      "安全评测与基准": "security"
+    },
+    "软件工程": {
+      "软件架构与设计": "se",
+      "模型驱动工程": "se",
+      "软件仓库挖掘": "se",
+      "软件演化与维护": "se",
+      "DevOps与持续交付": "se",
+      "可信软件与形式化验证": "se",
+      "自动化测试与模糊测试": "se",
+      "人本软件工程": "se",
+      "实证软件工程": "se",
+      "移动与Web应用工程": "se",
+      "软件开发基础与程序设计": "se"
+    },
+    "数据库与数据管理": {
+      "关系数据库与查询处理": "db",
+      "分布式与云数据库": "db",
+      "事务处理与并发控制": "db",
+      "数据仓库与OLAP": "db",
+      "数据集成与ETL": "db",
+      "数据血缘与版本管理": "db",
+      "隐私保护数据库": "db",
+      "嵌入式与边缘数据管理": "db",
+      "高性能数据管理与存储": "db"
+    },
+    "人机交互与图形学": {
+      "交互设计与用户研究": "hci",
+      "可用性与可访问性": "hci",
+      "社会计算与协同": "hci",
+      "智能用户界面": "hci",
+      "多模态与具身交互": "hci",
+      "用户建模与个性化": "hci",
+      "计算行为科学": "hci",
+      "移动与普适HCI": "hci"
+    },
+    "理论与算法": {
+      "近似算法与在线算法": "theory",
+      "图论与离散优化": "theory",
+      "自动机与形式语言": "theory",
+      "程序逻辑与类型论": "theory",
+      "模型检查与程序验证": "theory",
+      "自动定理证明": "theory",
+      "信息论与编码理论": "theory",
+      "计算几何": "theory",
+      "数据结构与算法基础": "theory"
+    },
+    "机器人与具身智能": {
+      "机器人感知与定位": "robotics",
+      "机器人学习": "robotics",
+      "柔性与仿生机器人": "robotics",
+      "人机协作与交互": "robotics",
+      "机器人安全与可信": "robotics",
+      "无人机与自主导航": "robotics",
+      "工业与农业机器人": "robotics"
+    },
+    "交叉与AI4Science": {
+      "AI for Physics": "science",
+      "AI for Chemistry": "science",
+      "基因组学与单细胞分析": "science",
+      "临床与转化医学": "science",
+      "自动化实验室": "science",
+      "科学软件与可复现计算": "science",
+      "数学发现与推理": "science",
+      "生态与农业智能": "science"
+    },
+    "网络与通信": {
+      "SDN与可编程网络": "networks",
+      "5G与6G移动网络": "networks",
+      "车联网与V2X": "networks",
+      "自组网与无线传感网": "networks",
+      "P2P与内容分发网络": "networks",
+      "网络经济与路由博弈": "networks",
+      "网络智能运维与AIOps": "networks",
+      "确定性网络与TSN": "networks",
+      "互联网体系结构与协议": "networks"
+    },
+    "体系结构与高性能计算": {
+      "CPU微架构": "architecture",
+      "GPU与AI加速器": "architecture",
+      "Chiplet与3D封装": "architecture",
+      "内存与缓存架构": "architecture",
+      "存储架构与持久内存": "architecture",
+      "FPGA与可重构计算": "architecture",
+      "硬件验证与形式化": "architecture",
+      "RISC-V与开放指令集": "architecture",
+      "计算机系统仿真": "architecture"
+    },
+    "量子计算与信息": {
+      "量子硬件与量子比特": "quantum",
+      "量子控制与校准": "quantum",
+      "量子模拟": "quantum",
+      "量子软件与编译": "quantum",
+      "量子密码": "quantum",
+      "容错量子计算": "quantum",
+      "量子体系结构": "quantum"
+    },
+    "计算与社会": {
+      "AI伦理与公平": "social",
+      "算法治理与问责": "social",
+      "数据治理与隐私政策": "social",
+      "平台治理与内容审核": "social",
+      "虚假信息与信息生态": "social",
+      "开源软件与数字劳动": "social",
+      "数字公平与数字鸿沟": "social",
+      "科技政策与法律": "social",
+      "人本技术评估": "social",
+      "计算经济学与机制设计": "social"
+    },
+    "编程语言与编译": {
+      "程序语言理论": "pl",
+      "类型系统与程序逻辑": "pl",
+      "形式语义与程序验证": "pl",
+      "编译器优化与代码生成": "pl",
+      "JIT与运行时系统": "pl",
+      "程序分析与抽象解释": "pl",
+      "并发与内存模型": "pl",
+      "程序合成与程序修复": "pl",
+      "语言设计与领域语言": "pl",
+      "模型检查与软件验证": "pl",
+      "安全编译与内存安全": "pl",
+      "概率、可逆与量子编程": "pl"
+    },
+    "计算机图形学与多媒体": {
+      "真实感渲染": "graphics",
+      "实时渲染与游戏引擎": "graphics",
+      "几何建模与处理": "graphics",
+      "动画与物理仿真": "graphics",
+      "计算摄影": "graphics",
+      "图像与视频编码": "graphics",
+      "多媒体内容理解": "graphics",
+      "虚拟现实与增强现实": "graphics",
+      "可视化与可视分析": "graphics",
+      "生成式图形与神经渲染": "graphics",
+      "数字人与人体建模": "graphics",
+      "触觉与多感官媒体": "graphics",
+      "媒体取证与生成检测": "graphics",
+      "三维重建与场景捕获": "graphics"
+    },
+    "分布式与云计算": {
+      "分布式一致性与共识": "distributed",
+      "容错与高可用系统": "distributed",
+      "云原生与容器编排": "distributed",
+      "无服务器计算": "distributed",
+      "边缘与雾计算": "distributed",
+      "分布式存储与文件系统": "distributed",
+      "并行算法与编程模型": "distributed",
+      "GPU与异构并行计算": "distributed",
+      "数据中心资源调度": "distributed",
+      "联邦与去中心化系统": "distributed",
+      "区块链系统与共识": "distributed",
+      "分布式机器学习系统": "distributed",
+      "服务计算与微服务": "distributed"
+    },
+    "嵌入式、物联网与CPS": {
+      "嵌入式系统与实时调度": "embedded",
+      "嵌入式操作系统与固件": "embedded",
+      "物联网系统与边缘感知": "embedded",
+      "无线传感网络": "embedded",
+      "信息物理系统": "embedded",
+      "工业控制系统": "embedded",
+      "智能硬件与可穿戴设备": "embedded",
+      "车联网与智能汽车": "embedded",
+      "无人机与低空系统": "embedded",
+      "机器人操作系统": "embedded",
+      "低功耗与能量采集": "embedded",
+      "嵌入式安全与可信启动": "embedded",
+      "恶劣环境与高可靠计算": "embedded"
+    },
+    "计算教育与专业实践": {
+      "计算教育研究": "education",
+      "编程学习分析": "education",
+      "自动评测与反馈": "education",
+      "计算机课程与知识模型": "education",
+      "软件工程职业实践": "education",
+      "科研可复现性": "education",
+      "科研软件与开放科学": "education",
+      "AI辅助教育与学习": "education",
+      "计算思维与K12教育": "education",
+      "工程伦理与团队协作": "education"
+    },
+    "电子设计自动化与计算机工程": {
+      "电子设计自动化": "eda",
+      "超大规模集成电路设计": "eda",
+      "处理器与芯片设计": "eda",
+      "芯片验证与测试": "eda",
+      "FPGA与可重构硬件": "eda",
+      "嵌入式处理器与SoC": "eda",
+      "模拟与混合信号电路": "eda",
+      "硬件软件协同设计": "eda",
+      "芯片可靠性与安全": "eda",
+      "光电子与量子硬件": "eda",
+      "芯片互连与Chiplet": "eda",
+      "低功耗芯片设计": "eda",
+      "数字逻辑与计算机组成": "eda"
+    },
+    "数据科学与数据工程": {
+      "大数据系统与分析": "data",
+      "数据清洗与数据准备": "data",
+      "数据集成与数据湖": "data",
+      "数据版本、血缘与可复现性": "data",
+      "数据治理与质量管理": "data",
+      "数据密集型机器学习": "data",
+      "流式数据分析": "data",
+      "时空与轨迹数据分析": "data",
+      "科学数据管理": "data",
+      "数据市场与数据定价": "data",
+      "信息系统与业务流程": "data"
+    },
+    "数学与统计基础": {
+      "离散数学与组合学": "math",
+      "概率论与随机过程": "math",
+      "统计推断与高维统计": "math",
+      "最优化理论与算法": "math",
+      "数值分析与科学计算": "math",
+      "线性代数与矩阵计算": "math",
+      "信息论与统计学习": "math",
+      "博弈论与机制设计": "math"
+    }
+  },
+  "category_default_profiles": {
+    "人工智能": "ml_method",
+    "计算机视觉": "vision",
+    "自然语言处理": "nlp",
+    "数据挖掘与信息检索": "data",
+    "系统与网络": "systems",
+    "安全与隐私": "security",
+    "软件工程": "se",
+    "数据库与数据管理": "db",
+    "人机交互与图形学": "hci",
+    "理论与算法": "theory",
+    "机器人与具身智能": "robotics",
+    "交叉与AI4Science": "science",
+    "网络与通信": "networks",
+    "体系结构与高性能计算": "architecture",
+    "量子计算与信息": "quantum",
+    "计算与社会": "social",
+    "编程语言与编译": "pl",
+    "计算机图形学与多媒体": "graphics",
+    "分布式与云计算": "distributed",
+    "嵌入式、物联网与CPS": "embedded",
+    "计算教育与专业实践": "education",
+    "电子设计自动化与计算机工程": "eda",
+    "数据科学与数据工程": "data",
+    "数学与统计基础": "math"
+  },
+  "category_related": {
+    "人工智能": [
+      "计算机视觉",
+      "自然语言处理",
+      "数据挖掘与信息检索",
+      "机器人与具身智能",
+      "安全与隐私"
+    ],
+    "计算机视觉": [
+      "人工智能",
+      "计算机图形学与多媒体",
+      "机器人与具身智能",
+      "交叉与AI4Science"
+    ],
+    "自然语言处理": [
+      "人工智能",
+      "数据挖掘与信息检索",
+      "人机交互与图形学",
+      "计算与社会"
+    ],
+    "数据挖掘与信息检索": [
+      "人工智能",
+      "数据库与数据管理",
+      "数据科学与数据工程",
+      "计算与社会"
+    ],
+    "系统与网络": [
+      "分布式与云计算",
+      "网络与通信",
+      "体系结构与高性能计算",
+      "安全与隐私"
+    ],
+    "安全与隐私": [
+      "系统与网络",
+      "软件工程",
+      "网络与通信",
+      "人工智能"
+    ],
+    "软件工程": [
+      "编程语言与编译",
+      "系统与网络",
+      "人机交互与图形学",
+      "安全与隐私"
+    ],
+    "数据库与数据管理": [
+      "数据挖掘与信息检索",
+      "数据科学与数据工程",
+      "系统与网络",
+      "分布式与云计算"
+    ],
+    "人机交互与图形学": [
+      "计算机图形学与多媒体",
+      "人工智能",
+      "计算与社会",
+      "嵌入式、物联网与CPS"
+    ],
+    "理论与算法": [
+      "数学与统计基础",
+      "编程语言与编译",
+      "量子计算与信息",
+      "人工智能"
+    ],
+    "机器人与具身智能": [
+      "计算机视觉",
+      "人工智能",
+      "嵌入式、物联网与CPS",
+      "人机交互与图形学"
+    ],
+    "交叉与AI4Science": [
+      "人工智能",
+      "数据科学与数据工程",
+      "数学与统计基础",
+      "机器人与具身智能"
+    ],
+    "网络与通信": [
+      "分布式与云计算",
+      "系统与网络",
+      "安全与隐私",
+      "嵌入式、物联网与CPS"
+    ],
+    "体系结构与高性能计算": [
+      "分布式与云计算",
+      "电子设计自动化与计算机工程",
+      "嵌入式、物联网与CPS",
+      "系统与网络"
+    ],
+    "量子计算与信息": [
+      "理论与算法",
+      "体系结构与高性能计算",
+      "安全与隐私",
+      "数学与统计基础"
+    ],
+    "计算与社会": [
+      "人机交互与图形学",
+      "数据挖掘与信息检索",
+      "计算教育与专业实践",
+      "人工智能"
+    ],
+    "编程语言与编译": [
+      "软件工程",
+      "理论与算法",
+      "系统与网络"
+    ],
+    "计算机图形学与多媒体": [
+      "计算机视觉",
+      "人机交互与图形学",
+      "人工智能"
+    ],
+    "分布式与云计算": [
+      "系统与网络",
+      "网络与通信",
+      "体系结构与高性能计算"
+    ],
+    "嵌入式、物联网与CPS": [
+      "系统与网络",
+      "网络与通信",
+      "机器人与具身智能",
+      "安全与隐私"
+    ],
+    "计算教育与专业实践": [
+      "计算与社会",
+      "人机交互与图形学",
+      "软件工程"
+    ],
+    "电子设计自动化与计算机工程": [
+      "体系结构与高性能计算",
+      "嵌入式、物联网与CPS",
+      "安全与隐私"
+    ],
+    "数据科学与数据工程": [
+      "数据挖掘与信息检索",
+      "数据库与数据管理",
+      "人工智能"
+    ],
+    "数学与统计基础": [
+      "理论与算法",
+      "人工智能",
+      "数据挖掘与信息检索"
+    ]
+  },
+  "thin_categories": [
+    "编程语言与编译",
+    "计算机图形学与多媒体",
+    "分布式与云计算",
+    "嵌入式、物联网与CPS",
+    "计算教育与专业实践",
+    "电子设计自动化与计算机工程",
+    "数据科学与数据工程",
+    "数学与统计基础"
+  ],
+  "profiles": {
+    "pl": {
+      "label": "编程语言/编译",
+      "importance": {
+        "scenario": 0.25,
+        "method": 0.85,
+        "task": 0.9,
+        "modality": 0.2
+      },
+      "scenarios": [
+        "软件研发",
+        "云计算与数据中心"
+      ],
+      "methods": [
+        "形式化方法与验证",
+        "静态与动态程序分析",
+        "编译与代码生成"
+      ],
+      "tasks": [
+        "程序分析与验证",
+        "测试与修复",
+        "编译与调度"
+      ],
+      "modalities": [
+        "代码与程序",
+        "文本"
+      ]
+    },
+    "distributed": {
+      "label": "分布式/云系统",
+      "importance": {
+        "scenario": 0.45,
+        "method": 0.8,
+        "task": 0.9,
+        "modality": 0.2
+      },
+      "scenarios": [
+        "云计算与数据中心",
+        "边缘与嵌入式",
+        "工业检测与智能制造"
+      ],
+      "methods": [
+        "系统优化与资源调度",
+        "分布式训练",
+        "形式化方法与验证"
+      ],
+      "tasks": [
+        "性能优化与资源管理",
+        "存储与查询",
+        "评测与Benchmark"
+      ],
+      "modalities": [
+        "网络与系统日志",
+        "图与时序",
+        "代码与程序"
+      ]
+    },
+    "embedded": {
+      "label": "嵌入式/物联网/CPS",
+      "importance": {
+        "scenario": 0.85,
+        "method": 0.7,
+        "task": 0.9,
+        "modality": 0.6
+      },
+      "scenarios": [
+        "边缘与嵌入式",
+        "工业检测与智能制造",
+        "智能座舱与车载",
+        "低空经济"
+      ],
+      "methods": [
+        "软硬件协同设计",
+        "低功耗与能量管理",
+        "仿真与数字孪生"
+      ],
+      "tasks": [
+        "规划与控制",
+        "性能优化与资源管理",
+        "硬件设计与验证"
+      ],
+      "modalities": [
+        "多模态传感器",
+        "事件相机与脉冲",
+        "网络与系统日志"
+      ]
+    },
+    "education": {
+      "label": "计算教育/专业实践",
+      "importance": {
+        "scenario": 0.75,
+        "method": 0.5,
+        "task": 0.9,
+        "modality": 0.55
+      },
+      "scenarios": [
+        "教育与学习分析",
+        "软件研发"
+      ],
+      "methods": [
+        "人机交互与用户研究",
+        "深度学习与Transformer",
+        "实证研究与用户研究"
+      ],
+      "tasks": [
+        "交互与可视化",
+        "评测与Benchmark",
+        "程序分析与验证"
+      ],
+      "modalities": [
+        "文本",
+        "代码与程序",
+        "多模态传感器"
+      ]
+    },
+    "eda": {
+      "label": "EDA/计算机工程",
+      "importance": {
+        "scenario": 0.2,
+        "method": 0.85,
+        "task": 0.9,
+        "modality": 0.15
+      },
+      "scenarios": [
+        "芯片与硬件",
+        "边缘与嵌入式"
+      ],
+      "methods": [
+        "软硬件协同设计",
+        "形式化方法与验证",
+        "优化与运筹"
+      ],
+      "tasks": [
+        "硬件设计与验证",
+        "编译与调度",
+        "性能优化与资源管理"
+      ],
+      "modalities": [
+        "图与时序",
+        "代码与程序"
+      ]
+    },
+    "math": {
+      "label": "数学/统计基础",
+      "importance": {
+        "scenario": 0.05,
+        "method": 0.9,
+        "task": 0.7,
+        "modality": 0.05
+      },
+      "scenarios": [],
+      "methods": [
+        "概率论与随机过程",
+        "最优化理论与算法",
+        "信息论与统计学习"
+      ],
+      "tasks": [
+        "推理与问答",
+        "评测与Benchmark",
+        "预测与回归"
+      ],
+      "modalities": []
+    }
+  },
+  "scenarios": [
+    {
+      "name": "软件研发",
+      "aliases": [
+        "软件研发",
+        "软件开发"
+      ],
+      "keywords": [
+        "software development"
+      ]
+    },
+    {
+      "name": "芯片与硬件",
+      "aliases": [
+        "芯片设计",
+        "硬件工程"
+      ],
+      "keywords": [
+        "chip design",
+        "hardware engineering"
+      ]
+    },
+    {
+      "name": "边缘与嵌入式",
+      "aliases": [
+        "边缘设备",
+        "嵌入式部署"
+      ],
+      "keywords": [
+        "edge deployment",
+        "embedded deployment"
+      ]
+    },
+    {
+      "name": "教育与学习分析",
+      "aliases": [
+        "教育科技",
+        "学习分析"
+      ],
+      "keywords": [
+        "education technology",
+        "learning analytics"
+      ]
+    },
+    {
+      "name": "智能终端与移动应用",
+      "aliases": [
+        "移动应用",
+        "智能终端"
+      ],
+      "keywords": [
+        "mobile application",
+        "smart device"
+      ]
+    },
+    {
+      "name": "云原生与数据中心",
+      "aliases": [
+        "云原生"
+      ],
+      "keywords": [
+        "cloud native",
+        "data center"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "name": "形式化方法与验证",
+      "aliases": [
+        "形式化验证"
+      ],
+      "keywords": [
+        "formal verification",
+        "formal methods"
+      ]
+    },
+    {
+      "name": "静态与动态程序分析",
+      "aliases": [
+        "程序分析"
+      ],
+      "keywords": [
+        "program analysis",
+        "static analysis",
+        "dynamic analysis"
+      ]
+    },
+    {
+      "name": "编译与代码生成",
+      "aliases": [
+        "编译优化"
+      ],
+      "keywords": [
+        "compiler",
+        "code generation"
+      ]
+    },
+    {
+      "name": "系统优化与资源调度",
+      "aliases": [
+        "资源调度"
+      ],
+      "keywords": [
+        "resource scheduling",
+        "system optimization"
+      ]
+    },
+    {
+      "name": "分布式训练",
+      "aliases": [],
+      "keywords": [
+        "distributed training",
+        "federated training"
+      ]
+    },
+    {
+      "name": "软硬件协同设计",
+      "aliases": [
+        "软硬件协同"
+      ],
+      "keywords": [
+        "hardware-software co-design"
+      ]
+    },
+    {
+      "name": "低功耗与能量管理",
+      "aliases": [],
+      "keywords": [
+        "low power",
+        "energy management",
+        "power management"
+      ]
+    },
+    {
+      "name": "概率论与随机过程",
+      "aliases": [],
+      "keywords": [
+        "probability",
+        "stochastic process"
+      ]
+    },
+    {
+      "name": "最优化理论与算法",
+      "aliases": [],
+      "keywords": [
+        "optimization",
+        "convex optimization"
+      ]
+    },
+    {
+      "name": "信息论与统计学习",
+      "aliases": [],
+      "keywords": [
+        "information theory",
+        "statistical learning"
+      ]
+    },
+    {
+      "name": "实证研究与用户研究",
+      "aliases": [],
+      "keywords": [
+        "empirical study",
+        "user study"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "程序分析与验证",
+      "aliases": [],
+      "keywords": [
+        "program analysis",
+        "program verification"
+      ]
+    },
+    {
+      "name": "编译与调度",
+      "aliases": [],
+      "keywords": [
+        "compiler",
+        "scheduling"
+      ]
+    },
+    {
+      "name": "硬件设计与验证",
+      "aliases": [],
+      "keywords": [
+        "hardware design",
+        "hardware verification"
+      ]
+    },
+    {
+      "name": "性能优化与资源管理",
+      "aliases": [],
+      "keywords": [
+        "performance optimization",
+        "resource management"
+      ]
+    },
+    {
+      "name": "评测与Benchmark",
+      "aliases": [],
+      "keywords": [
+        "evaluation",
+        "benchmark"
+      ]
+    },
+    {
+      "name": "交互与可视化",
+      "aliases": [],
+      "keywords": [
+        "interaction",
+        "visualization"
+      ]
+    }
+  ],
+  "modalities": [
+    {
+      "name": "代码与程序",
+      "aliases": [],
+      "keywords": [
+        "source code",
+        "binary",
+        "program"
+      ]
+    },
+    {
+      "name": "网络与系统日志",
+      "aliases": [],
+      "keywords": [
+        "system log",
+        "network log",
+        "trace"
+      ]
+    },
+    {
+      "name": "工业传感器",
+      "aliases": [],
+      "keywords": [
+        "industrial sensor",
+        "SCADA"
+      ]
+    }
+  ]
+}

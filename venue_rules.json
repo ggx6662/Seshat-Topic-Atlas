@@ -1,0 +1,172 @@
+{
+  "rules": [
+    {"match": ["单目", "双目", "深度估计", "depth", "stereo", "三维重建", "3D重建", "点云", "SLAM", "NeRF", "3DGS", "位姿"],
+     "venues": [
+       {"name": "CVPR", "type": "会议", "reason": "视觉/深度/3D 主会"},
+       {"name": "ICCV", "type": "会议", "reason": "视觉/3D 主会"},
+       {"name": "ECCV", "type": "会议", "reason": "视觉/3D 重要会议"},
+       {"name": "3DV", "type": "会议", "reason": "三维视觉专门会议"},
+       {"name": "TPAMI", "type": "期刊", "reason": "视觉/3D 顶级期刊"},
+       {"name": "IJCV", "type": "期刊", "reason": "计算机视觉顶级期刊"},
+       {"name": "TIP", "type": "期刊", "reason": "图像处理权威期刊"}
+     ]},
+    {"match": ["NeRF", "3DGS", "神经渲染", "新视角合成", "渲染", "geometry", "几何"],
+     "venues": [
+       {"name": "SIGGRAPH", "type": "会议", "reason": "神经渲染/图形学主会"},
+       {"name": "SIGGRAPH Asia", "type": "会议", "reason": "图形学重要会议"},
+       {"name": "TOG", "type": "期刊", "reason": "图形学顶级期刊"},
+       {"name": "TVCG", "type": "期刊", "reason": "可视化与图形学权威期刊"}
+     ]},
+    {"match": ["医学", "medical", "临床", "health"],
+     "venues": [
+       {"name": "MICCAI", "type": "会议", "reason": "医学影像主会"},
+       {"name": "MedIA", "type": "期刊", "reason": "医学影像分析权威期刊"},
+       {"name": "IEEE TMI", "type": "期刊", "reason": "医学影像顶级期刊"},
+       {"name": "ISBI", "type": "会议", "reason": "生物医学影像会议"}
+     ]},
+    {"match": ["遥感", "remote sensing", "卫星", "earth observation", "高光谱"],
+     "venues": [
+       {"name": "IGARSS", "type": "会议", "reason": "遥感主会"},
+       {"name": "ISPRS Journal", "type": "期刊", "reason": "摄影测量与遥感权威期刊"},
+       {"name": "IEEE TGRS", "type": "期刊", "reason": "遥感顶级期刊"}
+     ]},
+    {"match": ["机器人", "robotics", "具身", "embodied", "操作", "抓取", "导航", "SLAM"],
+     "venues": [
+       {"name": "ICRA", "type": "会议", "reason": "机器人主会"},
+       {"name": "IROS", "type": "会议", "reason": "机器人主会"},
+       {"name": "RSS", "type": "会议", "reason": "机器人研究会议"},
+       {"name": "CoRL", "type": "会议", "reason": "机器人学习会议"},
+       {"name": "RA-L", "type": "期刊", "reason": "机器人快报"},
+       {"name": "TRO", "type": "期刊", "reason": "机器人顶级期刊"}
+     ]},
+    {"match": ["自然语言", "NLP", "语言模型", "LLM", "对话", "翻译", "检索增强"],
+     "venues": [
+       {"name": "ACL", "type": "会议", "reason": "NLP 主会"},
+       {"name": "EMNLP", "type": "会议", "reason": "NLP 主会"},
+       {"name": "NAACL", "type": "会议", "reason": "NLP 重要会议"},
+       {"name": "TACL", "type": "期刊", "reason": "NLP 权威期刊"},
+       {"name": "Computational Linguistics", "type": "期刊", "reason": "NLP 权威期刊"}
+     ]},
+    {"match": ["机器学习", "深度学习", "representation", "optimization", "model"],
+     "venues": [
+       {"name": "NeurIPS", "type": "会议", "reason": "机器学习主会"},
+       {"name": "ICML", "type": "会议", "reason": "机器学习主会"},
+       {"name": "ICLR", "type": "会议", "reason": "表示学习主会"},
+       {"name": "JMLR", "type": "期刊", "reason": "机器学习权威期刊"}
+     ]},
+    {"match": ["数据挖掘", "检索", "推荐", "图挖掘", "知识图谱", "IR", "data mining"],
+     "venues": [
+       {"name": "KDD", "type": "会议", "reason": "数据挖掘主会"},
+       {"name": "SIGIR", "type": "会议", "reason": "信息检索主会"},
+       {"name": "WWW", "type": "会议", "reason": "Web 与数据挖掘主会"},
+       {"name": "CIKM", "type": "会议", "reason": "信息与知识管理会议"},
+       {"name": "TKDE", "type": "期刊", "reason": "数据工程权威期刊"}
+     ]},
+    {"match": ["系统", "网络", "云计算", "分布式", "操作系统", "存储", "system", "network", "HPC"],
+     "venues": [
+       {"name": "SOSP", "type": "会议", "reason": "系统主会"},
+       {"name": "OSDI", "type": "会议", "reason": "系统主会"},
+       {"name": "NSDI", "type": "会议", "reason": "网络系统主会"},
+       {"name": "SIGCOMM", "type": "会议", "reason": "网络主会"},
+       {"name": "EuroSys", "type": "会议", "reason": "欧洲系统会议"},
+       {"name": "USENIX ATC", "type": "会议", "reason": "系统会议"},
+       {"name": "TPDS", "type": "期刊", "reason": "并行与分布式系统期刊"}
+     ]},
+    {"match": ["安全", "隐私", "密码", "攻击", "漏洞", "security", "privacy", "cryptography"],
+     "venues": [
+       {"name": "IEEE S&P", "type": "会议", "reason": "安全顶会"},
+       {"name": "CCS", "type": "会议", "reason": "安全顶会"},
+       {"name": "USENIX Security", "type": "会议", "reason": "安全顶会"},
+       {"name": "NDSS", "type": "会议", "reason": "安全顶会"},
+       {"name": "TDSC", "type": "期刊", "reason": "安全权威期刊"}
+     ]},
+    {"match": ["密码学", "密码分析", "密码协议", "零知识", "同态加密", "安全多方计算", "cryptography", "zero-knowledge"], "priority": 2,
+     "venues": [
+       {"name": "CRYPTO", "type": "会议", "reason": "密码学顶会"},
+       {"name": "EUROCRYPT", "type": "会议", "reason": "密码学顶会"},
+       {"name": "TCC", "type": "会议", "reason": "理论密码学会议"},
+       {"name": "Journal of Cryptology", "type": "期刊", "reason": "密码学权威期刊"},
+       {"name": "Designs, Codes and Cryptography", "type": "期刊", "reason": "密码与编码期刊"}
+     ]},
+    {"match": ["区块链安全", "智能合约", "DeFi安全", "blockchain security", "smart contract"], "priority": 2,
+     "venues": [
+       {"name": "IEEE S&P", "type": "会议", "reason": "安全与区块链研究"},
+       {"name": "CCS", "type": "会议", "reason": "安全与区块链研究"},
+       {"name": "USENIX Security", "type": "会议", "reason": "系统与区块链安全"},
+       {"name": "NDSS", "type": "会议", "reason": "网络与分布式安全"},
+       {"name": "Financial Cryptography", "type": "会议", "reason": "金融密码与区块链会议"}
+     ]},
+    {"match": ["形式化安全", "协议验证", "可证明安全", "formal security", "provable security"], "priority": 2,
+     "venues": [
+       {"name": "IEEE CSF", "type": "会议", "reason": "计算机安全基础会议"},
+       {"name": "CAV", "type": "会议", "reason": "计算机辅助验证会议"},
+       {"name": "TACAS", "type": "会议", "reason": "工具与算法验证会议"},
+       {"name": "CCS", "type": "会议", "reason": "安全主会"}
+     ]},
+    {"match": ["匿名通信", "网络审查", "审查规避", "anonymous communication", "censorship"], "priority": 2,
+     "venues": [
+       {"name": "USENIX Security", "type": "会议", "reason": "网络与匿名通信安全"},
+       {"name": "CCS", "type": "会议", "reason": "安全与隐私主会"},
+       {"name": "PETS", "type": "会议", "reason": "隐私增强技术会议"},
+       {"name": "PoPETs", "type": "期刊", "reason": "隐私增强技术期刊"}
+     ]},
+    {"match": ["工业控制系统安全", "工控安全", "CPS安全", "SCADA", "ICS security"], "priority": 2,
+     "venues": [
+       {"name": "IEEE S&P", "type": "会议", "reason": "系统与物理安全"},
+       {"name": "USENIX Security", "type": "会议", "reason": "系统安全"},
+       {"name": "CCS", "type": "会议", "reason": "安全主会"},
+       {"name": "NDSS", "type": "会议", "reason": "网络与工业系统安全"},
+       {"name": "TDSC", "type": "期刊", "reason": "安全权威期刊"}
+     ]},
+    {"match": ["安全可用性", "可用安全", "安全人因", "钓鱼", "usable security", "phishing"], "priority": 2,
+     "venues": [
+       {"name": "SOUPS", "type": "会议", "reason": "安全可用性会议"},
+       {"name": "USENIX Security", "type": "会议", "reason": "安全主会"},
+       {"name": "CHI", "type": "会议", "reason": "人机交互与用户研究"},
+       {"name": "CCS", "type": "会议", "reason": "安全主会"}
+     ]},
+    {"match": ["软件工程", "程序", "测试", "代码", "软件", "SE", "program"],
+     "venues": [
+       {"name": "ICSE", "type": "会议", "reason": "软件工程主会"},
+       {"name": "FSE", "type": "会议", "reason": "软件工程主会"},
+       {"name": "ASE", "type": "会议", "reason": "自动化软件工程会议"},
+       {"name": "ISSTA", "type": "会议", "reason": "软件测试与分析会议"},
+       {"name": "TSE", "type": "期刊", "reason": "软件工程权威期刊"}
+     ]},
+    {"match": ["数据库", "查询", "事务", "数据湖", "图数据库", "DB", "database"],
+     "venues": [
+       {"name": "SIGMOD", "type": "会议", "reason": "数据库主会"},
+       {"name": "VLDB", "type": "会议", "reason": "数据库主会"},
+       {"name": "ICDE", "type": "会议", "reason": "数据工程主会"},
+       {"name": "TODS", "type": "期刊", "reason": "数据库权威期刊"}
+     ]},
+    {"match": ["人机交互", "HCI", "可视化", "交互", "用户研究", "可访问性"],
+     "venues": [
+       {"name": "CHI", "type": "会议", "reason": "HCI 主会"},
+       {"name": "UIST", "type": "会议", "reason": "交互技术主会"},
+       {"name": "CSCW", "type": "会议", "reason": "协作与社会计算会议"},
+       {"name": "TOCHI", "type": "期刊", "reason": "HCI 权威期刊"}
+     ]},
+    {"match": ["理论", "算法", "复杂性", "优化", "博弈", "theory", "algorithm"],
+     "venues": [
+       {"name": "STOC", "type": "会议", "reason": "理论主会"},
+       {"name": "FOCS", "type": "会议", "reason": "理论主会"},
+       {"name": "SODA", "type": "会议", "reason": "算法主会"},
+       {"name": "JACM", "type": "期刊", "reason": "理论权威期刊"},
+       {"name": "SICOMP", "type": "期刊", "reason": "计算复杂性权威期刊"}
+     ]},
+    {"match": ["量子", "quantum"],
+     "venues": [
+       {"name": "QIP", "type": "会议", "reason": "量子信息主会"},
+       {"name": "Quantum", "type": "期刊", "reason": "量子信息期刊"},
+       {"name": "PRX Quantum", "type": "期刊", "reason": "量子权威期刊"}
+     ]},
+    {"match": ["教育", "社会", "计算社会科学", "金融", "政务", "可持续"],
+     "venues": [
+       {"name": "CHI", "type": "会议", "reason": "人本计算主会"},
+       {"name": "CSCW", "type": "会议", "reason": "社会计算会议"},
+       {"name": "FAccT", "type": "会议", "reason": "公平、问责与透明会议"},
+       {"name": "WWW", "type": "会议", "reason": "Web 与社会计算会议"}
+     ]}
+  ]
+}
