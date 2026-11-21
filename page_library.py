@@ -323,7 +323,20 @@ class LibraryPage(tk.Frame):
     def reload(self):
         threading.Thread(target=self._build_rows_and_apply, daemon=True).start()
 
+    def _alive(self):
+        """后台线程回来的回调要先问一句：这张卡片还在不在。
+
+        post() 只负责投递，不保证执行时页面没被销毁——切走页面会重建整页，
+        旧实例的 _fcard.body 就成了 "bad window path name"。
+        """
+        try:
+            return bool(self._fcard.body.winfo_exists())
+        except Exception:
+            return False
+
     def _apply(self, d):
+        if not self._alive():
+            return
         self.rows = d["rows"]
         self.cats = d["cats"]
         self._m["pdf"].set(d["stats"].get("total_pdf", len(self.rows)))

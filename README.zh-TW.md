@@ -373,32 +373,41 @@ node competition\scripts\check_site.mjs          # 158 項斷言，含 NO_CONSOL
 
 ## 倉庫結構
 
+根目錄放的是**程式碼**，資料與文件都收在子目錄裡。第一次進來，看下面這張表就夠了：
+
+| 位置 | 裡面是什麼 | 你會不會改它 |
+| --- | --- | --- |
+| `app_main.py` | 主視窗、左欄導覽、十四個頁面的裝配 | 偶爾 |
+| `app_theme.py` / `design_tokens.py` | 元件庫與設計權杖（顏色、字級檔、圓角、間距） | 偶爾 |
+| `page_*.py` | 十四個頁面，一頁一檔案 | 經常 |
+| 其餘 `*.py` | 能力層：候選產生、診斷、查重、檢索、學者索引等 | 按需 |
+| `tools_*.py` | 測試與工具腳本（回歸命令見上一節） | 只跑不改 |
+| `web_server.py` + `web_static/` | 網頁體驗端（唯讀 5 檢視） | 偶爾 |
+| `competition/` | 公開示範站原始碼、資料匯出與驗收腳本 | 偶爾 |
+| `docs/` | 文件與配圖 | 寫文件時 |
+| `AGENTS.md` / `PRODUCT.md` / `DESIGN.md` | 協作約定、產品說明、視覺規範 | 改行為時 |
+
+能力層按用到它的地方分三組：
+
+| 分組 | 檔案 | 做什麼 |
+| --- | --- | --- |
+| 選題鏈路 | `topic_gen.py`（方向 × 22 個切入角度）、`research_diagnose.py`（9 項結構診斷）、`research_gap.py`（文獻空白矩陣）、`novelty_check.py`（arXiv 全庫查重） | 從一個方向詞走到一組可核實的候選 |
+| 檢索與索引 | `kb_vector.py`（53.8 萬篇 arXiv 向量索引）、`semantic_search.py`（本機 345 篇 TF-IDF + SVD）、`fulltext.py`、`meta_index.py` | 查重、找同類論文、模糊搜本機文獻 |
+| 人與去處 | `advisor_index.py`（四源合併、ORCID 優先去重）、`paper_sources.py`（OpenAlex / Europe PMC / arXiv 三源適配）、`research_skills.py`（七套方法論定義） | 找到能聯絡的人和能投的會 |
+
+子目錄：
+
 ```text
-knowledge-monitor/
-├─ app_main.py              # 主視窗、導覽、十二頁裝配
-├─ app_theme.py             # 元件庫（T.Btn / T.Card / T.ScrollArea…）
-├─ design_tokens.py         # 唯一設計權杖來源：顏色、字級檔、圓角、間距
-├─ page_*.py                # 十四個頁面，一頁一檔案
-├─ topic_gen.py             # 候選產生：方向 × 切入角度（22 個角度）
-├─ research_diagnose.py     # 9 項結構診斷，硬條件判檔
-├─ research_gap.py          # 文獻空白矩陣
-├─ novelty_check.py         # arXiv 全庫查重
-├─ research_skills.py       # 七套方法論（id/name/en/when/goal/steps/output/pitfall）
-├─ advisor_index.py         # 學者索引：四源合併、ORCID 優先去重
-├─ kb_vector.py             # 53.8 萬篇 arXiv 向量索引
-├─ semantic_search.py       # 本機 345 篇的 TF-IDF+SVD 檢索
-├─ paper_sources.py         # OpenAlex / Europe PMC / arXiv 三源適配
-├─ web_server.py            # 網頁體驗端（唯讀 5 檢視，7 開放 5 拒絕）
-├─ web_static/              # 網頁體驗端前端
-├─ competition/
-│  ├─ site/                 # 公開示範站原始碼
-│  └─ scripts/              # 資料匯出、驗收、截圖
-├─ docs/
-│  ├─ origin/               # 歷史文件存檔（舊 README 全文、功能說明手冊等）
-│  ├─ images/               # 本 README 的配圖（light 場景 / dark 整窗 / web 網頁端）
-│  └─ screenshots/          # 站內文件用截圖
-├─ tools_*.py               # 測試與工具腳本
-└─ AGENTS.md / PRODUCT.md / DESIGN.md
+competition/
+├─ site/        # 公開示範站原始碼（index.html + assets/ + data/，dist/ 是發佈拷貝）
+└─ scripts/     # 資料匯出、驗收（check_site.mjs）、截圖
+
+docs/
+├─ images/      # README 與文件的配圖（light 場景 / dark 整窗 / web 網頁端）
+├─ origin/      # 歷史文件存檔（舊 README、功能說明手冊、歷次交接手冊）
+└─ screenshots/ # 早期截圖副本，正文不再引用，留作對照
+
+web_static/     # 網頁體驗端前端（index.html + app.js + style.css + 圖示）
 ```
 
 改 README 配圖的完整流程（別跳過第一步，否則數字對不上）：

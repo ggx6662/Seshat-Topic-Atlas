@@ -18,8 +18,9 @@ from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor, Cm
 
 HERE = Path(__file__).resolve().parent
-SRC = HERE / "功能说明手册.md"
-OUT = HERE / "功能说明手册.docx"
+# 手册正文已归档到 docs/origin/，产物跟它放一起，不再弄脏仓库根目录
+SRC = HERE / "docs" / "origin" / "功能说明手册-2026-11-15.md"
+OUT = HERE / "docs" / "origin" / "功能说明手册-2026-11-15.docx"
 
 CN = "微软雅黑"
 MONO = "Consolas"

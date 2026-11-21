@@ -373,32 +373,41 @@ node competition\scripts\check_site.mjs          # 158 项断言，含 NO_CONSOL
 
 ## 仓库结构
 
+根目录放的是**代码**，数据和文档都收在子目录里。第一次进来，只看下面这张表就够了：
+
+| 位置 | 里面是什么 | 你会不会改它 |
+| --- | --- | --- |
+| `app_main.py` | 主窗口、左栏导航、十四个页面的装配 | 偶尔 |
+| `app_theme.py` / `design_tokens.py` | 组件库与设计令牌（颜色、字号档、圆角、间距） | 偶尔 |
+| `page_*.py` | 十四个页面，一页一文件 | 经常 |
+| `*.py` 其余 | 能力层：候选生成、诊断、查重、检索、学者索引等 | 按需 |
+| `tools_*.py` | 测试与工具脚本（回归命令见上一节） | 只跑不改 |
+| `web_server.py` + `web_static/` | 网页体验端（只读 5 视图） | 偶尔 |
+| `competition/` | 公开演示站源码、数据导出与验收脚本 | 偶尔 |
+| `docs/` | 文档与配图 | 写文档时 |
+| `AGENTS.md` / `PRODUCT.md` / `DESIGN.md` | 协作约定、产品说明、视觉规范 | 改行为时 |
+
+能力层按用到它的地方分三组：
+
+| 分组 | 文件 | 干什么 |
+| --- | --- | --- |
+| 选题链路 | `topic_gen.py`（方向 × 22 个切入角度）、`research_diagnose.py`（9 项结构诊断）、`research_gap.py`（文献空白矩阵）、`novelty_check.py`（arXiv 全库查重） | 从一个方向词走到一组可核实的候选 |
+| 检索与索引 | `kb_vector.py`（53.8 万篇 arXiv 向量索引）、`semantic_search.py`（本地 345 篇 TF-IDF + SVD）、`fulltext.py`、`meta_index.py` | 查重、找同类论文、模糊搜本地文献 |
+| 人与去处 | `advisor_index.py`（四源合并、ORCID 优先去重）、`paper_sources.py`（OpenAlex / Europe PMC / arXiv 三源适配）、`research_skills.py`（七套方法论定义） | 找到能联系的人和能投的会 |
+
+子目录：
+
 ```text
-knowledge-monitor/
-├─ app_main.py              # 主窗口、导航、十二页装配
-├─ app_theme.py             # 组件库（T.Btn / T.Card / T.ScrollArea…）
-├─ design_tokens.py         # 唯一设计令牌源：颜色、字号档、圆角、间距
-├─ page_*.py                # 十四个页面，一页一文件
-├─ topic_gen.py             # 候选生成：方向 × 切入角度（22 个角度）
-├─ research_diagnose.py     # 9 项结构诊断，硬条件判档
-├─ research_gap.py          # 文献空白矩阵
-├─ novelty_check.py         # arXiv 全库查重
-├─ research_skills.py       # 七套方法论（id/name/en/when/goal/steps/output/pitfall）
-├─ advisor_index.py         # 学者索引：四源合并、ORCID 优先去重
-├─ kb_vector.py             # 53.8 万篇 arXiv 向量索引
-├─ semantic_search.py       # 本地 345 篇的 TF-IDF+SVD 检索
-├─ paper_sources.py         # OpenAlex / Europe PMC / arXiv 三源适配
-├─ web_server.py            # 网页体验端（只读 5 视图，7 开放 5 拒绝）
-├─ web_static/              # 网页体验端前端
-├─ competition/
-│  ├─ site/                 # 公开演示站源码
-│  └─ scripts/              # 数据导出、验收、截图
-├─ docs/
-│  ├─ origin/               # 历史文档存档（旧 README 全文、功能说明手册等）
-│  ├─ images/               # 本 README 的配图（light 场景 / dark 整窗 / web 网页端）
-│  └─ screenshots/          # 站内文档用截图
-├─ tools_*.py               # 测试与工具脚本
-└─ AGENTS.md / PRODUCT.md / DESIGN.md
+competition/
+├─ site/        # 公开演示站源码（index.html + assets/ + data/，dist/ 是发布拷贝）
+└─ scripts/     # 数据导出、验收（check_site.mjs）、截图
+
+docs/
+├─ images/      # README 与文档的配图（light 场景 / dark 整窗 / web 网页端）
+├─ origin/      # 历史文档存档（旧 README、功能说明手册、历次交接手册）
+└─ screenshots/ # 早期截图副本，正文不再引用，留作对照
+
+web_static/     # 网页体验端前端（index.html + app.js + style.css + 图标）
 ```
 
 改 README 配图的完整流程（别跳过第一步，否则数字对不上）：

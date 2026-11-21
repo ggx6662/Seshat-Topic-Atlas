@@ -414,7 +414,21 @@ class GapPage(tk.Frame):
                 self.app.post(lambda c=checked: self._apply_check(c))
         threading.Thread(target=work, daemon=True).start()
 
+    def _alive(self):
+        """后台线程回来的回调要用它先问一句：控件还在不在。
+
+        post() 只是把函数塞进队列，不保证执行时页面还没被销毁——
+        用户切走、切回来会重建整页，旧实例的 gap_box 就成了
+        "bad window path name"。这里吞掉比让 TclError 冒到日志干净。
+        """
+        try:
+            return bool(self.gap_box.winfo_exists())
+        except Exception:
+            return False
+
     def _apply_check(self, checked):
+        if not self._alive():
+            return
         self.check_note.pack_forget()
         if self.data is not None:
             self.data["global_check"] = checked
@@ -425,6 +439,8 @@ class GapPage(tk.Frame):
         self.gap_box.refresh()
 
     def _apply(self, data):
+        if not self._alive():
+            return
         self.data = data
         # 每次重算都重读硬条件：用户可能刚在「个人画像」里改完再切回来，
         # 缓存住不刷新的话这一页会一直按旧条件给结论

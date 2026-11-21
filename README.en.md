@@ -377,32 +377,41 @@ node competition\scripts\check_site.mjs          # 158 assertions, including NO_
 
 ## Repository layout
 
+The root holds **code**; data and documents live in subdirectories. If you are new here, this table is all you need:
+
+| Where | What is in it | Will you touch it |
+| --- | --- | --- |
+| `app_main.py` | Main window, sidebar navigation, assembly of the fourteen pages | Occasionally |
+| `app_theme.py` / `design_tokens.py` | Widget library and design tokens (colour, type scale, radius, spacing) | Occasionally |
+| `page_*.py` | The fourteen pages, one file each | Often |
+| the rest of `*.py` | Capability layer: candidate generation, audit, duplicate checking, retrieval, scholar index | As needed |
+| `tools_*.py` | Test and utility scripts (the regression commands are in the previous section) | Run, do not edit |
+| `web_server.py` + `web_static/` | Web end (read-only, 5 views) | Occasionally |
+| `competition/` | Source of the public demo site, data export and verification scripts | Occasionally |
+| `docs/` | Documents and images | When writing docs |
+| `AGENTS.md` / `PRODUCT.md` / `DESIGN.md` | Working agreements, product notes, visual rules | When behaviour changes |
+
+The capability layer, grouped by where it is used:
+
+| Group | Files | What it does |
+| --- | --- | --- |
+| Topic pipeline | `topic_gen.py` (direction × 22 approaches), `research_diagnose.py` (nine-item audit), `research_gap.py` (gap matrix), `novelty_check.py` (duplicate check against the whole arXiv index) | From one direction word to a set of checkable candidates |
+| Retrieval and index | `kb_vector.py` (538k-paper arXiv vector index), `semantic_search.py` (TF-IDF + SVD over the 345 local papers), `fulltext.py`, `meta_index.py` | Duplicate checking, finding similar papers, fuzzy search of local literature |
+| People and venues | `advisor_index.py` (four sources merged, ORCID-first deduplication), `paper_sources.py` (OpenAlex / Europe PMC / arXiv adapters), `research_skills.py` (the seven method definitions) | Finding people to contact and venues to submit to |
+
+Subdirectories:
+
 ```text
-knowledge-monitor/
-├─ app_main.py              # main window, navigation, assembly of the fourteen pages
-├─ app_theme.py             # widget library (T.Btn / T.Card / T.ScrollArea …)
-├─ design_tokens.py         # single source of design tokens: colour, type scale, radius, spacing
-├─ page_*.py                # the fourteen pages, one file each
-├─ topic_gen.py             # candidate generation: direction × approach (22 approaches)
-├─ research_diagnose.py     # nine-item structural audit, hard-condition staging
-├─ research_gap.py          # literature-gap matrix
-├─ novelty_check.py         # duplicate checking against the whole arXiv index
-├─ research_skills.py       # the seven methods (id/name/en/when/goal/steps/output/pitfall)
-├─ advisor_index.py         # scholar index: four sources merged, ORCID-first deduplication
-├─ kb_vector.py             # 538k-paper arXiv vector index
-├─ semantic_search.py       # TF-IDF + SVD retrieval over the 345 local papers
-├─ paper_sources.py         # OpenAlex / Europe PMC / arXiv adapters
-├─ web_server.py            # web end (read-only, 5 views, 7 open / 5 refused)
-├─ web_static/              # web-end front end
-├─ competition/
-│  ├─ site/                 # source of the public demo site
-│  └─ scripts/              # data export, verification, screenshots
-├─ docs/
-│  ├─ origin/               # archived documents (legacy README, feature manual, etc.)
-│  ├─ images/               # screenshots used by this README (light scenes + dark/ with all 14)
-│  └─ screenshots/          # screenshots used by the documentation
-├─ tools_*.py               # test and utility scripts
-└─ AGENTS.md / PRODUCT.md / DESIGN.md
+competition/
+├─ site/        # source of the public demo site (index.html + assets/ + data/; dist/ is the publish copy)
+└─ scripts/     # data export, verification (check_site.mjs), screenshots
+
+docs/
+├─ images/      # images for the README and docs (light scenes / dark full-window / web)
+├─ origin/      # archived documents (legacy README, feature manual, earlier handover notes)
+└─ screenshots/ # older screenshot copies no longer referenced in the text, kept for comparison
+
+web_static/     # web-end front end (index.html + app.js + style.css + icons)
 ```
 
 How to refresh the README images (skipping step 1 is how the numbers drift):
