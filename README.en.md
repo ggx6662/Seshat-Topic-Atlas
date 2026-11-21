@@ -14,7 +14,7 @@
 [![Runtime](https://img.shields.io/badge/runtime-Python%203.10%2B%20%2B%20Tk-2f5d8a)](#quick-start)
 [![Offline](https://img.shields.io/badge/core-100%25%20offline-3f6b4f)](#three-zeros)
 [![Live demo](https://img.shields.io/badge/demo-topic--compass-c9a227)](https://topic-compass-jzkhsw942zj.qoder.website)
-[![License](https://img.shields.io/badge/license-TBD-lightgrey)](#license)
+[![License](https://img.shields.io/badge/license-MIT-2f6f4f)](#license)
 
 </div>
 
@@ -461,7 +461,7 @@ Every hard-coded count in the three READMEs was re-totalled against the data: th
 
 ## License
 
-See the LICENSE file at the repository root for the code licence. Third-party data (OpenAlex / ORCID / arXiv / Europe PMC) remains under its own licence; this project references and aggregates it and does not redistribute the original datasets.
+The code in this repository is released under the **MIT licence**; the full text is in [LICENSE](LICENSE) at the repository root. Use it, change it, redistribute it, commercially too — just keep the copyright notice. Third-party data (OpenAlex / ORCID / arXiv / Europe PMC) remains under its own licence; this project references and aggregates it and does not redistribute the original datasets.
 
 ---
 

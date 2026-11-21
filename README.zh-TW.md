@@ -14,7 +14,7 @@
 [![Runtime](https://img.shields.io/badge/runtime-Python%203.10%2B%20%2B%20Tk-2f5d8a)](#快速開始)
 [![Offline](https://img.shields.io/badge/core-100%25%20offline-3f6b4f)](#三個零)
 [![Live demo](https://img.shields.io/badge/demo-topic--compass-c9a227)](https://topic-compass-jzkhsw942zj.qoder.website)
-[![License](https://img.shields.io/badge/license-TBD-lightgrey)](#授權)
+[![License](https://img.shields.io/badge/license-MIT-2f6f4f)](#授權)
 
 </div>
 
@@ -457,7 +457,7 @@ python check_tokens.py
 
 ## 授權
 
-本倉庫程式碼的授權，請見倉庫根目錄的 LICENSE 檔案。第三方資料（OpenAlex / ORCID / arXiv / Europe PMC）遵循各自授權，本專案僅作引用與統計，不再分發原始資料集。
+本倉庫程式碼採用 **MIT 授權**，全文見倉庫根目錄的 [LICENSE](LICENSE)。你可以自由使用、修改、再發布，商用也可以，只要保留版權聲明。第三方資料（OpenAlex / ORCID / arXiv / Europe PMC）遵循各自授權，本專案僅作引用與統計，不再分發原始資料集。
 
 ---
 
