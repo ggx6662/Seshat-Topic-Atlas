@@ -89,3 +89,7 @@ competition/site/dist.url
 # ---- 2026-11-21 追加：前端依赖与构建缓存 ----
 node_modules/
 *.tsbuildinfo
+
+# ---- 2026-11-21 追加：本机使用记录 ----
+# 窗口位置 + 输入过的命令历史，会拼出研究者的关注方向，不随仓库发布
+widget_settings.json
