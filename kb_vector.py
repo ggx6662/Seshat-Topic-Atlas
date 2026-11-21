@@ -2,7 +2,8 @@
 
 为什么不用 bge / 神经嵌入
 ------------------------
-本地 343 篇用 TF-IDF+SVD 实测 Top3 精确命中 89%，够用；45 万篇用神经模型
+本地 343 篇用 TF-IDF+SVD 实测「拿标题前几个词当查询、Top1 回到原论文」命中 89.7%
+（Top3 97.1%，310 条可评，评测脚本 `.tmp/eval_local_top3.py`），够用；45 万篇用神经模型
 需要 GPU 跑好几个小时，且要下 400MB~2GB 模型。先用能跑通的方案，
 召回不够再升级 —— 升级时只需替换 `embed()`，外部接口不变。
 
@@ -54,8 +55,32 @@ import numpy as np
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-OUT = Path(r"G:\kb-vector\index")
-SRC = Path(r"G:\kb-vector\arxiv_cs")
+def _base_dir():
+    """arXiv 索引的存放根。优先级：
+
+    1. 环境变量 `KB_VECTOR_DIR`（换电脑、放移动硬盘时最省事）；
+    2. config.json 里的 `kb_vector_path`（界面「设置与数据」可改）；
+    3. 原来的 `G:\\kb-vector`（老机器保持不变，不必搬家）。
+
+    索引约 1.5 GB，不进 git、也不跟程序走，所以单独定根目录而不是放进仓库。
+    """
+    v = os.environ.get("KB_VECTOR_DIR", "").strip()
+    if v:
+        return Path(v)
+    try:
+        import kb_widget
+        cfg = kb_widget.load_config() or {}
+        c = (cfg.get("kb_vector_path") or "").strip()
+        if c:
+            return Path(c)
+    except Exception:
+        pass
+    return Path(r"G:\kb-vector")
+
+
+BASE = _base_dir()
+OUT = BASE / "index"
+SRC = BASE / "arxiv_cs"
 
 DIMS = 180
 MIN_DF = 2           # 只出现 1 次的词不可能是好特征，且把词表从百万级压到十万级
@@ -580,7 +605,7 @@ def explain(q):
 # 这是 Wikipedia/矢量库之外的传统做法，但对「查重/查空白」比纯向量更可靠。
 
 
-BODIES_CACHE = Path(r"G:\kb-vector\index\bodies.z")
+BODIES_CACHE = OUT / "bodies.z"
 
 
 def _load_bodies_fast():

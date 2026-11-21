@@ -1,4 +1,4 @@
-/* 550W·知识库助手 · Service Worker
+/* 塞莎特——题谱 · 本地体验端 Service Worker
  *
  * 目标是「装到手机桌面 + 断网也能打开」，不是「离线用完整功能」。
  *
@@ -10,7 +10,7 @@
  * 为什么不做「离线可用的完整版」：这个站的接口全部由本机 Python 服务提供，
  * 手机离线时后端根本不在，缓存 JSON 只会给出假的老数据。
  */
-const VER = "kb-v1";
+const VER = "kb-v3";
 const SHELL = [
   "/",
   "/index.html",
@@ -19,6 +19,7 @@ const SHELL = [
   "/manifest.webmanifest",
   "/icon-192.png",
   "/icon-512.png",
+  "/icon-48.png",
 ];
 
 self.addEventListener("install", (e) => {

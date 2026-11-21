@@ -106,7 +106,8 @@ def t_ping():
 def t_static_index():
     code, body = get("/")
     assert code == 200
-    assert "知识库助手" in body
+    assert "塞莎特——题谱" in body
+    assert 'src="/icon-48.png"' in body
     assert 'id="out"' in body
 
 

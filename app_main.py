@@ -82,12 +82,14 @@ if HERE not in sys.path:
 import app_theme as T          # noqa: E402
 import app_icons as I          # noqa: E402
 import ui_parts as U           # noqa: E402
+import ui_kit as UK            # noqa: E402
 import app_widgets as widgets  # noqa: E402
 import app_diagnose_view as diag_view  # noqa: E402
 import research_diagnose as RD  # noqa: E402
 import kb_widget as kb         # noqa: E402
 import kb_download as KB       # noqa: E402
 from page_library import LibraryPage   # noqa: E402
+from page_materials import MaterialsPage, load_materials  # noqa: E402
 from page_topic import TopicPage       # noqa: E402
 from page_ideas import IdeasPage       # noqa: E402
 from page_map import MapPage           # noqa: E402
@@ -99,7 +101,9 @@ from page_venue import VenuePage, SettingsPage  # noqa: E402
 from page_profile import ProfilePage  # noqa: E402
 from page_plan import PlanPage        # noqa: E402
 
-APP_TITLE = "知识库助手"
+APP_TITLE = "塞莎特——题谱"
+# 侧栏只放得下主名，女神名单独一行（见 _build_sidebar 的品牌块）。
+APP_TITLE_SHORT = "题谱"
 APP_SUB = "科研选题工作台"
 VERSION = "v4.0"
 
@@ -256,7 +260,7 @@ class HomePage(tk.Frame):
 
     # ------------------------------------------------------------ 顶部
     def _build_kpi(self, page):
-        """四个主指标横排 + 一行过程指标。
+        """五个主指标横排 + 一行过程指标。
 
         之前的版本是 7 行表格，把「知识库文献 344 / 已提取标题 340 /
         语义索引 343」这些**几乎同源的数字**平铺在同一条垂直线上，占掉半屏，
@@ -264,7 +268,7 @@ class HomePage(tk.Frame):
         所有东西一样大、一样重，等于没有层级。
 
         现在分两层：
-          - 主层：真正会变的那四个数（我的选题 / 知识库 / 导师名单 / 研究方向）
+          - 主层：真正会变的那五个数（我的选题 / 知识库 / 导师 / 方向 / 素材库）
           - 细节层：其余过程指标压成一行小字，需要时才看
         数字用一个 Metric 风格的块（大数字 + 单位 + 名称），不再拉成七行。
         """
@@ -281,15 +285,15 @@ class HomePage(tk.Frame):
 
         strip = tk.Frame(card.body, bg=T.CARD)
         strip.pack(fill="x", padx=16, pady=(0, 10))
-        for i in range(4):
+        for i in range(len(main)):
             strip.grid_columnconfigure(i, weight=1, uniform="kpi")
         for i, (name, value, unit, color) in enumerate(main):
             cell = tk.Frame(strip, bg=T.CARD)
-            cell.grid(row=0, column=i, sticky="nsew", padx=(0 if i == 0 else 20, 0))
+            cell.grid(row=0, column=i, sticky="nsew", padx=(0 if i == 0 else 8, 0))
             if i:
                 # 列间竖线画在 cell 内部左缘（grid 的 cell 不能直接放一条线）
                 tk.Frame(cell, bg=T.LINE_SOFT, width=1).pack(side="left", fill="y",
-                                                              padx=(0, 20))
+                                                              padx=(0, 8))
             box = tk.Frame(cell, bg=T.CARD)
             box.pack(side="left", fill="both", expand=True)
             # 名称在上、数字在下：先告诉读者「这是哪个数」，数字才有意义。
@@ -308,10 +312,10 @@ class HomePage(tk.Frame):
                                                   pady=(8, 0))
 
         if detail:
-            tk.Label(card.body, text=detail, bg=T.CARD, fg=T.TXT4,
-                     font=T.T_CAPTION(), anchor="w", justify="left",
-                     wraplength=T.wrap(860)).pack(fill="x", padx=16,
-                                                  pady=(0, 12))
+            lb = tk.Label(card.body, text=detail, bg=T.CARD, fg=T.TXT4,
+                          font=T.T_CAPTION(), anchor="w", justify="left")
+            lb.pack(fill="x", padx=16, pady=(0, 12))
+            T.fill_wrap(lb, pad=32)
 
         try:
             card.sync_now()
@@ -340,10 +344,12 @@ class HomePage(tk.Frame):
         av = _n(lambda: __import__("advisor_index").stats(), {}) or {}
         lib = _n(lambda: kb.load_direction_library(), {}) or {}
         meta = _n(lambda: __import__("meta_index").stats(), {}) or {}
+        mats = _n(lambda: load_materials(), {}) or {}
 
         n_field = sum(len((v or {}).get("subs") or []) for v in lib.values()) if lib else None
         n_idea = len(ideas)
         n_adv = av.get("complete_advisors") if av else None
+        n_data = len(mats.get("datasets") or []) or None
 
         # 主层：四个真正会变、且用户会拿来判断「我该干什么」的数。
         # 「我的选题 0 条」用警示色 —— 0 在这一页是唯一一个「你该去做点什么」的信号。
@@ -352,6 +358,7 @@ class HomePage(tk.Frame):
             ("知识库文献", pdf if pdf is not None else "—", "篇", T.TXT),
             ("导师名单", n_adv if n_adv is not None else "—", "人", T.TXT),
             ("研究方向", n_field if n_field is not None else "—", "个", T.TXT),
+            ("素材库", n_data if n_data is not None else "—", "个", T.TXT),
         ]
 
         bits = []
@@ -380,20 +387,21 @@ class HomePage(tk.Frame):
         让步给输入框和数据表。
         """
         top = tk.Frame(page, bg=T.BG)
-        top.pack(fill="x", padx=T.PAD, pady=(2, 2))
-        hour = datetime.datetime.now().hour
-        greet = "早上好" if hour < 11 else ("下午好" if hour < 18 else "晚上好")
-        tk.Label(top, text="%s。从研究方向出发：识别领域 → 生成候选 → 体检 → 找 venue 与导师。"
-                           "全部离线可算。" % greet,
-                 bg=T.BG, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
-                 justify="left", wraplength=T.wrap(900)).pack(anchor="w")
-
-        start = tk.Frame(page, bg=T.BG)
-        start.pack(fill="x", padx=T.PAD, pady=(8, 12))
-        e = tk.Entry(start, bg=T.CARD, fg=T.TXT, insertbackground=T.ACCENT,
-                     relief="flat", font=T.T_BODY())
+        top.pack(fill="x", padx=T.PAD, pady=(4, 8))
+        tk.Label(top, text="总览", bg=T.BG, fg=T.TXT,
+                 font=T.T_PAGE_TITLE()).pack(side="left")
+        note = tk.Label(page, text="从研究方向到候选、证据与实验；计划由你决定，工具只提供线索。",
+                        bg=T.BG, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w", justify="left")
+        note.pack(fill="x", padx=T.PAD, pady=(0, 8))
+        T.fill_wrap(note)
+        card = T.Card(page, pad=14, fill_y=False)
+        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
+        UK.eyebrow(card.body, "从方向开始", "01").pack(fill="x", pady=(0, 6))
+        start = tk.Frame(card.body, bg=T.CARD)
+        start.pack(fill="x")
+        e = tk.Entry(start, bg=T.CARD_HI, fg=T.TXT, insertbackground=T.ACCENT,
+                     relief="flat", font=T.T_BODY(), width=1)
         T.fix_highlight(e, T.card_edge(T.LINE, T.CARD))
-        e.pack(side="left", fill="x", expand=True, ipady=6)
         e.insert(0, "输入研究方向，例如：红外小目标检测")
         e.config(fg=T.TXT4)
         self._hero_entry = e
@@ -416,7 +424,8 @@ class HomePage(tk.Frame):
 
         e.bind("<FocusIn>", focus_in)
         e.bind("<Return>", go)
-        T.Btn(start, "开始选题", go, "primary").pack(side="left", padx=(10, 0))
+        T.Btn(start, "开始选题", go, "primary").pack(side="right", padx=(10, 0))
+        e.pack(side="left", fill="x", expand=True, ipady=6)
 
     # ------------------------------------------------------------ 宫格
     def _module_tiles(self):
@@ -521,21 +530,19 @@ class HomePage(tk.Frame):
 
         head = tk.Frame(card.body, bg=T.CARD)
         head.pack(fill="x")
-        tk.Label(head, text="研究计划", bg=T.CARD, fg=T.TXT3,
-                 font=T.T_CAPTION(), anchor="w").pack(side="left")
+        tk.Label(head, text="研究计划", bg=T.CARD, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(side="left")
         T.Btn(head, "打开研究计划", lambda: self.app.goto("plan")).pack(side="right")
 
         if p.get("empty"):
             # 没有计划时不摆空表格，只给一句能立刻做的事。
             # 这里**不显示 0/0** —— 一串零会让人以为系统算错了。
-            tk.Label(card.body,
-                     text="还没有排计划。计划是你自己定的阶段与截止日期，"
-                          "系统只负责把剩余天数和待办摆出来。",
-                     bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
-                     justify="left", wraplength=T.wrap(720)).pack(
-                fill="x", pady=(8, 6))
-            T.Btn(card.body, "去排一个", lambda: self.app.goto("plan"),
-                  "primary").pack(anchor="w")
+            note = tk.Label(card.body,
+                            text="还没有排计划。阶段与截止日期由你填写，不自动预测工期。",
+                            bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
+                            justify="left")
+            note.pack(fill="x", pady=(8, 6))
+            T.fill_wrap(note)
             try:
                 card.sync_now()
             except Exception:
@@ -557,10 +564,11 @@ class HomePage(tk.Frame):
                 txt, col = "还剩 %d 天" % days, T.WARN
             else:
                 txt, col = "还剩 %d 天" % days, T.TXT3
-            tk.Label(row, text=str(cur.get("name") or ""), bg=T.CARD, fg=T.TXT,
-                     font=T.T_BODY(), anchor="w", justify="left",
-                     wraplength=T.wrap(560)).pack(side="left")
-            T.Pill(row, txt, col, bg=T.CARD).pack(side="left", padx=(10, 0))
+            T.Pill(row, txt, col, bg=T.CARD).pack(side="right", padx=(10, 0))
+            label = tk.Label(row, text=str(cur.get("name") or ""), bg=T.CARD, fg=T.TXT,
+                             font=T.T_BODY(), anchor="w", justify="left")
+            label.pack(side="left", fill="x", expand=True)
+            T.fill_wrap(label)
 
         # 三条最近待办：勾选框是只读的，点一下回到计划页 ——
         # 总览是「看」的地方，在这里改数据会让两处状态不同步。
@@ -840,13 +848,23 @@ class App(tk.Tk):
             pass
         # 字号档位也要在建控件之前定。默认「标准」，25 岁的人和 55 岁的人
         # 用同一个字号是不合理的 —— 设置页里四档可选，Ctrl+= / Ctrl+- 也能调。
+        # 2026-11 第 31 版：默认改为「自动」—— 2560 屏上还按 15px 正文排，
+        # 整页缩在中间一小块，用户第一反应就是「为什么没有适配大屏」。
+        # 手动选档位即关闭自动（见 set_font_step）。
         try:
-            _step = kb.load_config().get("font_step") or "normal"
+            _cfg = kb.load_config()
         except Exception:
-            _step = "normal"
+            _cfg = {}
+        self._font_auto = bool(_cfg.get("font_auto", True))
+        _step = _cfg.get("font_step") or "normal"
+        if self._font_auto:
+            try:
+                _step = T.step_for_width(self.winfo_screenwidth())
+            except Exception:
+                _step = "normal"
         try:
             T.set_font_step(_step)
-            T.SIDEBAR_W = max(200, int(round(200 * T.font_scale() ** 0.85)))
+            T.SIDEBAR_W = max(210, int(round(210 * T.font_scale() ** 0.85)))
         except Exception:
             pass
         self.configure(bg=T.BG)
@@ -892,50 +910,27 @@ class App(tk.Tk):
 
     # ------------------------------------------------------------ 框架
     def _header(self, main, key, name):
-        """页面抬头：大标题 + 一行弱说明/状态 + 一行页面级提示。
+        """细顶栏，对齐网页版 .topbar。
 
-        2026-11 第 7 版按用户给的运维控制台参考图重做。参考图的抬头是三段：
-            ① 22–24px 的页面大标题（粗、亮）
-            ② 一行 13px 弱色元信息，用「 · 」串起来（版本、当前对象、状态）
-            ③ 一行 13px 提示（这一步能做什么）
-        我们原来的抬头只有一行标题 + 下面一条 1px 通栏线，标题和内容之间是空的，
-        整页看着「没有头」。现在把元信息补进第②行：它本来就散落在页脚状态条和
-        各页的说明文字里，收到抬头反而更省地方。
-
-        这条抬头**不画通栏分隔线**：参考图里标题区和卡片区是靠底色和留白分开的，
-        没有一条横线横在中间。
+        网页版顶栏只有一行：左边「塞莎特——题谱 / 选题工坊」，右边时钟与图标；
+        页面的大标题、说明、统计都属于内容区的英雄卡。桌面端原来把
+        32px 大标题和「版本 · 路径 · 状态」两行元信息堆在顶栏，每次
+        换页都先吃掉 100px 高度，和网页版的疏朗感正好相反。
         """
         bg = T.BG
         head = tk.Frame(main, bg=bg)
         self._header_frame = head
-        head.pack(side="top", fill="x", padx=T.PAD + 8, pady=(18, 8))
+        head.pack(side="top", fill="x", padx=T.PAD + 4, pady=(T.sp(8), T.sp(2)))
         left = tk.Frame(head, bg=bg)
         left.pack(side="left", fill="x", expand=True)
 
-        self._crumb_name = tk.Label(left, text=name, bg=bg, fg=T.TXT,
-                                    font=T.F(17, True), anchor="w")
-        self._crumb_name.pack(anchor="w")
-
-        # ② 元信息行：版本 · 当前页 · 数据规模之类的弱色小字
-        self.crumb = tk.Label(left, text="", bg=bg, fg=T.TXT3, font=T.T_CAPTION(),
-                              anchor="w", justify="left")
-        self.crumb.pack(anchor="w", pady=(3, 0))
-        # ③ 页面提示行：由各页在 reload 时通过 set_page_tip() 填
-        self.page_tip = tk.Label(left, text="", bg=bg, fg=T.TXT3,
-                                 font=T.T_CAPTION(), anchor="w",
-                                 justify="left", wraplength=T.wrap(900))
-        self.page_tip.pack(anchor="w", pady=(2, 0))
-
-        right = tk.Frame(head, bg=bg)
-        right.pack(side="right", anchor="n")
-
-        def _icon(txt, cmd, tip, color=T.TXT3):
-            w = tk.Label(right, text=txt, bg=bg, fg=color, font=T.F(10),
-                         cursor="hand2", padx=7, pady=3)
-            w.pack(side="right", padx=(2, 0))
+        def _icon(txt, cmd, tip, color=T.TXT3, side="left"):
+            w = tk.Label(left, text=txt, bg=bg, fg=color, font=T.F(11),
+                         cursor="hand2", padx=T.sp(5))
+            w.pack(side=side, padx=(0, T.sp(2)))
             w.bind("<Button-1>", lambda e: cmd())
-            w.bind("<Enter>", lambda e: w.config(bg=T.CARD_HI, fg=T.TXT))
-            w.bind("<Leave>", lambda e: w.config(bg=bg, fg=color))
+            w.bind("<Enter>", lambda e: w.config(fg=T.TXT))
+            w.bind("<Leave>", lambda e: w.config(fg=color))
             try:
                 self._tip(w, tip)
             except Exception:
@@ -944,27 +939,61 @@ class App(tk.Tk):
 
         self.btn_back = _icon("‹", self.nav_back, "返回（Alt + ←）")
         self.btn_fwd = _icon("›", self.nav_forward, "前进（Alt + →）")
-        _icon("⌕", self.show_search, "搜索文献（Ctrl + K）")
-        # 切换按钮用强调色：它是这一排里唯一会改变整个界面的动作，
-        # 和上下一页器同色就没人注意到了。
-        _icon("☀" if T.MODE == "dark" else "☾", self.toggle_theme,
-              "切换明暗（Ctrl + Shift + L）", T.ACCENT)
+        self.crumb = tk.Label(left, text=APP_TITLE + " / " + (name or "总览"), bg=bg,
+                              fg=T.TXT3, font=T.T_BODY_SM(), anchor="w")
+        self.crumb.pack(side="left", padx=(T.sp(6), 0))
 
+        right = tk.Frame(head, bg=bg)
+        right.pack(side="right")
+
+        def _ricon(txt, cmd, tip, color=T.TXT3):
+            w = tk.Label(right, text=txt, bg=bg, fg=color, font=T.F(11),
+                         cursor="hand2", padx=T.sp(5))
+            w.pack(side="right", padx=(0, T.sp(2)))
+            w.bind("<Button-1>", lambda e: cmd())
+            w.bind("<Enter>", lambda e: w.config(fg=T.TXT))
+            w.bind("<Leave>", lambda e: w.config(fg=color))
+            try:
+                self._tip(w, tip)
+            except Exception:
+                pass
+            return w
+
+        # 时钟：网页版顶栏右侧的「10:16 + 日期」，是很强的一个「在本地运行」信号。
+        # 时间与日期同排：顶栏要薄，两行堆叠会把整条栏撑到 60px。
+        clock = tk.Frame(right, bg=bg)
+        clock.pack(side="right", padx=(T.sp(10), T.sp(4)))
+        self.clock_time = tk.Label(
+            clock, text="--:--", bg=bg, fg=T.TXT,
+            font=(T.MONO, -max(15, int(round(16 * T.font_scale()))), "bold"),
+            anchor="e")
+        self.clock_time.pack(side="left")
+        self.clock_date = tk.Label(clock, text="", bg=bg, fg=T.TXT4,
+                                   font=T.T_CAPTION(), anchor="e")
+        self.clock_date.pack(side="left", padx=(T.sp(8), 0), pady=(T.sp(4), 0))
+        self._tick_clock()
+
+        _ricon("◐" if T.MODE == "light" else "◑", self.toggle_theme,
+               "切换明暗（Ctrl + Shift + L）", T.ACCENT)
+        _ricon("⌕", self.show_search, "搜索文献（Ctrl + K）")
         self.busy = tk.Label(right, text="", bg=bg, fg=T.TXT3, font=T.T_CAPTION())
-        self.busy.pack(side="right", padx=(0, 10))
+        self.busy.pack(side="right", padx=(0, T.sp(8)))
 
-    def set_page_tip(self, text):
-        """给抬头第③行填一句提示。空串就收起那一行，不占地方。"""
+    def _tick_clock(self):
+        if getattr(self, "_closing", False):
+            return
         try:
-            if text:
-                self.page_tip.config(text=text)
-                if not self.page_tip.winfo_manager():
-                    self.page_tip.pack(anchor="w", pady=(2, 0))
-            else:
-                self.page_tip.config(text="")
-                self.page_tip.pack_forget()
+            now = datetime.datetime.now()
+            self.clock_time.config(text=now.strftime("%H:%M"))
+            wd = "一二三四五六日"[now.weekday()]
+            self.clock_date.config(text="%s 周%s" % (now.strftime("%Y.%m.%d"), wd))
+            self.after(20000, self._tick_clock)
         except Exception:
             pass
+
+    def set_page_tip(self, text):
+        """旧接口：网页版顶栏没有提示行，这里只保留调用兼容。"""
+        self._page_tip_text = text
 
     def _tip(self, widget, text):
         """极轻的悬停提示。只给图标按钮用 —— 有文字的按钮不需要。"""
@@ -1027,22 +1056,53 @@ class App(tk.Tk):
         写进了 font 选项，只能重建。重建约 0.2 秒，比漏改几十个控件可靠。
         """
         key = T.set_font_step(key)
+        self._font_auto = False
         try:
             import app_paths
             import json
             cfg = kb.load_config()
             cfg["font_step"] = key
+            cfg["font_auto"] = False
             (app_paths.DATA / "config.json").write_text(
                 json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception:
             pass
-        T.SIDEBAR_W = max(200, int(round(200 * T.font_scale() ** 0.85)))
+        T.SIDEBAR_W = max(210, int(round(210 * T.font_scale() ** 0.85)))
         self._rebuild_window()
         name = dict((k, n) for k, n, _f, _d in T.FONT_STEPS).get(key, key)
         try:
-            self.toast("字号：%s" % name, T.OK)
+            self.toast("字号：%s（已退出自动适配）" % name, T.OK)
         except Exception:
             pass
+
+    def set_font_auto(self):
+        """回到「按屏幕自动选档」：手动选过档位后仍可一键恢复。"""
+        self._font_auto = True
+        try:
+            key = T.step_for_width(self.winfo_screenwidth())
+        except Exception:
+            key = "normal"
+        T.set_font_step(key)
+        try:
+            import app_paths
+            import json
+            cfg = kb.load_config()
+            cfg["font_auto"] = True
+            cfg["font_step"] = key
+            (app_paths.DATA / "config.json").write_text(
+                json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+        T.SIDEBAR_W = max(210, int(round(210 * T.font_scale() ** 0.85)))
+        self._rebuild_window()
+        try:
+            name = dict((k, n) for k, n, _f, _d in T.FONT_STEPS).get(key, key)
+            self.toast("字号：自动适配（当前 %s）" % name, T.OK)
+        except Exception:
+            pass
+
+    def font_auto(self):
+        return bool(getattr(self, "_font_auto", True))
 
     def step_font(self, direction):
         """Ctrl++ / Ctrl+- 在四档之间上下一格（不循环，到顶就是到顶）。"""
@@ -1125,33 +1185,50 @@ class App(tk.Tk):
         #      要吃掉 432px，比内容区一半还多）。
         brand = tk.Frame(shell, bg=T.SIDEBAR)
         self.brand_box = brand
-        brand.pack(fill="x", padx=14, pady=(14, 6))
-        # logo：源码里存 128px 母图，**显示前用 PIL 按设备像素预缩**。
-        # 为什么不能直接把 PNG 塞给 Tk：Tk 的 PhotoImage 不做缩放/降采样，
-        # 原图像素原样贴上去。125% 缩放下 Label 要 32 逻辑像素 = 40 物理像素，
-        # 于是 32px 的图被 Tk 直接摆出来 —— 图形只占视觉方框 80%，看着比旁边
-        # 的文字小一号（2026-11-16 实测对比：logo_32 原样 vs 128 缩到 40，
-        # 后者边缘更干净、视觉重量与文字对齐）。母图取 128 而不是 64，
-        # 是因为不同缩放档下目标像素可能是 40 / 48 / 96，128 都能干净地缩过去。
+        brand.pack(fill="x", padx=T.sp(16), pady=(T.sp(16), T.sp(8)))
+        # 品牌块对齐网页版：圆标 + 「塞莎特——题谱」+ 一行英文副标。
+        # 副标是网页版侧栏最有辨识度的一处，也是「这是一个成品应用」的信号。
         try:
-            self.logo = _load_logo(32)
+            self.logo = _load_logo(34)
             tk.Label(brand, image=self.logo, bg=T.SIDEBAR).pack(
-                side="left", padx=(0, 8))
+                side="left", padx=(0, T.sp(9)))
         except Exception:
             tk.Label(brand, text="◆", bg=T.SIDEBAR, fg=T.ACCENT,
-                     font=T.F(12)).pack(side="left", padx=(0, 8))
-        # 搜索按钮先 pack（side="right"）再 pack 标题 —— pack 按调用顺序
-        # 分配空位，晚 pack 的会被挤到品牌行外面。
-        self.search_btn = tk.Label(brand, text="⌕", bg=T.SIDEBAR, fg=T.TXT3,
-                                   font=T.F(12), cursor="hand2", padx=6, pady=0)
-        self.search_btn.pack(side="right")
-        self.search_btn.bind("<Button-1>", lambda e: self.show_search())
-        try:
-            self._tip(self.search_btn, "搜索文献（Ctrl+K）")
-        except Exception:
-            pass
-        tk.Label(brand, text=APP_TITLE, bg=T.SIDEBAR, fg=T.TXT,
-                 font=T.T_LABEL()).pack(side="left", fill="x", expand=True)
+                     font=T.F(13)).pack(side="left", padx=(0, T.sp(9)))
+        # 搜索入口只在顶栏（⌕ / Ctrl+K）；侧栏品牌行不再放第二个放大镜，
+        # 那 30px 会让英文副标被截成「RESEARCH A…」。
+        names = tk.Frame(brand, bg=T.SIDEBAR)
+        names.pack(side="left", fill="x", expand=True)
+        # 品牌名排成一整行「塞莎特 —— 题谱」，三段字号递减：
+        #   女神名最小、破折号同号、主名大一档（主名大是这里唯一的层级信号）。
+        # 2026-11-19 改：原来是**两行**（「塞莎特」/「— 题谱」），两行都顶着
+        # 左边界，视觉上像一句被硬折断的话，主名反而比页内条目小。
+        # 现在一字排开。**字号不能写死**：这台机器 _SCALE=1.25（系统 DPI）
+        # 与 _FS=1.15（字号档）叠乘，13px 声明会落到 19px，而侧栏同时被放大
+        # 到 236 宽 —— 两边都在变，写死像素必然溢出。所以字号按 `names`
+        # 这个容器的**真实宽度**现算（_brand_segments），宽度变了再算一次。
+        row = tk.Frame(names, bg=T.SIDEBAR)
+        row.pack(fill="x")
+        self._brand_segs = ("塞莎特", " —— ", APP_TITLE_SHORT)
+        self._brand_labels = []
+        for i, txt in enumerate(self._brand_segs):
+            # bd/padx/highlightthickness 全部清零：默认值会给每个 Label
+            # 白加 6px（bd=2 + padx=1），三个字块就是 18px —— 这正是
+            # 「按 measure() 算够了、实际却溢出被裁」的来源。
+            lb = tk.Label(row, text=txt, bg=T.SIDEBAR, bd=0, padx=0,
+                          highlightthickness=0,
+                          fg=(T.TXT if i == 2 else T.TXT4), anchor="w")
+            lb.pack(side="left")
+            self._brand_labels.append(lb)
+        # 副标用小号等宽字，左缘与品牌名对齐（不缩进）。
+        self.brand_sub = tk.Label(names, text="RESEARCH ATLAS", bg=T.SIDEBAR,
+                                  fg=T.TXT4, anchor="w")
+        self.brand_sub.pack(fill="x")
+        # 首帧 names 还没被布局（宽度是 1），所以先按侧栏宽度估一档，
+        # 等 <Configure> 带来真实宽度再用 _fit_brand 重排。
+        self._fit_brand(max(80, T.SIDEBAR_W - 2 * T.sp(16) - 34 - T.sp(9)))
+        names.bind("<Configure>",
+                   lambda e: self._fit_brand(e.width), add="+")
 
         # 搜索框只在聚焦时出现 —— 常驻一个输入框会把侧栏压成「两个区域」，
         # 而它在 99% 的时间里是空的。点放大镜或按 Ctrl+K 才落下来。
@@ -1172,12 +1249,13 @@ class App(tk.Tk):
         # 导航区吃掉剩余高度，底部的空白留给「下一屏还没到」的感觉，而不是把
         # 12 个条目挤成一团。
         self.nav_box = tk.Frame(shell, bg=T.SIDEBAR)
-        # 第 20 版「分散开一些」：导航不再贴左上角一格里，改成
-        # 上边留 8px、左右 10px，条目之间靠行高撑开而不是靠分组标题。
-        self.nav_box.pack(fill="both", expand=True, padx=10, pady=(8, 0))
+        # 导航不再立刻 pack：底部索引卡先占位，nav_box 再吃剩下的高度。
+        # 反过来 pack 时，expand 的导航区会把底卡挤出窗口下沿。
         self.nav_box.bind("<Configure>",
                           lambda e: self.after(30, self._fit_nav), add="+")
         self.nav_items = {}
+        # 组标题控件留给 _fit_nav() 改上留白（见 _nav_group_pad）。
+        self._nav_group_labels = []
         # 导航项不再用「一个 Unicode 字形冒充图标」—— 那是把这套界面做虚的主要原因。
         #
         # 2026-11-15 第 7 版按参考图重排：
@@ -1190,7 +1268,8 @@ class App(tk.Tk):
                             ("latest", "最新研究"), ("ideas", "创新点库"))),
             ("方法与资源", (("skills", "科研方法论"), ("mentor", "导师与院校"),
                             ("venue", "期刊会议"))),
-            ("知识资产", (("library", "文献库"), ("map", "方向图谱"))),
+            ("知识资产", (("materials", "素材库"), ("library", "文献库"),
+                          ("map", "方向图谱"))),
             ("个人", (("plan", "研究计划"), ("profile", "个人画像"),
                      ("settings", "设置与数据"))),
         )
@@ -1201,18 +1280,49 @@ class App(tk.Tk):
                 # 第 20 版「分散开一些」：留白只加在分组之间（上 12 / 下 2），
                 # 行高则交给 _fit_nav() 按窗口余量自适应 —— 往行高里塞间距
                 # 会把 13 行撑出窗口，最后一行被页脚压住。
-                tk.Label(self.nav_box, text=label, bg=T.SIDEBAR, fg=T.TXT4,
-                         font=T.F(8), anchor="w").pack(
-                    fill="x", padx=12, pady=(12, 2))
+                _gl = tk.Label(self.nav_box, text=label, bg=T.SIDEBAR, fg=T.TXT4,
+                               font=(T.BASE, -14), anchor="w")
+                _gl.pack(fill="x", padx=12, pady=(T.sp(9), 0))
+                # 记下紧接着要创建的那一行，矮窗口隐藏组标题后靠它恢复顺序
+                _gl._nav_after = None
+                self._nav_group_labels.append(_gl)
             for key, name in items:
-                self._nav_item(key, name)
+                cv = self._nav_item(key, name)
+                # 本组第一行就是最近那个还在等后继的组标题的后继
+                for gl in self._nav_group_labels:
+                    if getattr(gl, "_nav_after", "x") is None:
+                        gl._nav_after = cv
+                        break
 
-        # 第 19 版：页脚原来包着两行（版本号 + 运行状态），在超大字下要占 80px，
-        # 侧栏本来就不够用。现在收成一行最弱的版本号，状态栏在内容区右下角已有。
-        foot = tk.Frame(shell, bg=T.SIDEBAR)
-        foot.pack(side="bottom", fill="x", padx=14, pady=(6, 8))
-        tk.Label(foot, text="%s · 本地运行" % VERSION, bg=T.SIDEBAR, fg=T.TXT4,
-                 font=T.T_CAPTION(), anchor="w").pack(fill="x")
+        # 侧栏底部索引卡（网页版 .sidebar-foot）：两个规模数字 + 运行状态。
+        # 数字在后台线程里数一遍，数不到就保持「—」，不拖慢启动。
+        # 卡片只做「索引」，不抢导航高度：数字 18px、说明 13px，
+        # 整卡控制在 110px 左右，1440×900 下也放得下 14 个条目。
+        self.foot_card = T.Card(shell, bg=T.CARD, border=T.LINE_SOFT,
+                                radius=T.RADIUS, pad=T.sp(10))
+        self.foot_card.pack(side="bottom", fill="x", padx=T.sp(12),
+                            pady=(T.sp(8), T.sp(12)))
+        fb = self.foot_card.body
+        grid = tk.Frame(fb, bg=T.CARD)
+        grid.pack(fill="x")
+        grid.grid_columnconfigure(0, weight=1, uniform="fs")
+        grid.grid_columnconfigure(1, weight=1, uniform="fs")
+        self._foot_dir = self._foot_stat(grid, 0, "—", "个方向")
+        self._foot_pap = self._foot_stat(grid, 1, "—", "篇本地文献")
+        T.hsep(fb, color=T.LINE_SOFT, pad=(0, T.sp(5)))
+        line = tk.Frame(fb, bg=T.CARD)
+        line.pack(fill="x")
+        dot = tk.Canvas(line, width=T.sp(6), height=T.sp(6), bg=T.CARD,
+                        highlightthickness=0, bd=0)
+        dot.pack(side="left", pady=(T.sp(3), 0))
+        dot.create_oval(0, 0, T.sp(6), T.sp(6), fill=T.OK, outline="")
+        tk.Label(line, text="LOCAL INDEX · 离线计算", bg=T.CARD, fg=T.TXT4,
+                 font=(T.BASE, -13)).pack(side="left", padx=(T.sp(5), 0))
+        tk.Label(fb, text="%s · 桌面版" % VERSION, bg=T.CARD, fg=T.TXT4,
+                 font=(T.BASE, -13), anchor="w").pack(fill="x",
+                                                      pady=(T.sp(2), 0))
+        self.nav_box.pack(fill="both", expand=True, padx=10, pady=(8, 0))
+        self.after(900, self._warm_foot_stats)
 
         # 右侧主体
         main = tk.Frame(self, bg=T.BG)
@@ -1236,7 +1346,8 @@ class App(tk.Tk):
         self._title_of = {
             "home": "总览", "topic": "选题工坊", "gap": "文献空白",
             "latest": "最新研究", "ideas": "创新点库", "skills": "科研方法论",
-            "mentor": "导师与院校", "venue": "期刊会议", "library": "文献库",
+            "mentor": "导师与院校", "venue": "期刊会议", "materials": "素材库",
+            "library": "文献库",
             "map": "方向图谱", "plan": "研究计划",
             "profile": "个人画像", "settings": "设置与数据",
         }
@@ -1277,15 +1388,124 @@ class App(tk.Tk):
         self.log_text.config(state="disabled")
         self._log_open = False
 
-    def _fit_nav(self):
-        """按 nav_box 的实际高度把导航行高拉开（只在窗口尺寸明显变化时才重排）。"""
+    def _foot_stat(self, grid, col, value, label):
+        box = tk.Frame(grid, bg=T.CARD)
+        box.grid(row=0, column=col, sticky="w")
+        v = tk.Label(box, text=value, bg=T.CARD, fg=T.TXT,
+                     font=(T.MONO, -18, "bold"), anchor="w")
+        v.pack(anchor="w")
+        tk.Label(box, text=label, bg=T.CARD, fg=T.TXT4,
+                 font=(T.BASE, -13), anchor="w").pack(anchor="w")
+        return v
+
+    def _warm_foot_stats(self):
+        """侧栏索引卡的数字：方向总数 / 本地 PDF 数，后台数完再填。"""
+        def work():
+            nd = None
+            np_ = None
+            try:
+                lib = kb.load_direction_library() or {}
+                nd = sum(len(v.get("subs") or []) for v in lib.values())
+            except Exception:
+                pass
+            try:
+                inv = kb._inventory()
+                files = (inv.get("files", []) if isinstance(inv, dict)
+                         else (inv or []))
+                np_ = 0
+                for f in files:
+                    if isinstance(f, (tuple, list)) and len(f) >= 3:
+                        p = str(f[2])
+                    elif isinstance(f, dict):
+                        p = str(f.get("path", ""))
+                    else:
+                        continue
+                    if p.lower().endswith(".pdf"):
+                        np_ += 1
+            except Exception:
+                pass
+
+            def apply():
+                try:
+                    if nd:
+                        self._foot_dir.config(text="{:,}".format(nd))
+                    if np_ is not None:
+                        self._foot_pap.config(text="{:,}".format(np_))
+                except Exception:
+                    pass
+            self.post(apply)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _fit_brand(self, avail):
+        """按品牌名容器的真实宽度，给三段挑一档放得下的字号。
+
+        2026-11-19：品牌名从两行改成一整行后，宽度是真的会溢出的 ——
+        Tk 的 Label 没有省略号，超出的字直接消失（「塞莎特——题」少了「谱」）。
+        而这台机器上 `_SCALE`（系统 DPI 1.25）和 `_FS`（字号档 1.15）会叠乘，
+        声明 13px 实际落到 19px，侧栏同时被放大到 236 —— 两边都在动，
+        写死任何像素数都不安全。所以**先量再挑**：主名从大往小试，
+        第一个三段合计放得下的就用它；女神名比主名小三档，不低于 13px 下限。
+        同一档位不重复重排（<Configure> 会反复来）。
+        """
         try:
-            h = self._nav_row_height()
+            from tkinter import font as _tkfont
+            avail = int(avail)
+            if avail <= 60:
+                return
+            base = int(round(15 * T._FS))
+            pick = None
+            for main_px in range(base + 4, 9, -1):
+                name_px = max(13, main_px - 3)
+                f_main = _tkfont.Font(family=T.SERIF, size=-main_px, weight="bold")
+                f_name = _tkfont.Font(family=T.SERIF, size=-name_px, weight="bold")
+                w = (f_name.measure("塞莎特") + f_name.measure(" —— ")
+                     + f_main.measure(APP_TITLE_SHORT))
+                if w <= avail:
+                    pick = (name_px, main_px)
+                    break
+            if pick is None:
+                # 极小窗口/超大系统字号：退回两行时代的尺寸，
+                # 至少保证主名完整可读。
+                pick = (13, 15)
+            sub_px = 11
+            while sub_px > 8:
+                if _tkfont.Font(family=T.MONO,
+                                size=-sub_px).measure("RESEARCH ATLAS") <= avail:
+                    break
+                sub_px -= 1
+            if pick == getattr(self, "_brand_px", None) and abs(
+                    avail - getattr(self, "_brand_avail", -999)) < 2:
+                return
+            self._brand_px = pick
+            self._brand_avail = avail
+            for i, lb in enumerate(self._brand_labels):
+                px = pick[1] if i == 2 else pick[0]
+                lb.configure(font=(T.SERIF, -px, "bold"))
+            self.brand_sub.configure(font=(T.MONO, -sub_px))
+        except Exception:
+            pass
+
+    def _fit_nav(self):
+        """按 nav_box 的实际高度把导航行高与组间距拉开（窗口尺寸明显变化时才重排）。
+
+        2026-11-19：布局改动（行高、组标题显隐、组间距）统一在这里执行一次，
+        不在 `_nav_metrics` 里边算边改 —— 那样下一轮读到的还是旧的映射状态，
+        组标题会一半显示一半隐藏（实测 1152×740 下只剩 1 个标题）。
+        """
+        try:
+            h, pad = self._nav_metrics()
+            want_heads = bool(getattr(self, "_nav_want_heads", True))
         except Exception:
             return
-        if h == getattr(self, "_nav_h", None):
+        heads = getattr(self, "_nav_group_labels", []) or []
+        heads_now = any(gl.winfo_ismapped() for gl in heads) if heads else True
+        if (h == getattr(self, "_nav_h", None)
+                and pad == getattr(self, "_nav_pad", None)
+                and want_heads == heads_now):
             return
         self._nav_h = h
+        self._nav_pad = pad
+        self._set_group_head_visible(want_heads)
         for key, (cv, lb, icon, bar) in list(getattr(self, "nav_items", {}).items()):
             try:
                 cv.configure(height=h)
@@ -1293,29 +1513,112 @@ class App(tk.Tk):
                 self._paint_nav(key)
             except Exception:
                 pass
+        if want_heads:
+            for gl in heads:
+                try:
+                    gl.pack_configure(pady=(pad, 0))
+                except Exception:
+                    pass
 
-    def _nav_row_height(self):
-        """导航行高：随字号与窗口高度自适应，最小 32、最大 40。
+    def _nav_metrics(self):
+        """一次算出行高与组间距，返回 `(row_h, group_pad)`。
 
-        12 个条目 + 4 个组标题在 860 高的窗口里总共要占 12*h + 若干留白；
-        h 取 32 大概 470px，取 40 大概 540px，都在 nav_box 的余量内。
+        2026-11-19：原来行高与组间距分别读对方的输出，形成循环依赖 ——
+        改行高 → 间距变 → 行高再变，实测在 1440 下算出 684 > 655，
+        最后一行被压成 7px。现在**一个函数算两件事**，只读真实控件尺寸，
+        不回头读自己写出去的值。
+
+        分配顺序（余量按这个优先级给）：
+          1. 行高先到 33px 这个舒适值，不够就往下压（最低 24）；
+          2. 剩下的余量平均分给 4 个组标题的上留白（最低 6px，最高 26）；
+          3. 还剩下就都给行高（封顶 38）。
         """
-        base = 32 if T.font_scale() <= 1.0 else 34
         try:
             nb = self.nav_box.winfo_height()
         except Exception:
             nb = 0
-        if nb <= 60:          # 还没布局完，别拿 1px 去算
-            return base
-        # 组标题盒 = 12+2 留白 + 一行 11px 文字 ≈ head + 14
-        head = int(round(22 * T.font_scale()))
-        room = nb - 4 * (head + 14) - 12
-        avail = int(room / 12.0) - 2
-        return max(30, min(40, avail))
+        rows = len(getattr(self, "nav_items", {}) or range(14))
+        groups = len(getattr(self, "_nav_group_labels", []) or range(4))
+        try:
+            head = max(int(gl.winfo_reqheight())
+                       for gl in self._nav_group_labels)
+        except Exception:
+            head = 26
+        rows = max(1, rows)
+        groups = max(1, groups)
+        if nb <= 60:                       # 首帧还没布局
+            return self._nav_base(), T.sp(9)
+        # 2026-11-19 修：上一版把 pady 算了两遍（先 -2 再 +2），
+        # 加上组标题的上留白漏算，1440 下算出 672 > 655，最后一行被压成 17px。
+        # 现在直接解方程：nb = rows*(row_h + ROW_PAD) + groups*(head + pad) + BREATH
+        ROW_PAD = 2      # cv.pack(pady=1) 上下各 1
+        BREATH = 8       # 底部留一点，不贴住状态栏
+        gap_min = T.sp(6)
+        # 矮窗口放不下「组标题 + 间距」这一套时的降级：隐藏组标题，只靠留白分组。
+        # 1080×680（应用的最小尺寸）nav_box 只有 435px，14 行 × 24 就要
+        # 336，加 4 个组标题 128 已经 464 —— 装不下，必须降级。
+        # 注意：**这里只算数，不改布局**。改布局放在 _fit_nav 里一次做完，
+        # 否则在算的过程中 pack/pack_forget，下一轮读到的还是旧的映射状态，
+        # 组标题会一半显示一半隐藏。
+        self._nav_want_heads = (nb >= rows * (24 + ROW_PAD)
+                                + groups * (head + gap_min) + BREATH)
+        if not self._nav_want_heads:
+            room = nb - BREATH
+            row_h = max(22, min(38, int(room / float(rows)) - ROW_PAD))
+            return row_h, T.sp(4)
+        # 第一轮：间距取下限，把剩下的全给行高
+        room = nb - BREATH - groups * (head + gap_min)
+        row_h = max(24, min(38, int(room / float(rows)) - ROW_PAD))
+        # 第二轮：行高封顶后，把真正的余量平均分给组间距
+        spare = nb - BREATH - rows * (row_h + ROW_PAD) - groups * head
+        pad = gap_min + max(0, min(int(spare / float(groups)) - 0, T.sp(20)))
+        # 再校一次：总高不能超过 nb，超了就把间距压回去
+        while groups * pad > 0 and (rows * (row_h + ROW_PAD)
+                                    + groups * (head + pad) + BREATH) > nb:
+            pad -= 1
+        return row_h, max(gap_min, pad)
+
+    def _set_group_head_visible(self, on):
+        """矮窗口下隐藏分组标题，改用留白分组。
+
+        2026-11-19：**不要用状态缓存**。上一版用 `_nav_head_on` 记状态，
+        但第一次调用时 `_nav_group_labels` 还没填满（构建过程中就会调到这里），
+        结果只隐藏了一部分，后续又因为缓存命中直接 return，
+        1152×740 下第一组标题一直留在里面，reqh 600 > nav_box 495。
+        现在每次都按「实际是否已映射」校正，幂等且不怕半途状态。
+        """
+        labels = getattr(self, "_nav_group_labels", []) or []
+        for gl in labels:
+            try:
+                shown = bool(gl.winfo_ismapped()) and gl.winfo_manager() == "pack"
+                if on and not shown:
+                    # 恢复到「紧跟上一组最后一行之后」的位置：用记下的后继锚点
+                    nxt = getattr(gl, "_nav_after", None)
+                    if nxt is not None and nxt.winfo_exists():
+                        gl.pack(fill="x", padx=12, pady=(T.sp(9), 0),
+                                before=nxt)
+                    else:
+                        gl.pack(fill="x", padx=12, pady=(T.sp(9), 0))
+                elif not on and gl.winfo_manager() == "pack" and shown:
+                    gl.pack_forget()
+            except Exception:
+                pass
+
+    def _nav_base(self):
+        """首帧还没有容器尺寸时用的保底行高。"""
+        return 34 if T.font_scale() <= 1.0 else 36
+
+    def _nav_row_height(self):
+        """导航行高（单一数据源：`_nav_metrics`）。"""
+        return self._nav_metrics()[0]
+
+    def _nav_group_pad(self):
+        """组标题上方留白（单一数据源：`_nav_metrics`）。"""
+        return self._nav_metrics()[1]
 
     def _nav_text_x(self):
         """条目文字的左边界：留出 10px 边距 + 16px 图标 + 8px 间隔。"""
-        return 34 if not getattr(self, "_nav_compact", False) else 32
+        return 38 if not getattr(self, "_nav_compact", False) else 34
 
     def _nav_item(self, key, name):
         """一个导航项：整行 34px，选中/悬停是一整块圆角浅灰底。
@@ -1348,6 +1651,7 @@ class App(tk.Tk):
         # 宽度变化时重画：圆角块的右边界要跟着容器走
         cv.bind("<Configure>", lambda e, k=key: self._paint_nav(k))
         self._paint_nav(key, fresh=True)
+        return cv          # 供外层记录组标题的恢复锚点
 
     def _paint_nav(self, key, fresh=False):
         """按当前状态重画一行：底色块 + 图标 + 文字。状态取自 self.current。"""
@@ -1377,28 +1681,21 @@ class App(tk.Tk):
             cv.coords(lb, self._nav_text_x(), h // 2)
             fg = T.ACCENT if on else (T.TXT2 if hover else T.TXT3)
             if on or hover:
-                # 第 12 版：选中态改成「**中性灰底 + 品牌色左竖条**」。
-                # 原先是「淡紫底 + 紫字」，实测对比度只有约 3.2:1，
-                # 浅色下看着像禁用项（用户反馈「发灰」就是这里）。
-                # 现在底色取中性色（不染色），靠一根 3px 品牌色竖条标位置，
-                # 文字用正文色——这是 GitHub / Linear 侧栏的实际做法，
-                # 对比度 14:1 以上，且不与品牌色抢注意力。
+                # 网页版选中项是「暖白圆角块 + 细描边」，没有左侧竖条；
+                # 悬停项是同色系浅底。桌面端照此重画。
                 if on:
-                    fill = T.CARD if T.MODE == "light" else T.CARD_HI
+                    fill, line = T.CARD, T.LINE
                 else:
-                    fill = T.tint(T.ACCENT, 0.10, T.SIDEBAR)
-                ids = T._round_rect(cv, 0, 1, w - 1, h - 2, 8,
-                                    fill=fill, outline=fill)
+                    fill = T.tint(T.ACCENT, 0.08, T.SIDEBAR)
+                    line = fill
+                ids = T._round_rect(cv, 0, 1, w - 1, h - 2, 10,
+                                    fill=fill, outline=line)
                 for i in ids:
                     cv.tag_lower(i)
-                if on:
-                    # 左侧竖条：画在圆角块上面（色块之后画，自然在上层）
-                    cv.create_rectangle(0, 5, 3, h - 5,
-                                        fill=T.ACCENT, outline=T.ACCENT)
             # 图标：18px，垂直居中，左边距 10
-            I.draw_on(cv, icon_name, size=16,
+            I.draw_on(cv, icon_name, size=17,
                       fg=(T.ACCENT if on else fg),
-                      x=10, y=(h - 16) // 2)
+                      x=12, y=(h - 17) // 2)
             # 选中时文字用正文色（不是品牌色），保证对比度与扫视清晰度
             cv.itemconfig(lb, fill=(T.TXT if on else T.TXT2),
                           font=(T.F(10, True) if on else T.F(10)))
@@ -1417,7 +1714,7 @@ class App(tk.Tk):
             self._paint_nav(k)
         try:
             name = self._title_of.get(key, key)
-            self._crumb_name.config(text=name)
+            self.crumb.config(text=APP_TITLE + " / %s" % name)
         except Exception:
             pass
 
@@ -1434,12 +1731,18 @@ class App(tk.Tk):
                 "map": lambda: MapPage(self.host, self),
                 "mentor": lambda: MentorPage(self.host, self),
                 "venue": lambda: VenuePage(self.host, self),
+                "materials": lambda: MaterialsPage(self.host, self),
                 "library": lambda: LibraryPage(self.host, self),
                 "plan": lambda: PlanPage(self.host, self),
                 "profile": lambda: ProfilePage(self.host, self),
                 "settings": lambda: SettingsPage(self.host, self),
             }[key]
             self.pages[key] = factory()
+            # 各页的竖向边距是历史遗留的手写值，这里统一收敛到 4px 网格
+            try:
+                T.normalize_page_spacing(self.pages[key])
+            except Exception:
+                pass
         return self.pages[key]
 
     def goto(self, key, _record=True, **kw):
@@ -1457,6 +1760,12 @@ class App(tk.Tk):
             if len(self.history) > 60:
                 self.history.pop(0)
                 self.hist_pos -= 1
+        # 联想下拉是置顶的独立窗口，不随页面隐藏，切页统一收起
+        try:
+            import app_suggest
+            app_suggest.close_all()
+        except Exception:
+            pass
         for k, p in self.pages.items():
             if k != key:
                 p.pack_forget()
@@ -1482,27 +1791,23 @@ class App(tk.Tk):
             pg.set_context(kw.get("cat", ""), kw["field"])
         if key == "venue" and kw.get("field"):
             pg.set_context(kw.get("cat", ""), kw["field"])
+        # 有些页在 reload 里会把主体重新 pack 一遍（例如 ideas 的空态与列表
+        # 互换），那会把创建时对齐好的 pady 又改回去，所以切页后再对齐一次。
+        try:
+            T.normalize_page_spacing(pg)
+        except Exception:
+            pass
         self._update_nav_ui(key, kw)
 
     # ------------------------------------------------------------ 前进 / 后退
     def _update_nav_ui(self, key, kw):
-        """抬头第②行：`APP_NAME · 版本 · 本地运行 · 浏览路径`。
-
-        参考图的元信息行是「只读控制台 v1.3 · 实例管理 · token 已验证 · 实例 ERP-24」
-        那种「一串事实」。这里同理：产品名/版本/离线状态是固定事实，
-        浏览路径是随点击变化的事实，用「 › 」串起来，最多留最近 4 步。
-        """
+        """顶栏面包屑：`塞莎特——题谱 / 选题工坊`，多层跳转时只留最近三步。"""
         try:
-            bits = [APP_TITLE, VERSION, "本地运行"]
-            stack = [self._title_of.get(k, k) for k, _ in self.history[:self.hist_pos + 1]]
-            if len(stack) > 4:
-                stack = ["…"] + stack[-3:]
-            if len(stack) > 1:
-                bits.append(" › ".join(stack))
-            extra = kw.get("field") or kw.get("cat")
-            if extra:
-                bits.append(str(extra))
-            self.crumb.config(text=" · ".join(bits))
+            stack = [self._title_of.get(k, k)
+                     for k, _ in self.history[:self.hist_pos + 1]]
+            if len(stack) > 3:
+                stack = ["…"] + stack[-2:]
+            self.crumb.config(text=APP_TITLE + " / " + " / ".join(stack))
             can_back = self.hist_pos > 0
             can_fwd = self.hist_pos < len(self.history) - 1
             self.btn_back.config(fg=T.TXT2 if can_back else T.TXT4,

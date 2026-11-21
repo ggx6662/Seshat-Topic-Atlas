@@ -9,6 +9,7 @@ import tkinter as tk
 
 import app_theme as T
 import ui_parts as U
+import ui_kit as UK
 import app_diagnose_view as diag_view
 import kb_widget as kb
 import llm_bridge as L
@@ -49,69 +50,104 @@ class IdeasPage(tk.Frame):
     # ------------------------------------------------------------ 布局
     def _build(self):
         top = tk.Frame(self, bg=T.BG)
-        top.pack(fill="x", padx=T.PAD, pady=(4, 8))
-        self._hint = U.Hint(top, IDEAS_HELP, summary="怎么用这一页", bg=T.BG)
-        self._hint.pack(side="left", fill="x", expand=True)
-        T.Btn(top, "新建选题", self.new_idea, "primary").pack(side="right")
-        T.Btn(top, "打开选题工坊", lambda: self.app.goto("topic")).pack(side="right", padx=(0, 6))
+        top.pack(fill="x", padx=T.PAD, pady=(T.sp(4), T.sp(8)))
+        top.grid_columnconfigure(0, weight=1)
+        heading = tk.Frame(top, bg=T.BG)
+        heading.grid(row=0, column=0, sticky="ew")
+        UK.eyebrow(heading, "IDEA LEDGER · 选题台账", bg=T.BG).pack(fill="x")
+        title = tk.Label(heading, text="创新点库", bg=T.BG, fg=T.TXT,
+                         font=T.T_PAGE_TITLE(), anchor="w", justify="left")
+        title.pack(fill="x", pady=(T.sp(4), T.sp(6)))
+        T.fill_wrap(title, pad=0)
+        tools = tk.Frame(top, bg=T.BG)
+        tools.grid(row=0, column=1, sticky="ne", padx=(T.sp(12), 0))
+        T.Btn(tools, "新建选题", self.new_idea, "primary").pack(side="right")
+        T.Btn(tools, "打开选题工坊", lambda: self.app.goto("topic")).pack(
+            side="right", padx=(0, T.sp(6)))
+        self._hint = U.Hint(top, IDEAS_HELP,
+                            summary="保存研究想法，核查结构缺口；不评价创新性或研究价值。",
+                            bg=T.BG)
+        self._hint.grid(row=1, column=0, columnspan=2, sticky="ew")
+        self._hint._lbl.pack_configure(fill="x", expand=True)
+        T.fill_wrap(self._hint._lbl, pad=T.sp(36))
+        T.fill_wrap(self._hint._detail, pad=0)
 
         self.metric_row = tk.Frame(self, bg=T.BG)
         self.metric_row.pack(fill="x", padx=T.PAD)
-        self._metrics = U.FoldMetrics(
-            self.metric_row,
-            [("选题总数", "0"), ("可进入实验", "0"), ("需补证据", "0"), ("过早", "0")],
-            bg=T.BG, cols=4)
+        self._metrics = tk.Label(self.metric_row, bg=T.BG, fg=T.TXT3,
+                                 font=T.T_CAPTION(), anchor="w", justify="left")
         self._metrics.pack(fill="x")
+        T.fill_wrap(self._metrics, pad=0)
 
         body = tk.Frame(self, bg=T.BG)
-        body.pack(fill="both", expand=True, padx=T.PAD, pady=(10, 14))
+        body.pack(fill="both", expand=True, padx=T.PAD, pady=(T.sp(10), T.sp(14)))
         body.grid_columnconfigure(0, weight=4, uniform="c")
         body.grid_columnconfigure(1, weight=6, uniform="c")
+        body.grid_rowconfigure(0, weight=1)
         self._body = body
 
-        left = T.Card(body, pad=10)
-        left.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        left = T.Card(body, pad=T.sp(12), fill_y=True)
+        left.grid(row=0, column=0, sticky="nsew", padx=(0, T.sp(10)))
         self._left_card = left
+        UK.eyebrow(left.body, "全部选题", "01").pack(fill="x", pady=(0, T.sp(8)))
         self.list_scroll = T.ScrollArea(left.body, bg=T.CARD)
         self.list_scroll.pack(fill="both", expand=True)
 
-        right = T.Card(body, pad=14)
+        right = T.Card(body, pad=T.sp(14), fill_y=True)
         right.grid(row=0, column=1, sticky="nsew")
         self._right_card = right
-        self.detail_head = tk.Label(right.body, text="未选择选题", bg=T.CARD, fg=T.TXT,
-                                    font=T.T_BODY(), anchor="w", justify="left",
-                                    wraplength=520)
-        self.detail_head.pack(fill="x")
-        self.detail_sub = tk.Label(right.body, text="在左侧点选一条，查看它的体检结论与待补足项。",
-                                   bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(), anchor="w",
-                                   justify="left", wraplength=520)
-        self.detail_sub.pack(fill="x", pady=(2, 8))
+        UK.eyebrow(right.body, "选题详情 · 结构核查", "02").pack(
+            fill="x", pady=(0, T.sp(8)))
         self.detail_scroll = T.ScrollArea(right.body, bg=T.CARD)
         self.detail_scroll.pack(fill="both", expand=True)
+        self.detail_head = tk.Label(self.detail_scroll.inner, text="未选择选题",
+                                    bg=T.CARD, fg=T.TXT, font=T.T_SECTION(),
+                                    anchor="w", justify="left", wraplength=T.sp(300))
+        self.detail_head.pack(fill="x")
+        self._wrap_text(self.detail_head)
+        self.detail_sub = tk.Label(self.detail_scroll.inner,
+                                   text="在左侧点选一条，查看结构缺口与待补足项。",
+                                   bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
+                                   anchor="w", justify="left", wraplength=T.sp(300))
+        self.detail_sub.pack(fill="x", pady=(T.sp(4), T.sp(12)))
+        self._wrap_text(self.detail_sub)
         self.detail_box = tk.Frame(self.detail_scroll.inner, bg=T.CARD)
-        self.detail_box.pack(fill="both", expand=True)
-        # 对话面板放在滚动区**外面**的固定槽位：滚进去的控件在可视区外
-        # 不会分配几何（mapped=0、w/h 恒为 1），滚到底也画不出来。放在
-        # 动作条上方、始终可见，也符合「边看诊断边追问」的使用顺序。
+        self.detail_box.pack(fill="x")
         self._chat_slot = tk.Frame(right.body, bg=T.CARD)
-        # 动作条：只有选中一条后才出现（空态不摆用不了的按钮）
-        # 第 10 版：五个按钮按「做这条选题的先后」分层。
-        # 审查提示词是主路径（不花钱、立刻能把结构问题交出去问），
-        # AI 审稿 / 继续聊要配 Key，复制摘要与删除是零星动作 ——
-        # 后三件收进「更多 ▾」。删除原来是个红按钮常驻在最右，
-        # 离其他按钮只有几个像素，误点一次就没了，不能这么放。
-        self.act = tk.Frame(right.body, bg=T.CARD)
-        T.Btn(self.act, "生成审查提示词", self.review_prompt, "primary").pack(
-            side="left", padx=(0, 6))
-        T.Btn(self.act, "和模型继续聊", self.open_chat, "ok").pack(
-            side="left", padx=(0, 6))
-        self.btn_more = T.Btn(self.act, "更多 ▾", self._more_menu, "ghost")
-        self.btn_more.pack(side="left")
-
-        # 空态引导卡：一条选题都没有时，两栏网格整体隐去，只留这一块。
-        # 放在 body 之后单独 pack，空态时 body 会 pack_forget，
-        # 所以它不会跑到页面底部。
+        self.act = U.WrapRow(right.body, padx=0, gap=T.sp(6), rowgap=T.sp(6), bg=T.CARD)
+        self.act.add(T.Btn(self.act, "生成审查提示词", self.review_prompt, "primary"))
+        self.act.add(T.Btn(self.act, "和模型继续聊", self.open_chat))
+        self.btn_more = self.act.add(T.Btn(self.act, "更多 ▾", self._more_menu, "ghost"))
         self._welcome = tk.Frame(self, bg=T.BG)
+
+    def _wrap_text(self, label):
+        def fit(event):
+            if event.width > 1:
+                label.config(wraplength=max(1, event.width - T.sp(4)))
+        label.bind("<Configure>", fit, add="+")
+        self.detail_scroll._bind_wheel(label)
+        return label
+
+    def _detail_width(self):
+        width = self.detail_scroll.canvas.winfo_width()
+        if width <= 1:
+            width = self._right_card.body.winfo_width()
+        return max(T.sp(80), width - T.sp(8)) if width > 1 else T.sp(300)
+
+    def _clear_selection(self):
+        self.sel = None
+        self._clear_ai()
+        for w in self._chat_slot.winfo_children():
+            w.destroy()
+        self._chat_slot.pack_forget()
+        self._chat = None
+        for w in self.detail_box.winfo_children():
+            w.destroy()
+        self.detail_head.config(text="未选择选题")
+        self.detail_sub.config(text="在左侧点选一条，查看结构缺口与待补足项。")
+        self._show_actions(False)
+        self.detail_scroll.scroll_to_top()
+        self.detail_scroll.refresh()
 
     # ------------------------------------------------------------ 数据
     def _more_menu(self):
@@ -154,16 +190,24 @@ class IdeasPage(tk.Frame):
         if sig is not None and sig == getattr(self, "_sig", None):
             return
         self._sig = sig
+        selected = None
+        if self.sel is not None and 0 <= self.sel < len(self.ideas):
+            it = self.ideas[self.sel]
+            selected = (it.get("time"), it.get("title"))
         try:
             mem = kb.load_research_memory()
             self.ideas = list(mem.get("ideas", []))
         except Exception:
             self.ideas = []
         self.ideas.reverse()      # 新的在上
+        self.sel = next((i for i, it in enumerate(self.ideas)
+                         if (it.get("time"), it.get("title")) == selected), None)
         self._render_metrics()
-        self._render_list()
-        if self.sel is not None and self.sel < len(self.ideas):
+        if self.sel is not None:
             self.select(self.sel)
+        else:
+            self._clear_selection()
+            self._render_list()
 
     def _render_metrics(self):
         ranks = []
@@ -175,80 +219,101 @@ class IdeasPage(tk.Frame):
         adv = sum(1 for r in ranks if r >= 3)
         mid = sum(1 for r in ranks if r == 2)
         low = sum(1 for r in ranks if r <= 1)
-        self._metrics.set_values({
-            "选题总数": str(len(self.ideas)),
-            "可进入实验": str(adv),
-            "需补证据": str(mid),
-            "过早": str(low),
-        })
+        self._metrics.config(text="共 %d 条选题  ·  可进入实验 %d  ·  需补证据 %d  ·  过早 %d" %
+                             (len(self.ideas), adv, mid, low))
 
     def _render_list(self):
         self.list_scroll.clear()
         if not self.ideas:
-            # 空态：两栏都收起，只留一块引导卡。
-            # 第 10 版之前是两栏都撑开、左栏塞空态、右栏显示「未选择选题」——
-            # 结果是两块一高一矮的空卡片并排，比一处空更乱。
-            self.list_scroll.pack_forget()
-            for c in (self._left_card, self._right_card):
-                try:
-                    c.grid_remove()
-                    c._fill_y, c._fill_y_pinned = False, True
-                except Exception:
-                    pass
-            self._body.grid_rowconfigure(0, weight=0)
+            self._clear_selection()
+            self._body.pack_forget()
             for w in self._welcome.winfo_children():
                 w.destroy()
-            U.EmptyState(self._welcome,
-                         "还没有选题",
-                         "在「选题工坊」生成候选后点「存为创新点」，"
-                         "或者手写一条：标题 + 一个问题 + 你想验证什么。",
-                         action=self.new_idea, action_text="新建选题", bg=T.BG).pack(
-                             fill="x")
-            if not self._welcome.winfo_ismapped():
-                self._welcome.pack(fill="x", padx=T.PAD, pady=(8, 0))
+            empty = UK.EmptyPanel(
+                self._welcome, "还没有选题",
+                "在选题工坊保存候选，或手写标题与想验证的问题。",
+                icon="ideas", cta="新建选题", cta_cmd=self.new_idea,
+                bg=T.BG, height=T.sp(240))
+            empty.pack(fill="both", expand=True)
+            empty._holder.bind("<Configure>", lambda e: empty._cv.config(
+                height=max(T.sp(240), e.height + T.sp(32))), add="+")
+            self._welcome.pack(fill="both", expand=True, padx=T.PAD,
+                               pady=(T.sp(10), T.sp(14)))
             return
-        if self._welcome.winfo_ismapped():
-            self._welcome.pack_forget()
-        for c in (self._left_card, self._right_card):
-            try:
-                if not c.winfo_ismapped():
-                    c.grid()
-                c.grid_configure(sticky="nsew")
-                c._fill_y, c._fill_y_pinned = True, True
-            except Exception:
-                pass
-        self._body.grid_rowconfigure(0, weight=1)
-        if not self.list_scroll.winfo_ismapped():
-            self.list_scroll.pack(fill="both", expand=True)
+        self._welcome.pack_forget()
+        self._body.pack(fill="both", expand=True, padx=T.PAD,
+                        pady=(T.sp(10), T.sp(14)))
         for i, it in enumerate(self.ideas):
             try:
                 res = RD.diagnose(_norm(it))
-                rank, stage = RD.stage_rank(res["stage"]), res["stage"]
-                cnt = res["count"]
+                stage, cnt = res["stage"], res["count"]
             except Exception:
-                rank, stage, cnt = 0, "", {"passed": 0, "total": 9}
+                stage, cnt = "未诊断", {"passed": 0, "total": 9}
             active = self.sel == i
-            bg = T.ACCENT_D if active else T.CARD_HI
-            f = tk.Frame(self.list_scroll.inner, bg=bg, cursor="hand2")
-            f.pack(fill="x", pady=2)
-            head = tk.Frame(f, bg=bg)
-            head.pack(fill="x", padx=8, pady=(6, 0))
-            col = diag_view.stage_color(stage)
-            tk.Label(head, text=" %d " % rank, bg=col, fg="#061220",
-                     font=T.M(8, True)).pack(side="left")
-            tk.Label(head, text="  " + str(it.get("type") or "未标注"), bg=bg, fg=T.TXT4,
-                     font=T.F(8)).pack(side="left")
-            tk.Label(head, text="%d/%d 项  " % (cnt["passed"], cnt["total"]), bg=bg,
-                     fg=T.TXT3, font=T.M(8)).pack(side="right")
-            title = str(it.get("title") or "（无标题）")
-            tk.Label(f, text=title, bg=bg, fg=T.TXT if active else T.TXT2, font=T.F(9),
-                     anchor="w", wraplength=T.wrap(330), justify="left").pack(fill="x", padx=8,
-                                                                      pady=(2, 6))
-            for w in (f, head):
-                w.bind("<Button-1>", lambda e, idx=i: self.select(idx))
+            bg = T.tint(T.ACCENT, 0.08, T.CARD) if active else T.CARD
+            row = tk.Frame(self.list_scroll.inner, bg=bg, cursor="hand2")
+            row.pack(fill="x", pady=(0, T.sp(4)))
+            stripe = tk.Frame(row, bg=T.ACCENT if active else bg, width=T.sp(3))
+            stripe.pack(side="left", fill="y")
+            content = tk.Frame(row, bg=bg)
+            content.pack(side="left", fill="x", expand=True,
+                         padx=T.sp(10), pady=T.sp(8))
+            title = tk.Label(content, text=str(it.get("title") or "（无标题）"),
+                             bg=bg, fg=T.TXT, font=T.T_LABEL(), anchor="w",
+                             justify="left", wraplength=T.sp(260))
+            title.pack(fill="x")
+            meta = " · ".join(str(x) for x in (
+                it.get("type") or "未标注类型", it.get("category"), it.get("field")) if x)
+            tags = tk.Label(content, text=meta, bg=bg, fg=T.TXT3,
+                            font=T.T_CAPTION(), anchor="w", justify="left",
+                            wraplength=T.sp(260))
+            tags.pack(fill="x", pady=(T.sp(4), 0))
+            status = tk.Label(content,
+                              text="%s · 已具备 %d/%d 项" %
+                                   (stage, cnt["passed"], cnt["total"]),
+                              bg=bg, fg=T.ACCENT if active else T.TXT2,
+                              font=T.T_CAPTION(), anchor="w", justify="left",
+                              wraplength=T.sp(260))
+            status.pack(fill="x", pady=(T.sp(4), 0))
+            labels = [title, tags, status]
+            stamp = " · ".join(str(x) for x in (it.get("time"), it.get("source")) if x)
+            if stamp:
+                date = tk.Label(content, text=stamp, bg=bg, fg=T.TXT4,
+                                font=T.T_CAPTION(), anchor="w", justify="left",
+                                wraplength=T.sp(260))
+                date.pack(fill="x", pady=(T.sp(4), 0))
+                labels.append(date)
+            for label in labels:
+                T.fill_wrap(label, pad=0)
+            self._bind_idea_row(row, stripe, [row, content] + labels, i, bg, active)
+        self.list_scroll.refresh()
+
+    def _bind_idea_row(self, row, stripe, widgets, index, base, active):
+        def hover(on):
+            if not on:
+                x, y = row.winfo_pointerxy()
+                if (row.winfo_rootx() <= x < row.winfo_rootx() + row.winfo_width() and
+                        row.winfo_rooty() <= y < row.winfo_rooty() + row.winfo_height()):
+                    return
+            color = base if active or not on else T.tint(T.ACCENT, 0.05, T.CARD)
+            for widget in widgets:
+                widget.config(bg=color)
+            if not active:
+                stripe.config(bg=color)
+        for widget in widgets + [stripe]:
+            widget.config(cursor="hand2")
+            widget.bind("<Button-1>", lambda e: self.select(index))
+            self.list_scroll._bind_wheel(widget)
+            widget.bind("<Enter>", lambda e: hover(True), add="+")
+            widget.bind("<Leave>", lambda e: hover(False), add="+")
 
     # ------------------------------------------------------------ 选中
     def select(self, i):
+        if not 0 <= i < len(self.ideas):
+            self._clear_selection()
+            self._render_list()
+            return
+        self._clear_selection()
         self.sel = i
         self._render_list()
         it = self.ideas[i]
@@ -257,35 +322,58 @@ class IdeasPage(tk.Frame):
             it.get("type") or "", it.get("category") or "", it.get("field") or "",
             it.get("time") or "") if x)
         self.detail_sub.config(text=sub)
-        for w in self.detail_box.winfo_children():
-            w.destroy()
-        self._ai_box = None
         bg = T.CARD
+        wrap = self._detail_width()
         desc = str(it.get("desc") or "").strip()
-        tk.Label(self.detail_box, text=desc or "（没有描述。建议补一句：改了什么机制、与谁比、拿什么证据。）",
-                 bg=bg, fg=T.TXT2 if desc else T.TXT4, font=T.F(9), anchor="w",
-                 justify="left", wraplength=520).pack(fill="x", pady=(0, 8))
-        box = self.detail_box
-        T.hsep(box, T.LINE, (2, 8))
-        head = tk.Frame(box, bg=bg)
-        head.pack(fill="x", pady=(0, 2))
-        tk.Label(head, text="选题结构诊断", bg=bg, fg=T.TXT,
-                 font=T.F(10, True)).pack(side="left")
-        tk.Label(head, text="  核查的是「有没有交代」，不是「好不好」", bg=bg, fg=T.TXT4,
-                 font=T.F(8)).pack(side="left")
+        UK.eyebrow(self.detail_box, "原始描述").pack(fill="x", pady=(0, T.sp(4)))
+        description = tk.Label(
+            self.detail_box,
+            text=desc or "没有描述。建议补一句：改了什么机制、与谁比、拿什么证据。",
+            bg=bg, fg=T.TXT2 if desc else T.TXT4, font=T.T_BODY_SM(),
+            anchor="w", justify="left", wraplength=wrap)
+        description.pack(fill="x", pady=(0, T.sp(8)))
+        self._wrap_text(description)
+        T.hsep(self.detail_box, T.LINE_SOFT, (T.sp(4), T.sp(12)))
+        tk.Label(self.detail_box, text="选题结构诊断", bg=bg, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(fill="x")
+        note = tk.Label(self.detail_box, text="核查的是有没有交代，不是好不好。",
+                        bg=bg, fg=T.TXT3, font=T.T_CAPTION(), anchor="w",
+                        justify="left", wraplength=wrap)
+        note.pack(fill="x", pady=(T.sp(4), T.sp(8)))
+        self._wrap_text(note)
+        box = tk.Frame(self.detail_box, bg=bg)
+        box.pack(fill="x")
         try:
-            diag_view.render(box, _norm(it), compact=False, wrap=500)
+            diag_view.render(box, _norm(it), compact=False, wrap=wrap)
+            stage_head = box.winfo_children()[0]
+            badge, hint = stage_head.winfo_children()
+            badge.pack_configure(side="top", fill="x", anchor="w")
+            hint.pack_configure(side="top", fill="x", anchor="w", pady=(T.sp(4), 0))
+            hint.config(anchor="w", justify="left", wraplength=wrap)
+            self._wrap_diagnosis(box)
         except Exception as exc:
-            tk.Label(box, text="诊断失败：" + str(exc), bg=bg, fg=T.ERR,
-                     font=T.F(9)).pack(anchor="w")
+            error = tk.Label(box, text="诊断失败：" + str(exc), bg=bg, fg=T.ERR,
+                             font=T.T_BODY_SM(), anchor="w", justify="left",
+                             wraplength=wrap)
+            error.pack(fill="x")
+            self._wrap_text(error)
         self._show_actions(True)
+        self.detail_scroll.scroll_to_top()
         self.detail_scroll.refresh()
 
+    def _wrap_diagnosis(self, parent):
+        for widget in parent.winfo_children():
+            if isinstance(widget, tk.Label) and widget.winfo_pixels(widget.cget("wraplength")) > 0:
+                self._wrap_text(widget)
+            else:
+                self.detail_scroll._bind_wheel(widget)
+            self._wrap_diagnosis(widget)
+
     def _show_actions(self, on):
-        """动作条只在选中一条时出现——空态摆一排点了会提示"先选一条"的按钮纯属噪音。"""
-        if on and not self.act.winfo_ismapped():
-            self.act.pack(fill="x", pady=(8, 0))
-        elif not on and self.act.winfo_ismapped():
+        if on:
+            self.act.pack(side="bottom", fill="x", pady=(T.sp(12), 0),
+                          before=self.detail_scroll)
+        else:
             self.act.pack_forget()
 
     def ai_review(self):
@@ -310,10 +398,13 @@ class IdeasPage(tk.Frame):
         cand = {"title": str(it.get("title") or ""),
                 "reason": str(it.get("desc") or "")}
         self._render_ai_pending()
+        request = object()
+        self._ai_request = request
 
         def work():
             txt = L.critique_ideas(direction, [cand])
-            self.app.post(lambda: self._ai_done(txt))
+            self.app.post(lambda: self._ai_done(txt)
+                          if self._ai_request is request else None)
         threading.Thread(target=work, daemon=True).start()
 
     def _ai_done(self, txt):
@@ -327,12 +418,14 @@ class IdeasPage(tk.Frame):
         box.pack(fill="x", pady=(10, 0))
         head = tk.Frame(box, bg=bg)
         head.pack(fill="x")
-        tk.Label(head, text="AI 审稿意见", bg=bg, fg=T.PURPLE,
-                 font=T.F(10, True)).pack(side="left")
-        tk.Label(head, text="大模型生成 · 判断权在你", bg=bg, fg=T.TXT4,
-                 font=T.F(8), anchor="e").pack(side="right")
-        tk.Label(box, text=txt, bg=bg, fg=T.TXT2, font=T.F(9),
-                 anchor="w", justify="left", wraplength=510).pack(fill="x", pady=(4, 0))
+        tk.Label(head, text="AI 审稿意见", bg=bg, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(fill="x")
+        tk.Label(head, text="大模型生成 · 判断权在你", bg=bg, fg=T.TXT3,
+                 font=T.T_CAPTION(), anchor="w").pack(fill="x", pady=(T.sp(4), 0))
+        review = tk.Label(box, text=txt, bg=bg, fg=T.TXT2, font=T.T_BODY_SM(),
+                          anchor="w", justify="left", wraplength=self._detail_width())
+        review.pack(fill="x", pady=(T.sp(8), 0))
+        self._wrap_text(review)
         self._ai_box = box
         self.detail_scroll.refresh()
 
@@ -340,18 +433,28 @@ class IdeasPage(tk.Frame):
         self._clear_ai()
         box = tk.Frame(self.detail_box, bg=T.CARD)
         box.pack(fill="x", pady=(10, 0))
-        tk.Label(box, text="AI 审稿意见", bg=T.CARD, fg=T.PURPLE,
-                 font=T.F(10, True), anchor="w").pack(fill="x")
-        tk.Label(box, text="正在让大模型读这条选题…", bg=T.CARD, fg=T.TXT4,
-                 font=T.F(9), anchor="w").pack(fill="x", pady=(2, 0))
+        tk.Label(box, text="AI 审稿意见", bg=T.CARD, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(fill="x")
+        pending = tk.Label(box, text="正在让大模型读这条选题…", bg=T.CARD, fg=T.TXT3,
+                           font=T.T_BODY_SM(), anchor="w", justify="left",
+                           wraplength=self._detail_width())
+        pending.pack(fill="x", pady=(T.sp(4), 0))
+        self._wrap_text(pending)
         self._ai_box = box
         self.detail_scroll.refresh()
 
     def _clear_ai(self):
+        self._ai_request = None
         b = getattr(self, "_ai_box", None)
         if b is not None:
             try:
-                b.destroy()
+                if b is self._chat_slot:
+                    for w in b.winfo_children():
+                        w.destroy()
+                    b.pack_forget()
+                    self._chat = None
+                else:
+                    b.destroy()
             except Exception:
                 pass
             self._ai_box = None
@@ -375,7 +478,8 @@ class IdeasPage(tk.Frame):
         panel = self._chat_slot
         for w in panel.winfo_children():
             w.destroy()
-        panel.pack(fill="x", pady=(10, 0))
+        panel.pack(side="bottom", fill="x", pady=(T.sp(10), 0),
+                   before=self.detail_scroll)
         tk.Frame(panel, bg=T.LINE, height=1).pack(fill="x", pady=(0, 10))
 
         def ctx():
@@ -407,8 +511,11 @@ class IdeasPage(tk.Frame):
         row.pack(fill="x", pady=1)
         tk.Label(row, text="·", bg=T.CARD, fg=T.ACCENT, font=T.F(10)).pack(side="left",
                                                                         padx=(2, 6), anchor="n")
-        tk.Label(row, text=text, bg=T.CARD, fg=color or T.TXT2, font=T.F(9), anchor="w",
-                 justify="left", wraplength=500).pack(side="left", fill="x", expand=True)
+        label = tk.Label(row, text=text, bg=T.CARD, fg=color or T.TXT2,
+                         font=T.T_BODY_SM(), anchor="w", justify="left",
+                         wraplength=self._detail_width())
+        label.pack(side="left", fill="x", expand=True)
+        self._wrap_text(label)
 
     def _bar(self, parent, label, val):
         try:
@@ -436,7 +543,20 @@ class IdeasPage(tk.Frame):
         self._add(title, desc or "")
 
     def _add(self, title, desc):
+        title = (title or "").strip()
+        if not title:
+            return
         mem = kb.load_research_memory()
+        # 标题就是这条选题的身份；重复新建只会让台账出现两条同名记录
+        for it in mem.get("ideas") or []:
+            if (it.get("title") or "").strip() == title:
+                self.reload()
+                for i, x in enumerate(self.ideas):
+                    if (x.get("title") or "").strip() == title:
+                        self.select(i)
+                        break
+                self.app.toast("这条已经在库里了，没有重复新建", T.OK)
+                return
         idea = {
             "time": kb.datetime.datetime.now().strftime("%Y-%m-%dT%H:%M"),
             "title": title, "desc": desc,

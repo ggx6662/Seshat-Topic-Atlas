@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>塞莎特——题谱 · 封面</title>
+<style>
+  @page { margin: 0; }
+  html, body { margin: 0; padding: 0; background: #F6EFE3; }
+
+  .cover {
+    position: relative;
+    width: 2400px;
+    height: 1500px;
+    overflow: hidden;
+    background:
+      radial-gradient(92% 78% at 50% 40%, #FDFAF4 0%, #F9F2E6 42%, #F2E8D5 76%, #E9DBC2 100%);
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    color: #2A2118;
+  }
+
+  .grain {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(120, 88, 52, 0.024) 0 1px, transparent 1px 7px),
+      repeating-linear-gradient(25deg, rgba(120, 88, 52, 0.015) 0 1px, transparent 1px 11px);
+  }
+
+  .baseline {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 6px; z-index: 4;
+    background: linear-gradient(90deg, #6E4F36, #9A7B54 40%, #C9AE86 70%, #6E4F36);
+    opacity: 0.5;
+  }
+
+  /* ---------- 中心放射结构 ---------- */
+  .hub {
+    position: absolute;
+    left: 50%;
+    top: 162px;
+    width: 1200px;
+    height: 860px;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .hub svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  /* 中心：六边形新中式标记（不用圆角方块） */
+  .mark {
+    position: absolute;
+    left: 50%; top: 346px;
+    width: 300px; height: 300px;
+    margin: -150px 0 0 -150px;
+    z-index: 3;
+  }
+  .mark svg { display: block; width: 100%; height: 100%;
+    filter: drop-shadow(0 18px 38px rgba(110, 79, 54, 0.22)); }
+
+  /* 环绕节点 */
+  .node {
+    position: absolute;
+    width: 148px; height: 148px;
+    margin: -74px 0 0 -74px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 28%, #FFFFFF 0%, #FCF6EC 50%, #F1E6D2 100%);
+    border: 1.5px solid rgba(138, 106, 72, 0.32);
+    box-shadow: 0 12px 30px rgba(96, 68, 38, 0.13), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    z-index: 4;
+  }
+  .node .ic {
+    position: absolute;
+    left: 50%; top: 44px;
+    width: 42px; height: 42px;
+    margin: -21px 0 0 -21px;
+  }
+  .node .ic svg { display: block; width: 42px; height: 42px; fill: none; stroke: #7A5838;
+                  stroke-width: 1.45; stroke-linecap: round; stroke-linejoin: round; }
+  .node svg.gl { width: 42px; height: 42px; flex: 0 0 42px; fill: none; stroke: #7A5838; stroke-width: 1.45; stroke-linecap: round; stroke-linejoin: round; display: block; }
+  .node .name {
+    position: absolute;
+    left: 50%; top: 100px;
+    transform: translateX(-50%);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: #57422C;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ---------- 文案 ---------- */
+  .copy {
+    position: absolute;
+    left: 0; right: 0;
+    top: 970px;
+    text-align: center;
+    z-index: 5;
+  }
+  .eyebrow {
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    font-family: "Consolas", ui-monospace, monospace;
+    font-size: 19px; letter-spacing: 0.32em;
+    color: #8A6A48;
+    margin-bottom: 26px;
+  }
+  .eyebrow .rule { width: 92px; height: 1px; }
+  .eyebrow .rule.l { background: linear-gradient(90deg, rgba(138,106,72,0), #B79A74); }
+  .eyebrow .rule.r { background: linear-gradient(90deg, #B79A74, rgba(138,106,72,0)); }
+
+  h1 {
+    margin: 0;
+    font-family: "Songti SC", "STSong", "SimSun", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+    font-size: 122px;
+    line-height: 1.04;
+    letter-spacing: 0.055em;
+    font-weight: 700;
+    color: #2E2319;
+  }
+  h1 .sep { color: #9A6B3C; font-weight: 400; letter-spacing: 0; }
+
+  .latin {
+    margin-top: 14px;
+    font-family: "Consolas", ui-monospace, monospace;
+    font-size: 24px;
+    letter-spacing: 0.42em;
+    color: #8A6A48;
+  }
+
+  .quote {
+    margin: 34px auto 0;
+    width: 1500px;
+    font-family: "Songti SC", "STSong", "SimSun", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+    font-size: 33px;
+    line-height: 1.6;
+    color: #4A3A2A;
+    letter-spacing: 0.02em;
+  }
+  .quote em { font-style: normal; color: #8E5A2A; font-weight: 700; }
+
+  .stats {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 64px;
+    text-align: center;
+    z-index: 5;
+    font-size: 21px;
+    color: #6B563E;
+    letter-spacing: 0.02em;
+  }
+  .stats b { font-family: "Consolas", monospace; font-size: 26px; color: #4A3220; font-weight: 600; margin-right: 7px; }
+  .stats .div { color: #C0A883; margin: 0 17px; }
+
+  .tag {
+    position: absolute;
+    right: 54px; top: 46px;
+    z-index: 5;
+    font-family: "Consolas", monospace;
+    font-size: 16px;
+    letter-spacing: 0.28em;
+    color: rgba(107, 86, 62, 0.52);
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="grain"></div>
+
+  <div class="hub">
+    <svg viewBox="0 0 1200 860" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#E8C98A" stop-opacity="0.34"/>
+          <stop offset="52%" stop-color="#E8C98A" stop-opacity="0.11"/>
+          <stop offset="100%" stop-color="#E8C98A" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+          <stop offset="60%" stop-color="#6E4F36" stop-opacity="0.05"/>
+          <stop offset="100%" stop-color="#6E4F36" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 中心柔光两层 -->
+      <circle cx="600" cy="346" r="240" fill="url(#glow)"/>
+      <circle cx="600" cy="346" r="330" fill="url(#glow2)"/>
+
+      <!-- 外圈：刻度环 -->
+      <circle cx="600" cy="346" r="352" stroke="#B79A74" stroke-width="1.3"
+              stroke-dasharray="2.5 10.5" opacity="0.6"/>
+      <!-- 内圈：六边形（与中心标记同形，放大后作为结构线） -->
+      <path d="M600 -6 L904.8 170 L904.8 522 L600 698 L295.2 522 L295.2 170 Z"
+            fill="none" stroke="#C3A982" stroke-width="1.2" opacity="0.30"/>
+
+      <!-- 六条辐条 -->
+      <g stroke="#B79A74" stroke-width="1.5" opacity="0.55">
+        <line x1="600" y1="346" x2="600" y2="-6"/>
+        <line x1="600" y1="346" x2="904.8" y2="170"/>
+        <line x1="600" y1="346" x2="904.8" y2="522"/>
+        <line x1="600" y1="346" x2="600" y2="698"/>
+        <line x1="600" y1="346" x2="295.2" y2="522"/>
+        <line x1="600" y1="346" x2="295.2" y2="170"/>
+      </g>
+
+      <!-- 辐条中段刻度 -->
+      <g fill="#C3A982" opacity="0.72">
+        <circle cx="600" cy="170" r="3.2"/>
+        <circle cx="600" cy="522" r="3.2"/>
+        <circle cx="752.4" cy="258" r="3.2"/>
+        <circle cx="447.6" cy="258" r="3.2"/>
+        <circle cx="752.4" cy="434" r="3.2"/>
+        <circle cx="447.6" cy="434" r="3.2"/>
+      </g>
+    </svg>
+
+    <!-- 中心：品牌标记（放大到与结构线同构） -->
+    <div class="mark">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 6 L107 33.5 L107 88.5 L60 116 L13 88.5 L13 33.5 Z"
+              fill="#6E4F36"/>
+        <path d="M60 21 L94 41 L94 81 L60 101 L26 81 L26 41 Z"
+              fill="none" stroke="#F8EFDF" stroke-width="4.6" stroke-linejoin="round"/>
+        <circle cx="60" cy="61" r="13" fill="#E8C98A"/>
+        <circle cx="26" cy="41" r="7.2" fill="#F8EFDF"/>
+        <circle cx="94" cy="41" r="7.2" fill="#F8EFDF"/>
+        <circle cx="60" cy="101" r="7.2" fill="#F8EFDF"/>
+      </svg>
+    </div>
+
+    <!-- 六个节点 -->
+    <div class="node" style="left: 600px; top: -6px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.1"/></svg></div><span class="name">选题工坊</span>
+    </div>
+    <div class="node" style="left: 904.8px; top: 170px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><rect x="3.6" y="3.6" width="16.8" height="16.8" rx="1.4"/><path d="M9.2 3.9v16.2M14.8 3.9v16.2M3.9 9.2h16.2M3.9 14.8h16.2"/></svg></div><span class="name">文献空白</span>
+    </div>
+    <div class="node" style="left: 904.8px; top: 522px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.2V12l3.2 2"/></svg></div><span class="name">最新研究</span>
+    </div>
+    <div class="node" style="left: 600px; top: 698px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.4" r="3.3"/><path d="M3.2 19.4c0-3.2 2.6-5.6 5.8-5.6s5.8 2.4 5.8 5.6"/><circle cx="17" cy="9.4" r="2.5"/><path d="M15.6 13.9c2.8 0 5 2.1 5 4.9"/></svg></div><span class="name">导师与院校</span>
+    </div>
+    <div class="node" style="left: 295.2px; top: 522px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><rect x="4.6" y="3.4" width="12.4" height="17.2" rx="1.2"/><path d="M17 7.4h2.2v12.4a1.6 1.6 0 0 1-1.6 1.6H7.4"/><path d="M7.8 8.2h6.2M7.8 11.8h6.2M7.8 15.4h4"/></svg></div><span class="name">期刊会议</span>
+    </div>
+    <div class="node" style="left: 295.2px; top: 170px;">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20.2l1.1-4.2L16.4 4.7a1.9 1.9 0 0 1 2.7 0l.6.6a1.9 1.9 0 0 1 0 2.7L8.2 19.1z"/><path d="M14.9 6.2l2.9 2.9"/></svg></div><span class="name">科研方法论</span>
+    </div>
+  </div>
+
+  <div class="copy">
+    <div class="eyebrow"><span class="rule l"></span><span>RESEARCH QUESTION ATLAS</span><span class="rule r"></span></div>
+    <h1>塞莎特<span class="sep">——</span>题谱</h1>
+    <div class="latin">RESEARCH QUESTION ATLAS</div>
+    <p class="quote">知识是人类缔造<em>巴别塔</em>的阶梯，思想是构建未来的桥梁。</p>
+  </div>
+
+  <div class="stats">
+    <span><b>536</b>研究方向</span><span class="div">/</span>
+    <span><b>552</b>公开数据集</span><span class="div">/</span>
+    <span><b>18,296</b>可浏览学者</span><span class="div">/</span>
+    <span><b>701</b>期刊会议</span>
+  </div>
+
+  <div class="tag">SINCE 2026 · OFFLINE</div>
+  <div class="baseline"></div>
+</div>
+
+</body>
+</html>

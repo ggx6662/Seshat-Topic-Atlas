@@ -5,28 +5,82 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- 手机浏览器的地址栏取色：和 design_tokens 的 surface_nav 保持一致，
      改配色时要一起改（或直接跑 CSS 里的 --surface-nav，浏览器读不到变量，只能写死） -->
-<meta name="theme-color" content="#111213">
+<meta name="theme-color" content="#f6efe3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="知识库助手">
+<meta name="apple-mobile-web-app-title" content="塞莎特——题谱">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-<title>知识库助手 · 体验端</title>
+<title>塞莎特——题谱 · 科研选题工作台（体验端）</title>
 <!-- DESIGN_TOKENS：服务端从这里注入 design_tokens.py 的变量，必须排在样式表之前 -->
 <!-- DESIGN_TOKENS -->
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
+<div class="bg-tech" aria-hidden="true">
+  <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+    <g opacity=".85">
+      <path d="M-10 902 H180 l44 44 H420"/>
+      <path d="M-10 938 H150 l30 30 H470"/>
+      <path d="M96 902 V804 l40-40 H262 l26-26 V646"/>
+      <circle cx="180" cy="902" r="3.2"/>
+      <circle cx="420" cy="946" r="3.2"/>
+      <circle cx="262" cy="620" r="3.2"/>
+      <rect x="66" y="618" width="32" height="32" rx="4"/>
+      <path d="M72 644 h20 M82 628 v20"/>
+    </g>
+    <g opacity=".8">
+      <path d="M1610 118 H1490 l-38-38 H1300"/>
+      <path d="M1610 158 H1522 l-34-34 H1392 l-28-28 H1272"/>
+      <circle cx="1300" cy="80" r="3.2"/>
+      <circle cx="1272" cy="96" r="3.2"/>
+      <rect x="1428" y="164" width="28" height="28" rx="3"/>
+      <path d="M1434 186 h16 M1442 172 v20"/>
+    </g>
+    <g opacity=".75">
+      <circle cx="1272" cy="486" r="252"/>
+      <circle cx="1272" cy="486" r="308" stroke-dasharray="2 18"/>
+      <path d="M1272 164 v26 M1272 782 v26 M950 486 h26 M1568 486 h26"/>
+      <path d="M1048 262 l20 20 M1496 710 l-20-20 M1048 710 l20-20 M1496 262 l-20 20"/>
+    </g>
+    <g opacity=".8">
+      <path d="M196 236 l92 52 86-40 66 62 84-26"/>
+      <path d="M196 236 l88 112 158-100 66 62"/>
+      <circle cx="196" cy="236" r="4.2"/>
+      <circle cx="288" cy="288" r="5.2"/>
+      <circle cx="350" cy="248" r="4.2"/>
+      <circle cx="288" cy="348" r="4.2"/>
+      <circle cx="504" cy="310" r="5.2"/>
+      <circle cx="440" cy="246" r="4.2"/>
+    </g>
+    <g opacity=".75">
+      <rect x="1142" y="838" width="126" height="60" rx="5"/>
+      <rect x="1168" y="856" width="74" height="24" rx="2"/>
+      <path d="M1154 830 v8 M1178 830 v8 M1202 830 v8 M1226 830 v8 M1250 830 v8"/>
+      <path d="M1154 898 v8 M1178 898 v8 M1202 898 v8 M1226 898 v8 M1250 898 v8"/>
+      <path d="M1134 854 h8 M1134 878 h8 M1268 854 h8 M1268 878 h8"/>
+    </g>
+    <g opacity=".8">
+      <path d="M1418 756 l28-16.2 28 16.2v32.4l-28 16.2-28-16.2z"/>
+      <path d="M1418 700 l28-16.2 28 16.2v32.4l-28 16.2-28-16.2z" stroke-dasharray="3 5"/>
+    </g>
+    <g class="bg-tech-dots" opacity=".55">
+      <circle cx="1128" cy="748" r="1.5"/><circle cx="1160" cy="748" r="1.5"/><circle cx="1192" cy="748" r="1.5"/><circle cx="1224" cy="748" r="1.5"/><circle cx="1256" cy="748" r="1.5"/>
+      <circle cx="1128" cy="780" r="1.5"/><circle cx="1160" cy="780" r="1.5"/><circle cx="1192" cy="780" r="1.5"/><circle cx="1224" cy="780" r="1.5"/><circle cx="1256" cy="780" r="1.5"/>
+    </g>
+  </svg>
+</div>
+
 <header class="top">
   <div class="brand">
-    <span class="logo">550W</span>
+    <img class="logo" src="/icon-48.png" alt="" width="34" height="34">
     <span class="brand-txt">
-      <b>知识库助手</b>
-      <i>科研选题工作台 · 体验端</i>
+      <b><i>塞莎特</i>——题谱</b>
+      <i>RESEARCH QUESTION ATLAS · 本地体验端</i>
     </span>
   </div>
   <nav class="tabs" id="tabs">
@@ -36,6 +90,17 @@
     <button class="tab" data-view="map">方向图谱</button>
     <button class="tab" data-view="skills">科研方法论</button>
   </nav>
+  <svg class="top-tech" viewBox="0 0 220 48" aria-hidden="true">
+    <path d="M0 12 H58 l14 14 H132"/>
+    <path d="M0 36 H44 l12-12 H94"/>
+    <circle cx="58" cy="12" r="2.4"/>
+    <circle cx="94" cy="24" r="2.4"/>
+    <path d="M168 24 l12-7 12 7v14l-12 7-12-7z"/>
+    <path d="M152 24 h-14"/>
+    <circle cx="168" cy="24" r="2"/>
+    <circle cx="180" cy="24" r="2.4"/>
+    <circle cx="192" cy="24" r="2"/>
+  </svg>
 </header>
 
 <main>

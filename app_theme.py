@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""选题智库 · 科研选题应用 —— 设计令牌与通用组件。
+"""塞莎特——题谱 · 科研选题应用 —— 设计令牌与通用组件。
 
-2026-11 重做：表面全部改成中性灰阶，层级靠亮度台阶 + 1px 描边，不靠投影；
-品牌色只给「可点的」和「关键数字」，彩色留给有含义的状态（风险、语义标签、
-图表数据）。明暗两套来自同一份 PALETTE，切一次全应用跟着变。
+2026-11-18 第 27 版：桌面端与赛事网页统一为「米纸 / 墨 / 铜」配色，层级仍靠
+底色台阶而不是投影；品牌色只给「可点的」和「关键数字」，彩色留给有含义的
+状态（风险、语义标签、图表数据）。明暗两套来自同一份 PALETTE，切一次全应用
+跟着变。
 
 **改色不要改这个文件顶部的常量** —— 它们只是 design_tokens 的别名，
 `set_theme_runtime()` 会原地重绑。
@@ -71,7 +72,7 @@ _KEYS = {"BG": "canvas", "SIDEBAR": "surface_nav", "CARD": "canvas",
 # 早先两种主题都取 "canvas"（卡片=画布），只能靠 1px 线区分，整页像到处是框。
 _CARD_KEY = {"dark": "surface_card", "light": "surface_card"}
 
-MODE = "dark"        # 当前生效的明暗；由 apply_mode() 改
+MODE = "light"       # 当前生效的明暗；由 apply_mode() 改
 
 
 def refresh_colors(mode=None):
@@ -113,7 +114,12 @@ def apply_mode(mode):
 # 现在按优先级挑第一个**真实存在**的，全都缺失时用 Tk 自身默认。
 FONT_STACK = ("Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC",
               "Source Han Sans SC", "PingFang SC", "DengXian", "SimHei")
+# 标题不再用正文黑体：赛事网页的标题是宋体，桌面端只把「品牌名 + 页面大标题」
+# 换成衬线，正文和表格仍用黑体，避免数据密集界面出现笔画过细的问题。
+SERIF_STACK = ("Noto Serif SC", "Source Han Serif SC", "Songti SC",
+               "STSong", "SimSun", "Georgia")
 BASE = FONT_STACK[0]      # 由 pick_fonts() 在启动时改写
+SERIF = SERIF_STACK[0]
 MONO = "Consolas"
 
 
@@ -123,7 +129,7 @@ def pick_fonts(root):
     必须在创建 Tk 根窗口之后、建任何控件之前调用（families() 需要 root）。
     返回 (去掉了虚拟占位符的) 可用字体集合，便于日志排查。
     """
-    global BASE, MONO
+    global BASE, MONO, SERIF
     try:
         from tkinter import font as _tkfont
         fams = set(_tkfont.families(root))
@@ -135,6 +141,12 @@ def pick_fonts(root):
         if f in fams:
             BASE = f
             break
+    for f in SERIF_STACK:
+        if f in fams:
+            SERIF = f
+            break
+    else:
+        SERIF = BASE
     for f in ("Consolas", "Cascadia Mono", "DejaVu Sans Mono",
               "JetBrains Mono", "Segoe UI"):
         if f in fams:
@@ -266,15 +278,91 @@ def fill_wrap(label, pad=24):
     （容器 396、Label 各 padx=6）就出现过一个「准」字被挤到第二行，
     因为 wrap 算出来是 396-8=388，实际只能用 396-12=384。
     所以这里取 `pad + 8` 作为安全余量，代价只是右边缘多留几个像素。
+
+    **改完 wraplength 必须让滚动区重新量高度**：折行数一变，Label 的请求高度
+    就变了；如果它挂在 ScrollArea 里，而 Canvas 尺寸没变、不会触发 <Configure>，
+    滚动区就会沿用「旧的、偏小」的内容高度，最后一行被裁掉。
+    期刊会议详情卡就是这样少给了 10px，把「截稿、模板…」那段压掉半行。
+
+    **宽度基准要取滚动区的 Canvas，不是 inner**：inner 的宽度是 Canvas 窗口项
+    反设上去的，跟不上内容请求宽度的变化 —— 先按旧宽度折行，inner 请求宽度
+    变大后它又不会被缩回去，于是「文字按 478 折行、实际只给 441」，右侧被裁。
+
+    2026-11-19 修正：**不能无条件取 ScrollArea 的 canvas 宽度**。
+    期刊会议的会议卡是「滚动区里再排一列卡片」，卡片本身只有 313px 宽，
+    而它祖先里最近的那个 ScrollArea 的 canvas 有 1000+px —— 用 canvas 宽度
+    当基准，wraplength 被设成 1000+，文字根本不折行，直接在卡片里被裁掉
+    （一屏能裁掉 111 行简介）。所以策略是：
+      · 先看 Label 的**直接父容器**有多少宽度，够就按它折行（最常见、最准）；
+      · 父容器还没布局（宽度 ≤ 60，首帧常见）时才退回 ScrollArea 的 canvas。
     """
     try:
         owner = label.master
-        margin = pad + 8
-        def _sync(e=None, _o=owner, _l=label, _m=margin):
+        scroll = _scroll_of(label)
+        # Label 自己的左右 padx 也要扣掉：父容器 <Configure> 给的是容器外宽，
+        # 而 Label 排版时会先减去自己的 padx 再用 wraplength 折行。
+        # 只按容器宽算，就会「按 548 折行、实际只剩 542」—— 尾巴被切几个字。
+        own_pad = 0
+        try:
+            own_pad = int(label.cget("padx")) * 2
+        except Exception:
+            own_pad = 0
+        # 2026-11-20：Label 自己 pack/grid 时的外padding 也要扣。
+        # 父容器 <Configure> 给的是**容器外宽**，而 fill="x" 的控件
+        # 实际拿到的是「容器宽 - 2×外padding」。素材库页的副标题
+        # 就是漏了这一层：容器 844、pack 的 padx 16 → 可用 812，
+        # 而 wraplength 被设成 832，尾巴「基线点名」被切掉半个字。
+        try:
+            _pi = label.pack_info()
+            _p = _pi.get("padx") or 0
+            if isinstance(_p, str):
+                _parts = [int(x) for x in _p.split() if x.strip()]
+                _outer = (_parts[0] * 2) if len(_parts) == 1 else _parts[0] + _parts[1]
+            else:
+                _outer = int(_p) * 2
+        except Exception:
+            _outer = 0
+        margin = pad + 8 + own_pad + _outer
+        def _wrap_now(_l=label):
+            """读当前的 wraplength。
+
+            2026-11-19：**必须 str() 再 int()**。Tk 这里回来的是 Tcl_Obj，
+            直接 `int(_l.cget("wraplength"))` 会抛
+            `TypeError: int() argument must be ... not '_tkinter.Tcl_Obj'`，
+            而这段代码外面包着 `except Exception: pass` —— 异常被静默吞掉，
+            wraplength 永远设不上，文字就整行被裁（空白分析页「例：…」全中）。
+            """
+            try:
+                return int(str(_l.cget("wraplength")) or 0)
+            except Exception:
+                return 0
+        def _sync(e=None, _o=owner, _l=label, _m=margin, _s=scroll, _try=0):
             try:
                 w = _o.winfo_width()
+                fallback = False
+                if w <= 60 and _s is not None:
+                    # 首帧父容器还没算宽度，退一步用滚动区可视宽度兜底。
+                    w = _s.canvas.winfo_width()
+                    fallback = True
                 if w > 60:
-                    _l.configure(wraplength=max(80, w - _m))
+                    want = max(80, w - _m)
+                    if _wrap_now(_l) != want:
+                        _l.configure(wraplength=want)
+                        # 折行结果只能在下一轮空闲里量到，所以推迟一次。
+                        # 用显式无参闭包而不是 lambda：这样它是 after_idle
+                        # 唯一的参数，不会被 Tk 当成事件回调去拼参数。
+                        def _later(_l=_l):
+                            _remeasure(_l)
+                        _l.after_idle(_later)
+                if (w <= 60 or fallback) and _try < 6:
+                    # 2026-11-19：父容器宽度还是 1 时，后来的 <Configure>
+                    # 不一定还会来。空白分析页的「例：…」标签就是在 row 还没
+                    # 布局时建的：当时 master_w=1，只能拿滚动区 canvas 宽度
+                    # 兜底；等布局落定 master 变成 552，wraplength 却停在
+                    # 兜底算出的值上。所以只要这轮用兜底值，就再排一次重试。
+                    def _retry(_o2=_o, _l2=_l, _m2=_m, _s2=_s, _try2=_try + 1):
+                        _sync(None, _o2, _l2, _m2, _s2, _try2)
+                    _l.after(40 * (_try + 1), _retry)
             except Exception:
                 pass
         owner.bind("<Configure>", _sync, add="+")
@@ -284,9 +372,90 @@ def fill_wrap(label, pad=24):
         return label
 
 
+def _scroll_of(widget):
+    """向上找最近的 ScrollArea 祖先；没有就返回 None。"""
+    try:
+        w = widget.master
+        while w is not None:
+            if isinstance(w, ScrollArea):
+                return w
+            w = w.master
+    except Exception:
+        pass
+    return None
+
+
+def _remeasure(widget):
+    """把控件最近的 ScrollArea 祖先重新量一次高度。找不到就什么都不做。"""
+    s = _scroll_of(widget)
+    if s is not None:
+        try:
+            s._fit_height(sync_width=True)
+        except Exception:
+            pass
+
+
 def gap(base_px):
     """间距随字号缩放，保持视觉节奏一致。"""
     return max(2, int(round(base_px * _SCALE * _FS)))
+
+
+def normalize_page_spacing(page):
+    """把页面顶层区块的竖向 pady 收敛到 4px 网格上。
+
+    2026-11-20：实测 14 个页面，横向 padx **全部**是 16（没问题），
+    但竖向 pady 是各页手写的，同一个「页头」位置出现过
+    (4,0)(4,2)(4,8)(5,9)(5,14)(6,2)(7,16)(9,12)(9,14) 九种值 ——
+    都不在 DESIGN.md 的阶梯上。换页时上下边距忽宽忽窄，正是
+    「留白不统一」的观感来源。
+
+    这里不逐行改 100+ 处 pack 调用（改漏一处就又不齐了），
+    而是按**角色**统一：第一个带子件的区块是页头，给它上 8 下 12；
+    其余区块之间一律 16；最后一项收尾也是 16。全部是阶梯上的值。
+
+    只动直接子件的 pady，不碰内部布局，也不会改变控件顺序，
+    所以对已经调好的页面（例如 gap 页矩阵收起、plan 页阶段条）没有影响。
+    """
+    try:
+        kids = [w for w in page.winfo_children()
+                if w.winfo_manager() == "pack"]
+    except Exception:
+        return
+    if not kids:
+        return
+    # 页头 = 第一个「自带子件」的容器；纯 Label 的页头在它前面，
+    # 那些跟着页头一起走，用页头的上边距。
+    head_i = 0
+    for i, w in enumerate(kids):
+        try:
+            if w.winfo_children():
+                head_i = i
+                break
+        except Exception:
+            pass
+
+    def _pady_of(info):
+        """pack_info 的 pady 单值时是 int，双值时是元组，统一成二元组。"""
+        v = info.get("pady", 0)
+        if isinstance(v, (tuple, list)):
+            return (int(v[0]), int(v[1])) if len(v) == 2 else (int(v[0]), 0)
+        return (int(v), int(v))
+
+    for i, w in enumerate(kids):
+        try:
+            info = w.pack_info()
+            if i == head_i:
+                before, after = GAP_SM, GAP_MD
+            elif i < head_i:
+                # 页头之上的小字：不留上边距，跟着页头
+                before, after = (GAP_SM if i == 0 else 0), 0
+            else:
+                before, after = 0, GAP_LG
+            if _pady_of(info) == (before, after):
+                continue
+            w.pack_configure(pady=(before, after))
+        except Exception:
+            pass
 
 
 # --------------------------------------------------------------- 字号档位
@@ -328,6 +497,23 @@ def set_font_step(key):
 
 def font_step():
     return FONT_STEP
+
+
+def step_for_width(width_px):
+    """按屏幕宽度挑一个默认字号档。
+
+    2560/4K 屏上「标准」档的正文只有 15px，整页缩在中间像没加载完；
+    这里按屏宽给出起步档，用户仍可在设置页手动改（手动改即退出自动）。
+    """
+    try:
+        w = int(width_px)
+    except Exception:
+        return "normal"
+    if w >= 2400:
+        return "xlarge"
+    if w >= 1900:
+        return "large"
+    return "normal"
 
 
 def font_scale():
@@ -401,6 +587,43 @@ def T_SECTION():
     return (BASE, -max(16, int(round(18 * _SCALE * _FS))), "bold")
 
 
+def T_PAGE_TITLE():
+    """页面大标题：衬线，和网页的宋体标题同一气质。"""
+    return (SERIF, -max(20, int(round(26 * _SCALE * _FS))), "bold")
+
+
+def T_HERO():
+    """网页版英雄卡标题：衬线、两行重排，字号比 page title 大一档。"""
+    return (SERIF, -max(24, int(round(30 * _SCALE * _FS))), "bold")
+
+
+def T_EYEBROW():
+    """眉标：等宽小字，对应网页的 DIRECTION INTAKE 一类标签。"""
+    return (MONO, -max(11, int(round(11 * _SCALE * _FS))))
+
+
+def T_BRAND():
+    """侧栏品牌名：衬线，字号略大于导航条目。"""
+    return (SERIF, -max(16, int(round(17 * _SCALE * _FS))), "bold")
+
+
+def T_BRAND_SM():
+    """品牌名前面的女神名：比主名小两档，但仍远在 13px 下限之上。"""
+    return (SERIF, -max(13, int(round(13 * _SCALE * _FS))), "bold")
+
+
+def T_BRAND_LG():
+    """侧栏品牌的主名「题谱」：比女神名大两档，用来把品牌和导航条目拉开。
+
+    2026-11-19 加。原来主名与女神名都在 17px 附近（两行断开时看不出主次）。
+    改成一行排开后，主名要明显大一档才立得住。
+    **字号上限由侧栏实际可用宽度封死**：侧栏 210 宽，扣 padx16×2、圆标 34、
+    间隔 9 后剩 135px；「塞莎特」13px + 「 —— 」13px + 「题谱」15px 实测 129px，
+    主名再往上抬一档（16px）就 136px 超界，「题谱」会被 Tk 直接裁掉。
+    """
+    return (SERIF, -max(14, int(round(15 * _SCALE * _FS))), "bold")
+
+
 def T_BODY():
     return (BASE, -max(16, int(round(16 * _SCALE * _FS))))
 
@@ -424,14 +647,24 @@ def T_METRIC(bold=True):
 
 # ---------------------------------------------------------------- 尺寸
 PAD      = 16
-# 2026-11 第 7 版：参考图（运维控制台）用 12px 圆角。
-# 6 太方正像老式 Windows 控件，10 又像气泡；12 是「现代控制台」的手感。
-RADIUS   = 12
-# 侧栏从 216 收到 200：参考图的侧栏是窄柱，条目只有一行字 + 一个小圆点。
-# 留 200 刚好放下最长的「科研方法论」五个字（15px 约 75px）+ 圆点 + 内边距。
-SIDEBAR_W = 200
+# 竖向间距阶梯，直接取自 DESIGN.md「Spacing System」的 4px 基础单位：
+#   xs 4 / sm 8 / md 12 / lg 16 / xl 24 / xxl 32
+# 2026-11-20：以前各页的 pady 是各写各的 —— 同一位置的页头出现过
+# (4,0)(4,2)(4,8)(5,9)(6,2)(9,12)(9,14) 七种值，都不在阶梯上，
+# 于是在换页时能明显看出「上下边距忽宽忽窄」。统一走下面四个常量。
+GAP_XS   = 4
+GAP_SM   = 8
+GAP_MD   = 12
+GAP_LG   = 16
+GAP_XL   = 24
+# 网页版的卡片是 20px 大圆角；桌面端控件更密，取 16 既保留柔和感，
+# 又不会让小卡片看起来像药丸。
+RADIUS   = 16
+# 侧栏对齐网页版的 244px（按 1440 宽计约 17%）。桌面窗口通常更窄，
+# 210 在 1320 宽下正好是同一比例，字号放大时再按 font_scale 微调。
+SIDEBAR_W = 210
 
-TITLE_MAIN = ("知识库助手", "选题智库")
+TITLE_MAIN = ("塞莎特——题谱", "Research Question Atlas")
 
 
 # ================================================================ 组件
@@ -779,12 +1012,14 @@ class Card(tk.Frame):
             self._syncing = False
 
     def pack(self, **kw):
-        if not self._fill_y_pinned:
+        # 只在这次真的传了布局参数时重判；`pack()` 不带参数（重新显示）
+        # 不能当成「不填充」，否则卡片内部滚动区会缩回内容高度。
+        if not self._fill_y_pinned and ("expand" in kw or "fill" in kw):
             self._fill_y = bool(kw.get("expand")) or str(kw.get("fill", "")).find("both") >= 0
         return super().pack(**kw)
 
     def grid(self, **kw):
-        if not self._fill_y_pinned:
+        if not self._fill_y_pinned and "sticky" in kw:
             self._fill_y = kw.get("sticky") in ("nsew", "ns", "nesw", "nswe")
         return super().grid(**kw)
 
@@ -1045,9 +1280,21 @@ class ScrollArea(tk.Frame):
 
     def _wheel(self, e):
         try:
-            if self.canvas.bbox("all") and \
-                    self.canvas.bbox("all")[3] <= self.canvas.winfo_height():
+            # 判断「有没有东西可滚」要看内容请求高度，
+            # **不能**看 bbox("all")：inner 被 itemconfigure 撑到可视高度后，
+            # bbox 就等于 canvas 高度，这里会误判成「没得滚」直接 return，
+            # 于是滚轮在明明溢出的阶段条上完全没反应。
+            vis = self.canvas.winfo_height()
+            req = max(self.inner.winfo_reqheight(), 1)
+            if req <= vis:
                 return
+            # 内容确实溢出：先保证窗口项高度「不限制」且 scrollregion 覆盖全内容，
+            # 否则 yview_scroll 会因为可滚范围不足而原地不动
+            cur = int(float(self.canvas.itemcget(self._win, "height") or 0))
+            if cur:
+                self.canvas.itemconfigure(self._win, height=0)
+            self.canvas.configure(
+                scrollregion=(0, 0, self.canvas.winfo_width(), max(vis, req)))
             self.canvas.yview_scroll(int(-e.delta / 120), "units")
         except Exception:
             pass
@@ -1077,13 +1324,21 @@ class ScrollArea(tk.Frame):
         self.canvas.itemconfigure(self._win, width=max(1, e.width))
         self._fit_height()
 
-    def _fit_height(self):
+    def _fit_height(self, sync_width=False):
         """内容不足一屏时撑满可视高度；超过一屏时保持自身高度并允许滚动。
 
         只能在 Canvas 尺寸变化时调用。**不要**在 inner 的 Configure 里调用，
         否则改高度→触发 Configure→再改高度会形成死循环（曾经真的卡死过）。
+
+        sync_width=True 时顺带把内部窗口宽度对齐 Canvas（内容重建后调用）。
+        宽度平时由 _on_canvas 设，但内容重建时 Canvas 尺寸没变就不会触发
+        <Configure>，inner 会保持上一次的宽度。
         """
         try:
+            if sync_width:
+                w = self.canvas.winfo_width()
+                if w > 1:
+                    self.canvas.itemconfigure(self._win, width=w)
             vis = self.canvas.winfo_height()
             req = self.inner.winfo_reqheight()
             want = max(vis, 1) if req <= vis else 0
@@ -1151,8 +1406,12 @@ class ScrollArea(tk.Frame):
             # 不调 update_idletasks()：它会强制同步完成所有子控件的布局，
             # 一次加了 80 行时这一句就占掉大半时间。
             # 直接更新 scrollregion，后续 Configure 事件会自然完成测量。
+            # sync_width=True：内容重建时 Canvas 尺寸往往没变，<_on_canvas> 不会触发，
+            # 不在这里对齐宽度的话 inner 会沿用旧宽度（曾导致期刊会议详情卡文字被裁）。
             self._update_region()
+            self._fit_height(sync_width=True)
             self.after(30, self._update_region)
+            self.after(30, lambda: self._fit_height(sync_width=True))
         except Exception:
             pass
 
@@ -1224,6 +1483,7 @@ def para(parent, text, color=None, font=None, wrap_px=700, bg=None, pady=(0, 0),
                   font=font or T_BODY_SM(), anchor="w", justify="left",
                   wraplength=wrap(wrap_px))
     lb.pack(fill="x", pady=(0, 3))
+    fill_wrap(lb, pad=0)
     return lb
 
 
@@ -1317,13 +1577,13 @@ class Btn(tk.Label):
         if hints:
             self._cmd = None
         elif cmd:
-            self.bind("<Button-1>", lambda e: self._cmd())
+            self.bind("<Button-1>", lambda e: self.invoke())
         self.bind("<Enter>", lambda e: self.config(bg=self._abg))
         self.bind("<Leave>", lambda e: self.config(bg=self._bg))
 
     def invoke(self):
         """按代码触发一次点击（测试用；也与 tk.Button.invoke 语义一致）。"""
-        if self._cmd:
+        if self._cmd and str(self.cget("state")) != "disabled":
             self._cmd()
 
     def set_command(self, cmd):
@@ -1340,7 +1600,7 @@ class Btn(tk.Label):
         except Exception:
             pass
         if cmd:
-            self.bind("<Button-1>", lambda e: self._cmd())
+            self.bind("<Button-1>", lambda e: self.invoke())
 
     def set_kind(self, kind):
         """切换按钮外观（ghost / primary / danger / ok）。
@@ -1369,11 +1629,11 @@ class Btn(tk.Label):
     def enable(self, on=True):
         """启用/禁用。禁用时同时摘掉点击回调，否则「变灰但还能点」——
         用户以为没生效，其实已经执行了。"""
-        self.config(cursor="hand2" if on else "arrow",
-                    fg=self._fg0 if on else TXT4)
+        self.config(state="normal" if on else "disabled",
+                    cursor="hand2" if on else "arrow", fg=self._fg0 if on else TXT4)
         if on:
             if self._cmd:
-                self.bind("<Button-1>", lambda e: self._cmd())
+                self.bind("<Button-1>", lambda e: self.invoke())
         else:
             self.unbind("<Button-1>")
 

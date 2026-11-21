@@ -136,19 +136,22 @@ CATEGORY_HINTS = [
     ("扩散", "扩散模型"), ("diffusion", "扩散模型"),
     ("aaai", "AAAI"), ("cvpr", "CVPR"), ("iccv", "ICCV"), ("iclr", "ICLR"),
 ]
-ERR = "#ff6f91"
-WARN = "#ffd166"
+ERR = "#a13c2f"
+WARN = "#8a5a00"
 ARXIV_ABS_URL = "https://arxiv.org/abs/"
 STARTUP_DIR = Path(os.environ.get("APPDATA", "")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 STARTUP_BAT = STARTUP_DIR / "知识库助手-开机启动.bat"
 
-ACCENT = "#6be7ff"
-BG = "#031826"
-CARD = "#08344a"
-LINE = "#1b6b8a"
-TXT = "#e6faff"
-MUT = "#a3c9d8"
-OKC = "#43ffc9"
+# 2026-11-18：跟随主应用与竞赛网页的「暖纸底 + 墨色字 + 铜色」体系。
+# 仍是无边框玻璃卡片，只是把原来的深青玻璃换成浅纸玻璃。
+ACCENT = "#5a3f2a"
+BG = "#f6efe3"
+CARD = "#fdf9f1"
+RAISED = "#f2e7d5"
+LINE = "#d9c9b2"
+TXT = "#1f2438"
+MUT = "#6b6155"
+OKC = "#2f6b45"
 MONO = ("Consolas", 9)
 FONT = ("Microsoft YaHei UI", 10)
 FONT_S = ("Microsoft YaHei UI", 10)
@@ -262,15 +265,31 @@ def _inventory():
 
 
 def load_config():
-    try:
-        return json.loads(Path(CONFIG_FILE).read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    """读 config.json；正式文件没有就退回空模板，保证 clone 下来能直接开。
+
+    config.json 不进仓库（本机知识库路径 + 用户自己的检索词），
+    仓库里只有 config.example.json。kbscan.load_config 里是同一套兜底。
+    """
+    for cand in (CONFIG_FILE, Path(CONFIG_FILE).parent / "config.example.json"):
+        try:
+            return json.loads(Path(cand).read_text(encoding="utf-8"))
+        except Exception:
+            continue
+    return {}
+
+
+def _default_kb():
+    """没配 kb_path 时指向程序目录下的 `知识库/`，而不是某台机器上的绝对路径。
+
+    换电脑、或者用户把整个文件夹拷到 U 盘，只要知识库还放在程序目录旁边，
+    不写 config.json 也能直接用。
+    """
+    return HERE / "知识库"
 
 
 def kb_root():
     cfg = load_config()
-    return Path(cfg.get("kb_path", r"G:\相关内容\AuthorKit27\知识库"))
+    return Path(cfg.get("kb_path") or _default_kb())
 
 
 def inbox_dir():
@@ -2739,7 +2758,7 @@ class W:
         self.tools_btn.pack(side="left", padx=(0, 6))
 
         self.menu = tk.Menu(root, tearoff=0, bg=CARD, fg=TXT,
-                            activebackground=ACCENT, activeforeground="#0e1420", bd=0)
+                            activebackground=ACCENT, activeforeground=CARD, bd=0)
         self.menu.add_command(label="始终置顶（当前: 关）", command=self.toggle_pin)
         self.menu.add_separator()
         self.menu.add_command(label="打开新论文目录", command=lambda: self.open_dir("inbox"))
@@ -2775,7 +2794,7 @@ class W:
         self.menu.add_separator()
         self.menu.add_command(label="折叠全部 / 展开全部", command=self._toggle_all_secs)
         self.menu.add_command(label="最小化到桌面", command=self._minimize)
-        self.menu.add_command(label="退出知识库助手", command=self._quit)
+        self.menu.add_command(label="退出塞莎特——题谱", command=self._quit)
         root.bind("<Button-3>", self._popup)
         foot = tk.Frame(shell, bg=BG)
         foot.pack(fill="x", pady=(0, 7))
@@ -2812,7 +2831,7 @@ class W:
 
         def _hov_in(_e, w=hdr):
             for x in (w,) + tuple(w.winfo_children()):
-                x.config(bg="#0a3448")
+                x.config(bg=RAISED)
 
         def _hov_out(_e, w=hdr):
             for x in (w,) + tuple(w.winfo_children()):
@@ -3008,7 +3027,7 @@ class W:
                     '@echo off\r\nstart "" "' + self._runner() + '" "'
                     + str(HERE / "kb_widget.py") + '"\r\n',
                     encoding="ascii")
-                self.status.set("已开启开机自启：登录后自动启动知识库助手")
+                self.status.set("已开启开机自启：登录后自动启动塞莎特——题谱")
         except Exception as exc:
             self.status.set("开机自启设置失败: " + str(exc))
         self._refresh_menu_labels()
@@ -3031,7 +3050,7 @@ class W:
         try:
             b = tk.Toplevel(self.root)
             b.overrideredirect(True)
-            b.configure(bg="#000000")
+            b.configure(bg="#1f2438")
             try:
                 b.attributes("-topmost", True)
             except tk.TclError:
@@ -3039,14 +3058,14 @@ class W:
             ww, wh = 360, 150
             sw, sh = b.winfo_screenwidth(), b.winfo_screenheight()
             b.geometry("%dx%d+%d+%d" % (ww, wh, (sw - ww) // 2, (sh - wh) // 2))
-            tk.Label(b, text="550W", bg="black", fg=ACCENT,
+            tk.Label(b, text="550W", bg="#1f2438", fg="#e2c28e",
                      font=("Consolas", 34, "bold")).pack(pady=(16, 0))
             tk.Label(b, text="KNOWLEDGE ARCHIVE TERMINAL · v3.5",
-                     bg="black", fg=TXT, font=("Consolas", 9)).pack()
-            self._boot_bar = tk.Label(b, text="", bg="black", fg=OKC,
+                     bg="#1f2438", fg="#f3e9d8", font=("Consolas", 9)).pack()
+            self._boot_bar = tk.Label(b, text="", bg="#1f2438", fg="#7fbf8a",
                                       font=("Consolas", 11))
             self._boot_bar.pack(pady=(16, 0))
-            tk.Label(b, text="CLICK / ANY KEY TO SKIP", bg="black", fg=MUT,
+            tk.Label(b, text="CLICK / ANY KEY TO SKIP", bg="#1f2438", fg="#a99a84",
                      font=("Consolas", 8)).pack(pady=(6, 0))
             b.bind("<Key>", lambda e: self._boot_done())
             b.bind("<Button-1>", lambda e: self._boot_done())
@@ -3638,7 +3657,7 @@ class W:
             cfg = load_config()
             ts = task_status()
             self._show_cmd_output([
-                "550W·知识库助手 v3.5",
+                "550W·塞莎特——题谱 v3.5",
                 "监控目录: " + str(HERE),
                 "知识库: " + str(kb_root()),
                 "检索词组: " + str(len(cfg.get("queries", []))) + " 条",
@@ -6406,7 +6425,7 @@ class W:
     def open_dir(self, target):
         try:
             cfg = load_config()
-            kb = Path(cfg.get("kb_path", r"G:\相关内容\AuthorKit27\知识库"))
+            kb = Path(cfg.get("kb_path", _default_kb()))
             if target == "kb":
                 p = kb
             elif target == "inbox":
@@ -6486,7 +6505,7 @@ def run_widget():
     sys.excepthook = _log_exc
     try:
         root = tk.Tk()
-        root.title("知识库助手")
+        root.title("塞莎特——题谱")
         try:
             root.iconbitmap(str(ICON))
         except Exception:

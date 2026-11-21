@@ -1,4 +1,4 @@
-/* 知识库助手 · 体验端前端
+/* 塞莎特——题谱 · 本地体验端前端
  *
  * 设计原则：
  *   1. 不引入任何框架/CDN。体验端要能在断网、内网、手机热点下打开，
@@ -62,7 +62,7 @@
     topics:   ["选题候选", "按「方向 × 切入角度」生成，每个候选都有独立的理由和最小验证实验"],
     gap:      ["文献空白", "读你本地的 PDF 台账，统计方法 / 任务 / 模态 / 问题维度各自被做过多少次"],
     advisors: ["导师与院校", "按方向匹配学者；画像不完整的不会出现在这里"],
-    map:      ["方向图谱", "12 个大类、64 个细分方向，点任意一个直接带进搜索框"],
+    map:      ["方向图谱", "25 个大类、536 个细分方向，点任意一个直接带进搜索框"],
     skills:   ["科研方法论", "七个环节各自的做法和常见坑，不是模板话术"]
   };
 
@@ -88,7 +88,9 @@
       $("s-papers").textContent = num(d.papers);
       $("s-adv").textContent = num(d.complete_advisors || d.advisors);
       $("s-inst").textContent = num(d.institutions);
-      $("s-cat").textContent = num(12);
+      // 2026-11-20：这里原来写死 num(12)，是早期 directions_library.json
+      // 的 12 个大类。接口现在返回真实值（25），别再写死。
+      $("s-cat").textContent = num(d.cats || 0);
     }).catch(function (e) {
       $("s-papers").textContent = "—";
     });
@@ -131,7 +133,7 @@
 
       box.appendChild(el("div", "cand-meta",
         [c.strategy, c.angle].filter(Boolean).join(" · ") +
-        (c.novelty != null ? "　新颖 " + c.novelty + " / 可行 " + c.feasibility : "")));
+        (c.novelty != null ? "　" + (c.relevance != null ? "相关 " + c.relevance + " / " : "") + "新颖 " + c.novelty + " / 可行 " + c.feasibility : "")));
 
       if (c.reason) box.appendChild(el("p", "cand-reason", c.reason));
 

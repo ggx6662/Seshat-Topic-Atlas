@@ -22,7 +22,7 @@ def pump(app, seconds):
 
 
 def shot(app, out, name):
-    doc = tools_shot.find_window("知识库助手", True)
+    doc = tools_shot.find_window("塞莎特——题谱", True)
     if not doc:
         print("窗口没找到")
         return

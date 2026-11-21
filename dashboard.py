@@ -55,15 +55,22 @@ def _decode_output(raw):
 
 
 def load_config():
-    try:
-        return json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    for cand in (CONFIG_FILE, CONFIG_FILE.parent / "config.example.json"):
+        try:
+            return json.loads(cand.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+    return {}
+
+
+def _default_kb():
+    """没配 kb_path 时指向程序目录下的 `知识库/`（换电脑也能用）。"""
+    return Path(__file__).resolve().parent / "知识库"
 
 
 def kb_root():
     cfg = load_config()
-    return Path(cfg.get("kb_path", r"G:\相关内容\AuthorKit27\知识库"))
+    return Path(cfg.get("kb_path") or _default_kb())
 
 
 def inbox_dir():
@@ -284,19 +291,19 @@ PAGE_HTML = r"""<!doctype html>
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>知识库助手</title>
+<title>塞莎特——题谱</title>
 <style>
-:root{--bg:#0f1420;--card:#171e2e;--line:#263049;--txt:#e6ebf5;--mut:#8b96ad;--acc:#4f8cff;--ok:#3ddc97;--warn:#ffb454}
+:root{--bg:#f6efe3;--card:#fdf9f1;--line:#d9c9b2;--txt:#1f2438;--mut:#6b6155;--acc:#5a3f2a;--ok:#2f6b45;--warn:#8a5a00}
 *{box-sizing:border-box}body{margin:0;font-family:"Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--txt)}
 .wrap{max-width:1080px;margin:0 auto;padding:22px 18px 80px}
-h1{font-size:22px;margin:0 0 4px}h1 small{color:var(--mut);font-weight:400;font-size:13px;margin-left:10px}
+h1{font-family:"Noto Serif SC","Songti SC",serif;font-size:24px;margin:0 0 4px}h1 small{color:var(--mut);font-weight:400;font-size:13px;margin-left:10px}
 .sub{color:var(--mut);font-size:13px;margin-bottom:18px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .card .k{font-size:12px;color:var(--mut)}.card .v{font-size:20px;font-weight:700;margin-top:4px;word-break:break-all}
 .card .v.s{font-size:14px}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-button{background:var(--acc);color:#fff;border:0;border-radius:9px;padding:9px 16px;font-size:14px;cursor:pointer}
+button{background:var(--acc);color:#fdf9f1;border:0;border-radius:9px;padding:9px 16px;font-size:14px;cursor:pointer}
 button.ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
 button:disabled{opacity:.55;cursor:not-allowed}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:14px}
@@ -305,7 +312,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .panel ul{margin:6px 0;padding-left:20px;line-height:1.7}
 .panel p{line-height:1.7;margin:6px 0;font-size:13.5px}
 .panel p.num{color:var(--warn)}
-pre{background:#0b1018;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px;color:var(--mut);line-height:1.5;white-space:pre-wrap}
+pre{background:#f1e7d6;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px;color:var(--mut);line-height:1.5;white-space:pre-wrap}
 .muted{color:var(--mut)}
 .pills{display:flex;gap:6px;flex-wrap:wrap}.pill{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--mut)}
 dialog{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:18px;max-width:520px}
@@ -313,7 +320,7 @@ dialog{background:var(--card);color:var(--txt);border:1px solid var(--line);bord
 </head>
 <body>
 <div class=wrap>
-<h1>知识库助手 <small>RGB-T / 多模态检测 · 文献情报</small></h1>
+<h1>塞莎特——题谱 <small>RGB-T / 多模态检测 · 文献情报</small></h1>
 <div class=sub id=now></div>
 <div class=grid id=cards></div>
 <div class=row>

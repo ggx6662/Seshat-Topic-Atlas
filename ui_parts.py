@@ -541,12 +541,19 @@ class Section(tk.Frame):
         self._arrow = tk.Label(head, text="▸" if not open else "▾", bg=self._bg,
                                fg=T.TXT3, font=T.T_BODY_SM(), width=2, anchor="w")
         self._arrow.pack(side="left")
-        tk.Label(head, text=title, bg=self._bg, fg=T.TXT2, font=T.T_LABEL(),
-                 anchor="w").pack(side="left")
+        labels = tk.Frame(head, bg=self._bg, cursor="hand2")
+        self._title_labels = labels
+        labels.pack(side="left", fill="x", expand=True)
+        title_label = tk.Label(labels, text=title, bg=self._bg, fg=T.TXT,
+                               font=T.T_SECTION(), anchor="w", justify="left")
+        title_label.pack(fill="x")
+        T.fill_wrap(title_label)
         if sub:
-            tk.Label(head, text="  " + sub, bg=self._bg, fg=T.TXT3,
-                     font=T.T_CAPTION(), anchor="w").pack(side="left")
-        for w in (head, self._arrow) + tuple(head.winfo_children()):
+            sub_label = tk.Label(labels, text=sub, bg=self._bg, fg=T.TXT3,
+                                 font=T.T_CAPTION(), anchor="w", justify="left")
+            sub_label.pack(fill="x", pady=(2, 0))
+            T.fill_wrap(sub_label)
+        for w in (head, self._arrow, labels) + tuple(labels.winfo_children()):
             try:
                 w.bind("<Button-1>", lambda e: self.toggle())
                 w.bind("<Enter>", lambda e: self._hover(True))
@@ -561,9 +568,7 @@ class Section(tk.Frame):
     def _hover(self, on):
         try:
             col = T.TXT if on else T.TXT2
-            for w in (self._arrow,) + tuple(self._arrow.master.winfo_children()):
-                if w is not self._arrow:
-                    w.config(fg=col)
+            self._title_labels.winfo_children()[0].config(fg=col)
         except Exception:
             pass
 
@@ -888,32 +893,37 @@ class WrapRow(tk.Frame):
         if not force and abs(w - self._last_w) < 8:
             return
         self._last_w = w
-        # 先算好每项该在哪一格，再和上一次比对：
-        # 位置没变的控件不动它（grid 的 forget+grid 会产生一帧闪烁，
-        # 而 WrapRow 的 <Configure> 是随窗口拖动高频触发的）。
+        # 用 place 手工定位：grid 的列宽是「各行同一列的最大值」，
+        # 折行后这些列宽相加会把 WrapRow 自己的请求宽度撑到整行总和，
+        # 嵌进按比例分栏时就会把另一栏挤扁。place 不参与请求宽度计算。
         plan = []
-        x = y = 0
+        x = y = rowh = 0
         for it in self._items:
             try:
                 iw = it.winfo_reqwidth()
+                ih = it.winfo_reqheight()
             except Exception:
-                iw = 90
-            if x and x + iw + self._gap > w:
+                iw, ih = 90, 30
+            if x and x + iw > w:
                 x = 0
-                y += 1
-            plan.append((y, x))
+                y += rowh + self._rowgap
+                rowh = 0
+            plan.append((x, y, iw, ih))
             x += iw + self._gap
+            rowh = max(rowh, ih)
         old = getattr(self, "_plan", [])
-        if not force and old == plan:
-            self._rows = (plan[-1][0] + 1) if plan else 0
-            return
         self._plan = plan
-        for it in self._items:
-            it.grid_forget()
-        for it, (ry, rx) in zip(self._items, plan):
-            it.grid(row=ry, column=rx, sticky="w",
-                    padx=(0, self._gap), pady=(0, self._rowgap))
-        self._rows = (plan[-1][0] + 1) if plan else 0
+        if not force and old == plan:
+            return
+        for it, (px, py, iw, ih) in zip(self._items, plan):
+            it.place(x=px, y=py, width=iw, height=ih)
+        self.configure(height=y + rowh)
+        self._rows = 0
+        prev = None
+        for (_, ry, _, _) in plan:
+            if ry != prev:
+                self._rows += 1
+                prev = ry
 
 
 def btn_row(parent, widgets, **kw):

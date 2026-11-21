@@ -1,0 +1,93 @@
+function reviewHtml() {
+  const pending = state.pending;
+  if (!pending) return "";
+  const { query, entry, confidence, best = [] } = pending;
+  const matched = Boolean(entry);
+  const directionName = entry ? (entry.aliasOf || entry.name) : query;
+  const category = entry?.category || "未归类";
+  const terms = entry ? matchedTerms(entry, query) : [];
+  const alternatives = best
+    .filter((row) => row.entry && row.entry.name !== entry?.name)
+    .slice(0, 4);
+  const near = confidence === "near";
+  const apps = pending.apps || [];
+  const altHtml = alternatives.length
+    ? `<div class="review-block">
+        <span class="review-label">相邻方向</span>
+        <div class="review-alts">
+          ${alternatives.map((row) => `
+            <button type="button" class="review-alt" data-action="choose-direction" data-name="${escapeHtml(row.entry.name)}">
+              <span>${escapeHtml(row.entry.aliasOf || row.entry.name)}</span>
+              <small>${escapeHtml(row.entry.category || "未归类")}</small>
+            </button>`).join("")}
+        </div>
+      </div>`
+    : "";
+
+  return `
+    <section class="review-panel" aria-live="polite">
+      <div class="review-head">
+        <div class="review-kicker"><span>DIRECTION REVIEW</span><b>02</b></div>
+        <h2>${matched ? "确认方向后生成候选。" : "方向库中没有这个说法。"}</h2>
+        <p>${matched
+          ? "确认这次识别的方向与应用场景。候选数量会随方向关键词的关联强度变化。"
+          : "可以改选最接近的方向，或使用全库数据继续生成。"}</p>
+      </div>
+
+      <div class="review-grid is-single">
+        <div class="review-main">
+          <div class="review-block">
+            <span class="review-label">你的输入</span>
+            <p class="review-query">${escapeHtml(query)}</p>
+          </div>
+
+          <div class="review-block">
+            <span class="review-label">识别结果</span>
+            <div class="review-match">
+              <div>
+                <strong>${escapeHtml(directionName)}</strong>
+                <span class="review-cat">${escapeHtml(category)}</span>
+              </div>
+              <span class="badge ${matched ? "badge-accent" : "badge-warn"}">${matched ? (pending.source === "tags" ? "标签组合命中" : pending.source === "browse" ? "目录选择" : confidenceLabel(confidence)) : "未命中方向库"}</span>
+            </div>
+            ${entry?.aliasOf ? `<p class="review-alias">方向库中对应：${escapeHtml(entry.name)}</p>` : ""}
+            ${near ? `<p class="review-warn">${icon("alert")} 近似匹配，请确认方向是否正确。</p>` : ""}
+          </div>
+
+          ${apps.length ? `
+          <div class="review-block">
+            <span class="review-label">应用场景</span>
+            <div class="review-terms">
+              ${apps.map((app) => `<span class="badge badge-accent">${escapeHtml(app.name)}<em>${escapeHtml(app.group || "")}</em></span>`).join("")}
+            </div>
+          </div>` : ""}
+
+          <div class="review-block">
+            <span class="review-label">匹配依据</span>
+            <div class="review-terms">
+              ${terms.length
+                ? terms.map((item) => `<span class="badge">${escapeHtml(item.label)}<em>${escapeHtml(item.kind)}</em></span>`).join("")
+                : `<span class="review-empty">${matched ? "按方向名直接匹配" : "没有可展示的匹配词"}</span>`}
+            </div>
+          </div>
+
+          <div class="review-block review-next">
+            <span class="review-label">下一步</span>
+            <p>按方向关键词与场景标签生成可核查的候选，并附上数据集、指标与基线。数据关系可在素材库单独核对。</p>
+            <button type="button" class="btn btn-quiet" data-action="go-materials">${icon("book")} 在素材库查看数据与基线</button>
+          </div>
+
+          ${altHtml}
+        </div>
+      </div>
+
+      <div class="review-actions">
+        ${matched
+          ? `<button type="button" class="btn btn-primary" data-action="confirm-direction">确认方向，生成候选 ${icon("arrow")}</button>`
+          : `<button type="button" class="btn btn-primary" data-action="confirm-direction" data-mode="fallback">仍然用「${escapeHtml(query)}」生成候选 ${icon("arrow")}</button>`}
+        <button type="button" class="btn" data-action="reset-direction">${matched ? "重新输入" : "换一个方向"}</button>
+        <span class="review-action-note">确认后仍可改选候选、改写描述并做结构体检。</span>
+      </div>
+    </section>`;
+}
+

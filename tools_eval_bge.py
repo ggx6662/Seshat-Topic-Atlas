@@ -12,6 +12,7 @@ bge 的用法要点
 * 53.8 万篇 CPU 编码约 1.5–2 小时，所以先用 5 万篇做判据。
 """
 import json
+import os
 import sys
 import time
 
@@ -19,7 +20,11 @@ import numpy as np
 
 from tools_eval_vector import CASES, hit
 
-BGE_DIR = r"G:\kb-vector\models\bge-small-zh-v1.5"
+try:
+    import kb_vector as _KV
+    BGE_DIR = str(_KV.BASE / "models" / "bge-small-zh-v1.5")
+except Exception:
+    BGE_DIR = r"G:\kb-vector\models\bge-small-zh-v1.5"
 PREFIX = "为这个句子生成表示以用于检索相关文章："
 SAMPLE = 50000
 
@@ -126,7 +131,8 @@ def main():
     out = {"sample": len(docs), "dims": dim, "top5_pct": pct,
            "est_full_hours": round(est_h, 2), "verdict": verdict,
            "cases": [{"q": q, "hit": h} for q, h, _ in rows]}
-    with open(r"G:\kb-vector\index\eval_bge.json", "w", encoding="utf-8") as f:
+    with open(os.path.join(os.path.dirname(BGE_DIR), os.pardir, "index", "eval_bge.json"), "w",
+              encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     return 0
 

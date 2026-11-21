@@ -37,9 +37,30 @@ ARXIV_ABS = "https://arxiv.org/abs/{}"
 ARXIV_PDF = "https://arxiv.org/pdf/{}"
 
 
+def _default_kb():
+    """没配 kb_path 时指向程序目录下的 `知识库/`（换电脑也能用）。"""
+    return Path(__file__).resolve().parent / "知识库"
+
+
+# config.json 不进仓库（里面是本机的知识库路径和用户自己的研究方向），
+# 公开仓库里只有一份空模板 config.example.json。找不到正式配置就退回模板，
+# 保证 clone 下来不写任何东西也能启动。
+CONFIG_EXAMPLE = "config.example.json"
+
+
+def _read_config(path):
+    """读配置；正式文件不存在时退回模板，模板也没有就给空字典。"""
+    for cand in (path, Path(path).parent / CONFIG_EXAMPLE):
+        try:
+            return json.loads(Path(cand).read_text(encoding="utf-8"))
+        except Exception:
+            continue
+    return {}
+
+
 def load_config(path):
-    cfg = json.loads(Path(path).read_text(encoding="utf-8"))
-    cfg.setdefault("kb_path", r"G:\相关内容\AuthorKit27\知识库")
+    cfg = _read_config(path)
+    cfg.setdefault("kb_path", str(_default_kb()))
     cfg.setdefault("inbox_dir", "新论文")
     cfg.setdefault("days_back", 7)
     cfg.setdefault("max_results_per_query", 8)

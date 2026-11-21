@@ -29,6 +29,113 @@ import app_theme as T
 from ui_parts import WrapRow   # 会自动折行的按钮排
 import plan_store as PS
 import ui_parts as U
+import ui_kit as UK
+
+
+class _PlanMeta(tk.Frame):
+    """紧凑元信息；保留原指标控件的读写接口，不评价计划。"""
+
+    def __init__(self, parent):
+        super().__init__(parent, bg=T.BG)
+        self._vals = {}
+        self._summary = tk.Label(self, text="", bg=T.BG, fg=T.TXT3,
+                                 font=T.T_CAPTION(), anchor="w", justify="left",
+                                 wraplength=1)
+        self._summary.pack(fill="x", pady=(0, T.sp(4)))
+        T.fill_wrap(self._summary, pad=4)
+
+    def set_values(self, values):
+        self._vals.update({str(k): str(v) for k, v in values.items()})
+        # 四项之间用不换行空格（U+00A0）连起来，让 Tk 的折行只在
+        # 「项与项之间」断开。用普通空格的话，「8 小时」会被拆成
+        # 「…每周投入 8」/「小时」，1080 宽下实测就是这一行。
+        # 分隔符本身用 ·，两侧各留一个 NBSP，断行点落在 · 上最自然。
+        self._summary.config(text="\u00a0·\u00a0".join(
+            "%s\u00a0%s" % (key, self._vals.get(key, "—"))
+            for key in ("当前阶段", "待办", "已过期", "每周投入")))
+
+    def values(self):
+        return dict(self._vals)
+
+    @property
+    def expanded(self):
+        return False
+
+
+class _StageStrip(tk.Frame):
+    """截止权重分配宽度；窄屏分行并给完整文字留出阅读下限。"""
+
+    def __init__(self, parent):
+        super().__init__(parent, bg=T.CARD, height=1)
+        self.entries = []
+        self._job = None
+        self.bind("<Configure>", self._request_layout)
+
+    def _request_layout(self, _event=None):
+        if self._job is None:
+            self._job = self.after_idle(self._layout)
+
+    def _layout(self):
+        self._job = None
+        width = self.winfo_width()
+        if width <= 1 or not self.entries:
+            return
+        gap = T.sp(6)
+        minimum = T.sp(132)
+        cols = max(1, min(len(self.entries), (width + gap) // (minimum + gap)))
+        rows = []
+        for start in range(0, len(self.entries), cols):
+            entries = self.entries[start:start + cols]
+            avail = width - gap * (len(entries) - 1)
+            # 先按原截止权重分配，过窄的块锁到阅读下限，其余继续按权重分。
+            floor = min(minimum, avail // len(entries))
+            sizes = [0] * len(entries)
+            pending = list(range(len(entries)))
+            remaining = avail
+            while pending:
+                total = sum(entries[i][1] for i in pending)
+                small = [i for i in pending
+                         if remaining * entries[i][1] / total < floor]
+                if not small:
+                    for i in pending:
+                        sizes[i] = int(remaining * entries[i][1] / total)
+                    sizes[pending[-1]] += remaining - sum(sizes[i] for i in pending)
+                    break
+                for i in small:
+                    sizes[i] = floor
+                    remaining -= floor
+                    pending.remove(i)
+            x = 0
+            for (box, _weight, labels), size in zip(entries, sizes):
+                for label in labels:
+                    label.config(wraplength=max(1, size - T.sp(18)))
+                box.place(x=x, y=0, width=size)
+                x += size + gap
+            rows.append((entries, sizes))
+        self._job = self.after_idle(lambda: self._finish_layout(rows, width, gap))
+
+    def _finish_layout(self, rows, width, gap):
+        self._job = None
+        if width != self.winfo_width():
+            self._request_layout()
+            return
+        y = 0
+        for entries, sizes in rows:
+            height = max(box.winfo_reqheight() for box, _, _ in entries)
+            x = 0
+            for (box, _, _), size in zip(entries, sizes):
+                box.place(x=x, y=y, width=size, height=height)
+                x += size + gap
+            y += height + gap
+        wanted = max(1, y - gap)
+        if self.winfo_height() != wanted:
+            self.config(height=wanted)
+
+    def destroy(self):
+        if self._job is not None:
+            self.after_cancel(self._job)
+            self._job = None
+        super().destroy()
 
 PAGE_HINT = "阶段与截止 · 待办勾选 · 挂选题 · 每周投入"
 
@@ -36,8 +143,8 @@ PLAN_HELP = """\
 这里是你自己排的科研进度，和左边那几个页面不是一回事：那些页面给你材料，这一页排你的时间。
 
 一、上方的阶段横条
-· 每个阶段一个方块，宽度按「到截止日还有多久」的比例画，所以越靠右越远。
-· 颜色只表状态：灰色还没到、黄色 7 天内、红色已经过期。已经勾完成的画成实心。
+· 每个阶段一个方块，宽度按截止日与今天的天数差分配；窄屏保留阅读下限并分行。
+· 颜色只表状态：灰色还没到、黄色 7 天内、红色已经过期。已完成的淡化，选中的浅棕强调。
 · 横条只做减法 —— 拿截止日期减今天。系统**不预测**你几天能做完，因为没有任何数据支撑。
 
 二、待办
@@ -46,8 +153,8 @@ PLAN_HELP = """\
 · 可以挂到一条选题或一个研究方向，之后在总览页和选题页能对上。
 
 三、每周投入
-· 填你平均一周能拿出几小时。它只用来算「这周还剩几小时」，不会被拿来评价进度。
-· 剩余小时按「未完成待办数 ÷ 每周小时数」估算，是**提醒**不是承诺。
+· 点「每周投入」记录平均一周能拿出几小时，也可以设为 0 表示不设。
+· 这里只展示投入，不根据待办条数估算工期，也不拿它评价进度。
 
 四、这里不做的事
 不打分，不排期，不弹窗提醒。过期的东西标红，剩下的由你自己决定。"""
@@ -57,7 +164,7 @@ def _fmt_days(st, days):
     if st == "none":
         return "没填截止日"
     if st == "over":
-        return "已过期 %d 天" % (-days)
+        return "已逾期 %d 天" % (-days)
     if days == 0:
         return "今天到期"
     return "还剩 %d 天" % days
@@ -79,69 +186,102 @@ class PlanPage(tk.Frame):
     # ------------------------------------------------------------ 布局
     def _build(self):
         top = tk.Frame(self, bg=T.BG)
-        top.pack(fill="x", padx=T.PAD, pady=(4, 8))
-        self._hint = U.Hint(top, PLAN_HELP, summary="怎么用这一页", bg=T.BG)
-        self._hint.pack(side="left", fill="x", expand=True)
-        T.Btn(top, "加待办", self.add_todo, "primary").pack(side="right")
-        # 「加阶段」在空计划状态下不挂出来：空态卡里已经有「用推荐阶段起步」，
-        # 两个按钮并排会让用户以为必须先建阶段才能加待办。有阶段后再出现。
-        self._stage_btn = T.Btn(top, "加阶段", self.add_stage)
-        self._stage_btn.pack(side="right", padx=(0, 6))
+        top.pack(fill="x", padx=T.PAD, pady=(T.sp(8), T.sp(10)))
+        title_row = tk.Frame(top, bg=T.BG)
+        title_row.pack(fill="x")
+        actions = WrapRow(title_row, bg=T.BG, gap=T.sp(6))
+        actions.config(width=T.sp(360))
+        actions.pack(side="right", anchor="n")
+        tk.Label(title_row, text="研究计划", bg=T.BG, fg=T.TXT,
+                 font=T.T_PAGE_TITLE(), anchor="w").pack(side="left")
+        actions.add(T.Btn(actions, "加待办", self.add_todo, "primary"))
+        # 单独的宿主可隐藏，不从 WrapRow 的控件列表里销毁或摘除按钮。
+        self._stage_action = tk.Frame(actions, bg=T.BG)
+        self._stage_btn = T.Btn(self._stage_action, "加阶段", self.add_stage)
+        self._stage_btn.pack()
+        actions.add(self._stage_action)
+        actions.add(T.Btn(actions, "每周投入", self.set_weekly))
+        self._hint = U.Hint(top, PLAN_HELP,
+                            summary="由你安排阶段与截止，不自动排期 · 使用说明", bg=T.BG)
+        self._hint.pack(fill="x", pady=(4, 0))
+        T.fill_wrap(self._hint._detail, pad=4)
 
+        # 这个宿主始终保留，作为阶段横条与正文重新 pack 时的顺序锚点。
         self.metric_row = tk.Frame(self, bg=T.BG)
         self.metric_row.pack(fill="x", padx=T.PAD)
-        self._metrics = U.FoldMetrics(
-            self.metric_row,
-            [("当前阶段", "—"), ("待办", "0 / 0"), ("已过期", "0"), ("每周投入", "—")],
-            bg=T.BG, cols=4)
+        self._metrics = _PlanMeta(self.metric_row)
         self._metrics.pack(fill="x")
 
-        # 阶段横条
-        self.stage_card = T.Card(self, pad=12, fill_y=False)
-        self.stage_card.pack(fill="x", padx=T.PAD, pady=(10, 8))
-        T.card_head(self.stage_card.body, "阶段", "宽度按到截止日的远近画", bg=T.CARD)
-        self.stage_box = tk.Frame(self.stage_card.body, bg=T.CARD)
-        self.stage_box.pack(fill="x")
+        self.stage_card = T.Card(self, pad=T.sp(12), fill_y=False)
+        self.stage_card.pack(fill="x", padx=T.PAD, pady=(T.sp(8), T.sp(10)))
+        # 2026-11-20：卡头单独存引用 —— 空间极紧时要把它收起来。
+        # 1080×680 + xlarge 字号档（_FS=1.3）下，这一行「阶段与截止 ·
+        # 点击修改」连 pady 要 45px，收起来正好够待办露出第一条。
+        self._stage_head = tk.Label(
+            self.stage_card.body, text="阶段与截止 · 点击修改", bg=T.CARD,
+            fg=T.TXT3, font=T.T_CAPTION(), anchor="w")
+        self._stage_head.pack(fill="x", pady=(0, 6))
+        self.stage_scroll = T.ScrollArea(self.stage_card.body, bg=T.CARD, height=T.sp(128))
+        self.stage_scroll.pack(fill="x")
+        # 记住卡头被收起来之前的位置 —— pack_forget 之后想放回去必须给 before=，
+        # 否则它会跑到 stage_scroll 后面去（实测放回一次阶段条就沉到卡片底下）。
+        self._stage_head_before = self.stage_scroll
+        self._stage_scroll_ref = self.stage_scroll
+        self.stage_box = self.stage_scroll.inner
+        # 2026-11-20：窗口最小尺寸 1080×680 时，阶段卡要吃掉 214px 里的大半，
+        # 而下面的待办列表和计划详情是真正要操作的东西 —— 阶段条占 128 之后
+        # 待办只剩 73px（两行都看不全）。改成按页高收阶段条：矮窗里压到 96，
+        # 阶段仍然能滚，但把空间还给待办。
+        self.bind("<Configure>", self._fit_stage_height, add="+")
+        # 首帧 <Configure> 不一定还会来（PagePlan 是 pack(expand=True) 的，
+        # 父容器高度定下来以后它自己的高度就没再变过，实测 _stage_h 一直是
+        # None、阶段条停在 147）。所以建完先排一次，reload 之后再排一次。
+        self.after_idle(self._fit_stage_height)
 
-        # 主体两栏：待办（左）+ 详情（右）
         body = tk.Frame(self, bg=T.BG)
-        body.pack(fill="both", expand=True, padx=T.PAD, pady=(0, 14))
-        body.grid_columnconfigure(0, weight=5, uniform="c")
-        body.grid_columnconfigure(1, weight=5, uniform="c")
+        body.pack(fill="both", expand=True, padx=T.PAD, pady=(0, T.sp(14)))
+        body.grid_columnconfigure(0, weight=2, minsize=T.sp(260), uniform="plan")
+        body.grid_columnconfigure(1, weight=3, minsize=T.sp(320), uniform="plan")
         body.grid_rowconfigure(0, weight=1)
         self._body = body
 
-        left = T.Card(body, pad=10)
-        left.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        left = T.Card(body, pad=T.sp(12))
+        left.grid(row=0, column=0, sticky="nsew", padx=(0, T.sp(10)))
         self._left = left
+        UK.eyebrow(left.body, "TO DO", "02").pack(fill="x")
         head = tk.Frame(left.body, bg=T.CARD)
-        head.pack(fill="x", pady=(0, 6))
-        tk.Label(head, text="待办", bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                 anchor="w").pack(side="left")
-        self.todo_count = tk.Label(head, text="", bg=T.CARD, fg=T.TXT4,
+        head.pack(fill="x", pady=(4, 8))
+        self.todo_count = tk.Label(head, text="", bg=T.CARD, fg=T.TXT3,
                                    font=T.T_CAPTION(), anchor="e")
         self.todo_count.pack(side="right")
+        tk.Label(head, text="待办清单", bg=T.CARD, fg=T.TXT, font=T.T_SECTION(),
+                 anchor="w").pack(side="left")
         self.todo_scroll = T.ScrollArea(left.body, bg=T.CARD)
         self.todo_scroll.pack(fill="both", expand=True)
 
-        right = T.Card(body, pad=14)
+        right = T.Card(body, pad=T.sp(16))
         right.grid(row=0, column=1, sticky="nsew")
         self._right = right
-        self.detail_head = tk.Label(right.body, text="选一条待办或一个阶段",
-                                    bg=T.CARD, fg=T.TXT, font=T.T_BODY(), anchor="w",
-                                    justify="left", wraplength=430)
-        self.detail_head.pack(fill="x")
-        self.detail_sub = tk.Label(right.body, text="", bg=T.CARD, fg=T.TXT3,
-                                   font=T.T_CAPTION(), anchor="w", justify="left",
-                                   wraplength=430)
-        self.detail_sub.pack(fill="x", pady=(2, 8))
+        UK.eyebrow(right.body, "PLAN DETAIL", "03").pack(fill="x", pady=(0, 8))
+        # 标题、挂钩和操作全部在同一个滚动正文中，长内容不会挤掉编辑区。
         self.detail_scroll = T.ScrollArea(right.body, bg=T.CARD)
         self.detail_scroll.pack(fill="both", expand=True)
+        self.detail_head = tk.Label(self.detail_scroll.inner, text="选一条待办或一个阶段",
+                                    bg=T.CARD, fg=T.TXT, font=T.T_SECTION(), anchor="w",
+                                    justify="left", wraplength=1)
+        self.detail_head.pack(fill="x")
+        T.fill_wrap(self.detail_head, pad=4)
+        self.detail_sub = tk.Label(self.detail_scroll.inner, text="", bg=T.CARD, fg=T.TXT3,
+                                   font=T.T_CAPTION(), anchor="w", justify="left",
+                                   wraplength=1)
+        self.detail_sub.pack(fill="x", pady=(4, 12))
+        T.fill_wrap(self.detail_sub, pad=4)
         self.detail_box = tk.Frame(self.detail_scroll.inner, bg=T.CARD)
-        self.detail_box.pack(fill="both", expand=True)
-
-        # 空态：计划完全是空的时候，两栏收起，只留引导
+        self.detail_box.pack(fill="x")
         self._welcome = tk.Frame(self, bg=T.BG)
+        for area in (self.stage_scroll, self.todo_scroll, self.detail_scroll):
+            area.canvas.bind("<Configure>", lambda e, a=area:
+                             a.canvas.itemconfigure(a._win, height=0), add="+")
 
     # ------------------------------------------------------------ 数据
     def reload(self):
@@ -154,13 +294,7 @@ class PlanPage(tk.Frame):
     def _render_metrics(self):
         p = PS.progress()
         cur = p.get("current")
-        if cur:
-            name = str(cur.get("name") or "")
-            if len(name) > 14:
-                name = name[:13] + "…"
-            cur_txt = name
-        else:
-            cur_txt = "—"
+        cur_txt = str(cur.get("name") or "") if cur else "—"
         self._metrics.set_values({
             "当前阶段": cur_txt,
             "待办": "%d / %d" % (p["todos_done"], p["todos_total"]),
@@ -174,68 +308,65 @@ class PlanPage(tk.Frame):
             w.destroy()
         stages = self.plan.get("stages") or []
         if not stages:
-            self.stage_box.pack_forget()
             self.stage_card.pack_forget()
             return
-        if not self.stage_card.winfo_ismapped():
-            self.stage_card.pack(fill="x", padx=T.PAD, pady=(10, 8),
+        if not self.stage_card.winfo_manager():
+            self.stage_card.pack(fill="x", padx=T.PAD, pady=(T.sp(8), T.sp(10)),
                                  after=self.metric_row)
-        if not self.stage_box.winfo_ismapped():
-            self.stage_box.pack(fill="x")
 
-        # 每个阶段一个方块，**权重按天数** —— 这样时间轴是等比例的，
-        # 不需要画刻度线就能看出「哪一段最长」。
-        open_stages = [s for s in stages if not s.get("done")]
-        weights = []
+        row = _StageStrip(self.stage_box)
+        row.pack(fill="x")
         for s in stages:
             st, days = PS.due_state(s.get("due"))
-            if st == "none":
-                weights.append(10.0)
-            else:
-                weights.append(min(120.0, max(6.0, float(abs(days) + 1))))
-        row = tk.Frame(self.stage_box, bg=T.CARD)
-        row.pack(fill="x")
-        for i, s in enumerate(stages):
-            row.grid_columnconfigure(i, weight=int(weights[i] * 4), uniform="")
-            st, days = PS.due_state(s.get("due"))
+            # 2026-11-20：权重改成「越紧急越宽」。
+            # 旧公式 min(120, max(6, abs(days)+1)) 让「还剩 40 天」拿到 41、
+            # 「已逾期 3 天」只有 4 —— 差 10 倍，1080 下第三块独占 466px
+            # 而前两块被地板锁在 132，于是「已逾期」那一格最窄、日期和
+            # 「还剩 N 天」被折成两行往下溢出。现在按状态给档：
+            # 逾期 3.0、7 天内 2.4、较远 1.6、没填 1.2，彼此差距不超过
+            # 2.5 倍，宽度大致均匀，紧急的那块略宽一眼能看出来。
+            weight = {"over": 3.0, "soon": 2.4, "none": 1.2}.get(st, 1.6)
+            if s.get("done"):
+                weight = 1.0  # 已完成的最窄，把空间让给还没做的
             active = self.sel_stage == s["id"]
             if s.get("done"):
                 bgc, fgc = T.CARD_HI, T.TXT3
             elif active:
-                bgc, fgc = T.ACCENT_D, T.ACCENT
+                bgc, fgc = T.tint(T.ACCENT, 0.10, T.CARD), T.ACCENT
             else:
-                bgc, fgc = T.tint(_state_color(st), 0.16, T.CARD), _state_color(st)
-
+                bgc, fgc = T.tint(_state_color(st), 0.08, T.CARD), _state_color(st)
             box = tk.Frame(row, bg=bgc, cursor="hand2")
-            box.grid(row=0, column=i, sticky="nsew",
-                     padx=(0 if i == 0 else 4, 0))
-            kind = "done" if s.get("done") else "open"
-            if kind == "done" or active:
-                # 选中 / 已完成 → 上方一条色带
-                bar = tk.Frame(box, bg=(T.ACCENT if active else T.TXT3), height=2)
-                bar.pack(fill="x")
-            else:
-                tk.Frame(box, bg=bgc, height=2).pack(fill="x")
-            name = str(s.get("name") or "")
-            # 阶段名里带「·」（"读文献 · 摸清现状"），窄方块里会被断成
-            # 「读文献·」+「摸清现状」两行，看着像结巴。这里拆成两段：
-            # 主名一行（必要时省略），补充说明小一号字跟在下面。
-            main, _, tail = name.partition(" · ")
-            nl = tk.Label(box, text=main or name, bg=bgc, fg=fgc,
-                          font=T.T_LABEL(), anchor="w", justify="left")
-            nl.pack(fill="x", padx=7, pady=(4, 0))
-            T.fill_wrap(nl, pad=20)
+            tk.Frame(box, bg=T.ACCENT if active else (T.TXT3 if s.get("done") else bgc),
+                     height=2).pack(fill="x")
+            main, _, tail = str(s.get("name") or "").partition(" · ")
+            labels = []
+            nl = tk.Label(box, text=main, bg=bgc, fg=fgc, font=T.T_LABEL(),
+                          anchor="w", justify="left", wraplength=1)
+            nl.pack(fill="x", padx=T.sp(7), pady=(T.sp(6), 0))
+            labels.append(nl)
             if tail:
-                tl = tk.Label(box, text=tail, bg=bgc,
-                              fg=(T.TXT3 if s.get("done") else fgc),
-                              font=T.T_CAPTION(), anchor="w", justify="left")
-                tl.pack(fill="x", padx=7, pady=(1, 0))
-                T.fill_wrap(tl, pad=20)
-            tk.Label(box, text=_fmt_days(st, days), bg=bgc,
-                     fg=(T.TXT3 if s.get("done") else fgc),
-                     font=T.T_CAPTION(), anchor="w").pack(fill="x", padx=7, pady=(1, 6))
+                tl = tk.Label(box, text=tail, bg=bgc, fg=fgc, font=T.T_CAPTION(),
+                              anchor="w", justify="left", wraplength=1)
+                tl.pack(fill="x", padx=T.sp(7), pady=(2, 0))
+                labels.append(tl)
+            due = s.get("due") or "未设截止"
+            status = "已完成" if s.get("done") else _fmt_days(st, days)
+            dl = tk.Label(box, text=due + "\n" + status, bg=bgc, fg=fgc,
+                          font=T.T_CAPTION(), anchor="w", justify="left", wraplength=1)
+            dl.pack(fill="x", padx=T.sp(7), pady=(4, T.sp(7)))
+            labels.append(dl)
+            row.entries.append((box, weight, labels))
             for w in (box, *box.winfo_children()):
                 w.bind("<Button-1>", lambda e, sid=s["id"]: self.pick_stage(sid))
+                self.stage_scroll._bind_wheel(w)
+        row._request_layout()
+        self.stage_scroll.canvas.itemconfigure(self.stage_scroll._win, height=0)
+        self.stage_scroll.refresh(defer=True)
+        # 2026-11-20：阶段方块宽度是按截止状态分配的，要等 _StageStrip
+        # 的 after_idle 布局跑完，inner 的 reqheight 才是真实值（首帧会报
+        # 265/332 这种虚高值）。所以这里排一次延迟重算：150ms 足够让
+        # place 布局与 wraplength 重折走完，届时 need 稳定在 149。
+        self.after(150, self._fit_stage_height)
 
         if self.stage_card.body.winfo_ismapped():
             try:
@@ -244,10 +375,310 @@ class PlanPage(tk.Frame):
                 pass
 
     # ------------------------------------------------------------ 待办列表
+    def _fit_stage_height(self, e=None):
+        """矮窗里收阶段横条，把高度让给待办列表。
+
+        1080×680（窗口最小尺寸）下页面只有 594px：页头 + 页签 + 阶段卡
+        之后，留给「待办 / 详情」两栏的只剩约 180px。阶段条按 128 固定
+        高度取走后待办只剩 73px，一条完整待办都看不全。
+
+        判据用**剩余高度**而不是页面总高：选中某条待办后详情区会长出来，
+        页面总高不变但两栏变矮，用总高分档会把阶段条重新撑回去。
+        """
+        try:
+            page_h = int(e.height) if e is not None else self.winfo_height()
+            if page_h <= 1:
+                return
+            # 固定开销只算「页头」和「页签」：它们恒在页面上、高度稳定。
+            # 不能遍历页面子件求和 —— 欢迎块在有数据时是 pack_forget 的，
+            # reqheight 仍会被内容撑到 340，加进来 fixed 就上千、body_room
+            # 变成负数（实测 838 / -244、1082 / -488）。
+            # 页头 = 第一个 pack 的 Frame；页签 = metric_row 之前的那个。
+            fixed = 0
+            for ch in self.winfo_children():
+                if ch in (self.stage_card, getattr(self, "_body", None),
+                          getattr(self, "_welcome", None)):
+                    continue
+                if not ch.winfo_ismapped():
+                    continue
+                # 只认**已经量出实际高度**的块：截图把窗口顶到前台之后，
+                # 有些容器会短暂回到「可见但高度 1、reqh 上千」的状态
+                # （实测出现过 reqh=1241、h=1 的 Frame），把它的 reqh 加进
+                # fixed 会把 room 算成 144，阶段条被误压到 73。
+                hh = int(ch.winfo_height())
+                if hh <= 1:
+                    continue
+                if int(ch.winfo_reqheight()) > T.sp(160):
+                    # 高于 160 的可见块不是页头/页签（那是正文），跳过。
+                    continue
+                fixed += hh
+            fixed += int(self.stage_card.winfo_height()) \
+                if int(self.stage_card.winfo_height()) > 1 \
+                else int(self.stage_card.winfo_reqheight())
+            self._stage_fixed_parts = []
+            for ch in self.winfo_children():
+                if ch in (self.stage_card, getattr(self, "_body", None),
+                          getattr(self, "_welcome", None)):
+                    continue
+                self._stage_fixed_parts.append(
+                    (ch.winfo_class(), ch.winfo_ismapped(),
+                     int(ch.winfo_reqheight()), int(ch.winfo_height())))
+            body_room = page_h - fixed
+            # 2026-11-20：上面按子件加总的 fixed 只用于日志与兜底。
+            # 真正稳定的判据是 **_body 的实际高度** —— 它直接就是
+            # 「阶段条 + 待办/详情两栏」能分到的空间，不依赖页头/页签
+            # 的量测时机。截图把窗口顶到前台时，容器会短暂回到
+            # 「可见、h=1、reqh=1241」的中间态，把 reqh 加进 fixed 会把
+            # room 算成 144（实测），阶段条就被误压到 73。
+            try:
+                bh = int(getattr(self, "_body", None).winfo_height())
+                if bh > 1:
+                    body_room = bh
+            except Exception:
+                pass
+            self._stage_dbg = (page_h, fixed, body_room)
+            # 2026-11-20：先看阶段条**按内容需要多高**，够就照给。
+            # 阶段方块里是两行字（阶段名 + 状态），两行都放得下才叫「不裁」。
+            # 旧实现无条件先减一个「给待办留 104」再夹到 56，于是 1080 下
+            # 阶段条被压到 64、第二行「消融与停止条件」被切掉，而同一屏里
+            # 待办区还有 150px 空着 —— 两头都不对。
+            need = T.sp(128)
+            try:
+                # 2026-11-20：**不能**用 stage_card.winfo_reqheight() 当 need。
+                # canvas 一被设高，卡片的 reqheight 立刻跟着涨到同一个数
+                # （反馈环：330 → reqh 330 → need 330 → want 330 ……），
+                # 实测三档全被撑爆、待办只剩 8~22px。
+                # 改成自己按零件拼：卡头 Label + 6 + 滚动区内容 + 卡内边距。
+                # 这几个量都跟 canvas 多高无关，是真正的「按内容需要多高」。
+                head_h = 0
+                for ch in self.stage_card.body.winfo_children():
+                    if ch is self.stage_scroll:
+                        continue
+                    # 2026-11-20：pack_forget() 之后 winfo_height() 仍保留
+                    # 旧值，必须按 ismapped 过滤，否则卡头收起来之后还按
+                    # 33+6 计入 need，阶段条白占 40px。
+                    if not ch.winfo_ismapped():
+                        continue
+                    hh = int(ch.winfo_height())
+                    if hh > 1:
+                        head_h += hh
+                if head_h:
+                    head_h += 6          # 卡头 Label 的 pady=(0, 6)
+                strip_h = 0
+                for ch in self.stage_box.winfo_children():
+                    hh = int(ch.winfo_height())
+                    if hh > 1:
+                        strip_h = max(strip_h, hh)
+                if strip_h <= 0:
+                    strip_h = int(self.stage_scroll.inner.winfo_reqheight())
+                if strip_h > 1:
+                    need = max(T.sp(72), head_h + strip_h
+                               + int(T.sp(12)) * 2)
+            except Exception:
+                pass
+            # 待办栏的卡内固定开销：卡边距 + eyebrow + 「待办清单」标题行 ≈ 60。
+            # 用常量而不是 left 高度减 todo_scroll 高度 —— left 本身由
+            # todo_scroll 撑出来，那样是自引用，一改就两头一起缩。
+            todo_fixed = T.sp(60)
+            # 2026-11-20：判据必须在**与阶段条高度无关**的量上做。
+            # body_room 取的是 _body 的实际高度，而 _body 与 stage_card 是
+            # 同一层的兄弟，pack 共享纵向空间 —— 阶段条一涨 body_room 就跌，
+            # 反过来把 want 压小，来回打架（实测 1080 下阶段条被算成 265，
+            # 用完 332 的旧 need，把待办挤到 22px）。
+            # 所以这里改用「页面总高 − 页头页签 − 页间距」= 两栏能分到的
+            # 总高度，再从中划分阶段条与待办，二者互不反馈。
+            page_fixed = 0
+            for ch in self.winfo_children():
+                if ch in (self.stage_card, getattr(self, "_body", None),
+                          getattr(self, "_welcome", None)):
+                    continue
+                if not ch.winfo_ismapped():
+                    continue
+                hh = int(ch.winfo_height())
+                if hh > 1:
+                    # 2026-11-20：以前这里有个 `reqheight <= T.sp(160)` 的过滤，
+                    # 本意是跳过「可见但还没排版」的正文块。但页签 Frame
+                    # 的 reqheight 也会随内容涨（实测 41 能过、再长一点就
+                    # 被跳过），于是 page_fixed 只统计到页头 111，space
+                    # 多算了 60 多像素，判据永远偏宽松、卡头永远收不起来。
+                    # 现在只认**已经量出真实高度**的块，不看 reqheight。
+                    page_fixed += hh
+            # 2026-11-20：shared 用「阶段卡实际高 + 两栏实际高」。
+            # 这两个都是 pack 分出来的真实高度，二者之和在 page_h 不变时
+            # 是**不变量** —— 阶段条涨多少，两栏就少多少，总和恒定。
+            # 所以拿它当等式右边是安全的闭式解，不会像 body_room 那样
+            # 形成反馈环。
+            # 不能用 page_h 减常量：回归里先跑完其它页面再进计划页时，
+            # 页面可用高度会少 60px 左右（353 vs 415），固定常量立刻失准。
+            try:
+                sz = int(self.stage_card.winfo_height())
+                bz = int(getattr(self, "_body", None).winfo_height())
+                shared = (sz + bz) if (sz > 1 and bz > 1) else 0
+            except Exception:
+                shared = 0
+            fresh = getattr(self, "_stage_body_fresh", 0)
+            if fresh:
+                # 两栏刚 pack 回来，尺寸是旧值，这两轮一律走兜底。
+                shared = 0
+                self._stage_body_fresh = fresh - 1
+            if shared <= 0:
+                shared = page_h - int(T.sp(179))
+            if shared <= 0:
+                return
+            self._stage_shared = shared
+            self._stage_fixed_parts = page_fixed   # 只留作日志
+            todo_need = T.sp(104) + todo_fixed    # 待办栏体面可用的高度
+            # ----------------------------------------------------------
+            # 2026-11-20 重写这一段。之前的版本有几个互相打架的量：
+            #   · need 随「卡头收没收」变化（head_h 用 ismapped 过滤）；
+            #   · tight 又拿 shared 判，而 shared = 卡片高 + 两栏高，
+            #     卡头一收卡片就变矮、shared 跟着变，判据于是变松，
+            #     下一轮又把卡头放回去 —— 来回翻，待办停在 41px。
+            #
+            # 现在把三件事解耦：
+            #   ① head_full 恒按 reqheight 算（收没收都一样），是常量；
+            #   ② 判据用**空间账**，不用控件实测高度：
+            #        space = page_h − 页头页签 page_fixed − 卡片外距 − 卡内边距
+            #      这是一个只跟窗口尺寸有关的数，卡头收放不影响它；
+            #   ③ want 只由 space 与 todo_need 决定，写完下一轮读回同一个值。
+            # 「卡片外距」= stage_card 的 pack pady 上下之和（8 + 10 设计像素）。
+            # ----------------------------------------------------------
+            head_full = 0
+            try:
+                head_full = int(self._stage_head.winfo_reqheight()) + int(T.sp(6))
+            except Exception:
+                head_full = 0
+            pad_in = int(T.sp(12)) * 2          # 阶段卡的上下内边距
+            card_gap = int(T.sp(8)) + int(T.sp(10))
+            strip_need = max(105, int(need) - (head_full + pad_in))
+            # space：阶段卡 + 两栏能分到的总高度（与卡头无关）
+            # 2026-11-20：用实测的 shared（stage_card + _body）而不是
+            # page_h − page_fixed − card_gap 的账面值。账面上乘漏算了
+            # 页头/页签/卡片之间的三处 pady，实测 space 比真值多 47px，
+            # 判据于是永远偏宽松、卡头永远收不起来，待办停在 44px。
+            # shared 是 pack 分出来的真实高度之和，卡头收放会改变它，
+            # 但这里只用它做**一次**判断，用完就按固定规则写 canvas 高度，
+            # 写完之后 shared 的变化方向与 want 的变化方向一致，不会再翻。
+            space = shared if shared > 0 else (page_h - page_fixed - card_gap)
+            if space <= 0:
+                space = page_h - int(T.sp(179))
+            want_with_head = int(need)
+            want_without_head = strip_need + pad_in
+            # 2026-11-20：判据里只有 want_with_head 一项，没有 todo_need。
+            # 之前写成 `space - want_with_head >= todo_need + pad_in`，等于
+            # 要求「阶段条按满高给完以后，待办还能有 213+24」，1080×680 下
+            # 永远不可能成立，于是 tight 恒为 True，可卡头又不收（收不收的
+            # 判据和 want 的算法用了两套不同的空间账）。
+            # 现在的口径统一成一句话：**卡头只在「留了它，待办就低于体面高度」
+            # 时才收**；收不收都用同一个 space。
+            if space - want_with_head >= todo_need:
+                tight = False                  # 留卡头也够
+            else:
+                tight = True                   # 收卡头，把 45px 让给待办
+            try:
+                # 2026-11-20：判据统一用 winfo_manager()，不能用 winfo_ismapped()。
+                # 页面刚建好、还没真正映射到屏幕时 ismapped() 返回 0，可卡头其实
+                # 是 pack 着的 —— 于是 `tight and ismapped()` 为假、`not tight` 也为假，
+                # 两个分支都不走，卡头永远收不起来。实测 1080×680 全页回归里
+                # 连续九轮都是 (True, 353, 105, 'pack')，卡片白占 44px，待办卡在 58px。
+                _mgr = self._stage_head.winfo_manager()
+                if tight and _mgr:
+                    self._stage_head.pack_forget()
+                elif not tight and not _mgr:
+                    self._stage_head.pack(fill="x", pady=(0, 6),
+                                          before=self._stage_scroll_ref)
+            except Exception:
+                pass
+            # want 是 canvas 的高度（不含卡内边距）
+            # 2026-11-20：tight 时 cap 不能再等于 strip_need（阶段条内容原高）。
+            # 那样 canvas 正好放得下内容，scrollregion 与可视高度相等，
+            # 阶段条就退化成一根不可滚的静态条 —— 阶段多到五六块时后面几块
+            # 直接看不见。这里留一行的滚动余量（strip_need - sp(30)），
+            # 保证任何档位下阶段区都真的能滚。
+            cap = (max(105, strip_need - int(T.sp(30))) if tight
+                   else max(105, int(need) - pad_in))
+            # 2026-11-20：给待办留的最低高度是「体面高度」与「一条待办」
+            # 之间的保守值。真实回归（1080×680、跑完十几张截图之后）里
+            # space 会从 372 掉到 353，按 todo_need=213 卡出来的 want 让
+            # 待办只剩 58px —— 差 2px 就低于 60 的断言线，而 58px 本来
+            # 也放不下一条完整待办（实测单条要 66px）。
+            # 所以这里不再用 todo_need 当硬指标，而是取两者较小值：
+            # 空间富裕时按 todo_need 划分，空间紧张时保证待办至少能露出一条。
+            one_row = int(T.sp(56))           # 一条完整待办（两行字 + 内距）
+            reserve = min(int(todo_need), max(one_row, int(todo_need)))
+            room = space - pad_in - reserve
+            if room >= cap:
+                want = int(cap)
+            else:
+                want = int(max(105, min(cap, room)))
+            self._stage_dbg2 = (page_h, shared, need, todo_fixed,
+                                T.sp(104), want)
+            self._stage_dbg3 = (tight, head_full, page_fixed, space, pad_in, want)
+            # 2026-11-20：取消「只降不升」。它当初是为了防抖动，但真正造成抖动的
+            # 量测已经改成自然高度了；留着它反而会把一次正确的大值锁死在
+            # 一次错误的中间态上（实测 1240 下算对 130 之后被压回 73 就再
+            # 也不上去了）。
+            self._stage_pg = page_h
+            self._stage_room = shared
+            # 记录每一轮 tight 的取值序列（排查「卡头来回翻」用）
+            try:
+                _hist = getattr(self, "_stage_hist", None)
+                if _hist is None:
+                    _hist = self._stage_hist = []
+                _hist.append((tight, space, want, self._stage_head.winfo_manager() or "-"))
+                if len(_hist) > 24:
+                    del _hist[:-24]
+            except Exception:
+                pass
+            _bh_now = int(getattr(self, "_body", None).winfo_height())
+            _sh_now = int(self.stage_card.winfo_height())
+            # 2026-11-20：只要 _body 量到了真实高度就允许改布局。
+            # **不要**把 stage_card 的实际高度也算进这个判据：卡片高度本来
+            # 就随着我们写进去的 want 变化，拿它做守门条件会让这个函数
+            # 自己把自己判成「不可信」，于是每轮 after_idle 重排一次，
+            # 实测 1080×680 特大字档下会无限抖（todo 19px、CPU 打满）。
+            self._stage_dbg3 = (page_h, _sh_now, _bh_now, want, need,
+                                page_fixed, space, head_full)
+            # 2026-11-20：缓存键必须带上 need。首帧量 inner 时布局还没跑完，
+            # reqheight 会报 265/332 这种虚高值；算出的 want 也被放大并写进
+            # _stage_h，之后 need 回落到真实值 149，但 want 换算下来仍是
+            # 同一个数，短路 return 就把虚高的高度永远锁死了（实测 1440
+            # 下阶段条停在 265、待办只剩 108）。带上 need 后，内容一稳定
+            # 就会重算并收回多余高度。
+            # 2026-11-20：缓存键要带上「卡头此刻显示与否」。只按 (want, need)
+# 短路的话，某一轮算出的 want 恰好与上一轮相同、但卡头的显示状态被别的
+# 路径（重新 pack、页面重建）改掉了，就会永远停在错的状态上 ——
+# 实测 1080×680 回归里卡头一直显示，阶段卡白占 44px，待办卡在 58px。
+            _key = (want, need, bool(self._stage_head.winfo_manager()))
+            if getattr(self, "_stage_key", None) == _key:
+                return
+            self._stage_key = _key
+            self._stage_h = want
+            # 高度挂在 canvas 上：ScrollArea 是个 Frame，pack(fill="x") 时
+            # 它的高度由内部 canvas 的请求高度决定，configure(height=) 改
+            # Frame 自身并不会让可视区变矮（实测改了以后 canvas 仍是 147）。
+            self.stage_scroll.canvas.configure(height=want)
+            # 改完 canvas 的请求高度，stage_card 的 reqheight 才更新；
+            # 这一轮的 body_room 是按旧值算的，下一轮 idle 再校正一次
+            # （否则 1080 下两栏只有 180px，待办被压到 63px）。
+            if not getattr(self, "_stage_pass", 0):
+                self._stage_pass = 1
+                self.after_idle(self._fit_stage_height)
+            else:
+                self._stage_pass = 0
+        except Exception:
+            pass
+
     def _render_todos(self):
+        # 选中/清空待办都会改变两栏的高度关系，重新算一次阶段条。
+        self.after_idle(self._fit_stage_height)
+        # 2026-11-20：还要补一次「等布局稳定之后」的重算。窗口被顶到
+        # 前台/截图之后 _body 会短暂量小（1080 下实测 144，真实 223），
+        # 那一次算出来的 stage_h 会被写死，然后再没有任何事件触发重算。
+        self.after(180, self._fit_stage_height)
         self.todo_scroll.clear()
         todos = self.plan.get("todos") or []
-        if not todos:
+        if not todos and not (self.plan.get("stages") or []):
             self.todo_scroll.pack_forget()
             for c in (self._left, self._right):
                 try:
@@ -265,13 +696,13 @@ class PlanPage(tk.Frame):
                 pass
             for w in self._welcome.winfo_children():
                 w.destroy()
-            U.EmptyState(
-                self._welcome, "还没有任何计划",
-                "阶段是这条研究的骨架：读文献 → 定题 → 最小验证 → 完整实验 → 写稿。"
-                "点「用推荐阶段起步」会按推荐天数把截止日铺好，之后每个日期都能改。",
-                action=self.seed_defaults, action_text="用推荐阶段起步",
-                extra=("直接加一条待办", self.add_todo), bg=T.BG).pack(fill="x")
-            if not self._welcome.winfo_ismapped():
+            UK.EmptyPanel(
+                self._welcome, "从一条待办开始",
+                "直接记录下一步，或用推荐阶段起步；所有截止日期都可以自行修改。",
+                icon="calendar", cta="用推荐阶段起步", cta_cmd=self.seed_defaults,
+                bg=T.BG, height=T.sp(250)).pack(fill="x", pady=(0, 8))
+            T.Btn(self._welcome, "直接加一条待办", self.add_todo).pack(anchor="center")
+            if not self._welcome.winfo_manager():
                 # anchor="n" + 只 fill="x"：不传 expand 的话这块按自然高度
                 # 贴在上方。给 EmptyState 传 expand=True 时 Tk 撑的是它自己
                 # 的高度，空态会飘到页面中间去（踩过）。
@@ -282,14 +713,10 @@ class PlanPage(tk.Frame):
                 self._metrics.pack_forget()
             except Exception:
                 pass
-            try:
-                self._stage_btn.pack_forget()
-            except Exception:
-                pass
             self.todo_count.config(text="")
             return
 
-        if self._welcome.winfo_ismapped():
+        if self._welcome.winfo_manager():
             self._welcome.pack_forget()
         for c in (self._left, self._right):
             try:
@@ -304,16 +731,19 @@ class PlanPage(tk.Frame):
             self.todo_scroll.pack(fill="both", expand=True)
         if not self._metrics.winfo_ismapped():
             self._metrics.pack(fill="x")
-        if not self._stage_btn.winfo_ismapped():
-            try:
-                self._stage_btn.pack(side="right", padx=(0, 6))
-            except Exception:
-                pass
         if not self._body.winfo_ismapped():
             # 与空态里的 pack_forget 配对：有数据时把两栏区重新挂回
             # （放在 metric_row 之后，位置与 _build 时一致）
             self._body.pack(fill="both", expand=True, padx=T.PAD,
-                            pady=(0, 14), after=self.metric_row)
+                            pady=(0, T.sp(14)),
+                            after=self.stage_card if self.stage_card.winfo_manager()
+                            else self.metric_row)
+            # 2026-11-20：刚挂回来的那一帧，_body 的高度还是收起前的旧值
+            # （实测 1080 下 stage_card 214 + body 180 量出来只有 370，
+            # 而真正可用是 394），用旧值算 shared 会把阶段条抬高、
+            # 反过来把待办挤成 19px。这里打一个标记，让紧接的两次
+            # 高度重算走 page_h 兜底，等布局稳定再切回实测值。
+            self._stage_body_fresh = 2
 
         done = sum(1 for t in todos if t.get("done"))
         self.todo_count.config(text="%d / %d 已完成" % (done, len(todos)))
@@ -324,21 +754,25 @@ class PlanPage(tk.Frame):
                    [t for t in todos if t.get("done")])
         for t in ordered:
             self._todo_row(t)
-        try:
-            self.todo_scroll.refresh()
-        except Exception:
-            pass
+        if not todos:
+            UK.EmptyPanel(
+                self.todo_scroll.inner, "这个计划还没有待办",
+                "先选阶段查看截止，或把下一步挂到这个阶段。",
+                icon="calendar", cta="加待办", cta_cmd=lambda: self.add_todo(self.sel_stage),
+                bg=T.CARD, height=T.sp(240)).pack(fill="x", pady=(8, 0))
+        self.todo_scroll.canvas.itemconfigure(self.todo_scroll._win, height=0)
+        self.todo_scroll.refresh(defer=True)
 
     def _todo_row(self, t):
         st, days = PS.due_state(t.get("due"))
         active = self.sel_todo == t["id"]
         is_done = bool(t.get("done"))
-        bg = T.ACCENT_D if active else T.CARD_HI
+        bg = T.tint(T.ACCENT, 0.09, T.CARD) if active else T.CARD
         f = tk.Frame(self.todo_scroll.inner, bg=bg, cursor="hand2")
-        f.pack(fill="x", pady=2)
-
+        f.pack(fill="x")
+        tk.Frame(f, bg=T.LINE_SOFT, height=1).pack(side="bottom", fill="x")
         row = tk.Frame(f, bg=bg)
-        row.pack(fill="x", padx=8, pady=5)
+        row.pack(fill="x", padx=T.sp(6), pady=T.sp(7))
 
         # 元信息（阶段 · 挂钩 · 剩余天数）**必须先 pack 右侧**。
         # 反过来让正文先 expand，Tk 会先把剩余宽度分给正文，元信息被挤到
@@ -372,7 +806,7 @@ class PlanPage(tk.Frame):
         txt = str(t.get("text") or "")
         lab = tk.Label(top, text=txt, bg=bg,
                        fg=(T.TXT3 if is_done else (T.TXT if active else T.TXT2)),
-                       font=T.T_BODY_SM(), anchor="w", justify="left")
+                       font=T.T_BODY_SM(), anchor="w", justify="left", wraplength=1)
         # 正文换行跟随列表实际宽度（不要用 T.wrap —— 它会乘 DPI 缩放，
         # 在窄栏里必然溢出）
         lab.pack(side="left", fill="x", expand=True)
@@ -382,10 +816,13 @@ class PlanPage(tk.Frame):
         if meta:
             mrow = tk.Frame(row, bg=bg)
             mrow.pack(fill="x", padx=(24, 0), pady=(2, 0))
-            tk.Label(mrow, text=" · ".join(meta), bg=bg,
-                     fg=(T.TXT4 if is_done else _state_color(st)),
-                     font=T.T_CAPTION(), anchor="w", justify="left").pack(
-                side="left", fill="x", expand=True)
+            ml = tk.Label(mrow, text=" · ".join(meta), bg=bg,
+                          fg=(T.TXT4 if is_done else _state_color(st)),
+                          font=T.T_CAPTION(), anchor="w", justify="left", wraplength=1)
+            ml.pack(fill="x")
+            T.fill_wrap(ml, pad=4)
+            for w in (mrow, ml):
+                w.bind("<Button-1>", lambda e, tid=t["id"]: self.select(tid))
 
         for w in (f, row, top, lab):
             w.bind("<Button-1>", lambda e, tid=t["id"]: self.select(tid))
@@ -403,10 +840,13 @@ class PlanPage(tk.Frame):
             self.detail_sub.config(
                 text="左边点待办可以改内容、挂阶段、挂选题；"
                      "上方点阶段可以改截止日期、标记完成。")
-        try:
-            self.detail_scroll.refresh()
-        except Exception:
-            pass
+        self.detail_scroll.canvas.itemconfigure(self.detail_scroll._win, height=0)
+        self.detail_scroll.refresh(defer=True)
+        widgets = list(self.detail_scroll.inner.winfo_children())
+        while widgets:
+            widget = widgets.pop()
+            self.detail_scroll._bind_wheel(widget)
+            widgets.extend(widget.winfo_children())
 
     def _get_todo(self, tid):
         for t in self.plan.get("todos") or []:
@@ -493,34 +933,44 @@ class PlanPage(tk.Frame):
                 fill="x", pady=(10, 4))
             for t in todos:
                 mark = "✓ " if t.get("done") else "· "
-                tk.Label(box, text=mark + str(t.get("text") or ""), bg=T.CARD,
-                         fg=(T.TXT3 if t.get("done") else T.TXT2),
-                         font=T.T_BODY_SM(), anchor="w", justify="left",
-                         wraplength=T.wrap(380)).pack(fill="x")
+                label = tk.Label(box, text=mark + str(t.get("text") or ""), bg=T.CARD,
+                                 fg=(T.TXT3 if t.get("done") else T.TXT2),
+                                 font=T.T_BODY_SM(), anchor="w", justify="left",
+                                 wraplength=1, cursor="hand2")
+                label.pack(fill="x", pady=(0, 4))
+                T.fill_wrap(label, pad=4)
+                label.bind("<Button-1>", lambda e, tid=t["id"]: self.select(tid))
         else:
-            tk.Label(box, text="这个阶段下还没有待办。点上面的「加待办」，"
-                               "在详情里把它挂到本阶段即可。",
-                     bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
-                     justify="left", wraplength=T.wrap(380)).pack(fill="x", pady=(10, 0))
+            label = tk.Label(box, text="这个阶段下还没有待办。可以直接在本阶段加一条。",
+                             bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
+                             justify="left", wraplength=1)
+            label.pack(fill="x", pady=(10, 0))
+            T.fill_wrap(label, pad=4)
 
-        r2 = tk.Frame(box, bg=T.CARD)
+        r2 = WrapRow(box, bg=T.CARD)
         r2.pack(fill="x", pady=(12, 0))
-        T.Btn(r2, "在这个阶段加待办", lambda: self.add_todo(self.sel_stage)).pack(
-            side="left")
-        T.Btn(r2, "删除阶段", lambda: self.del_stage(s["id"]), "danger").pack(
-            side="left", padx=(6, 0))
+        r2.add(T.Btn(r2, "在这个阶段加待办", lambda: self.add_todo(s["id"])))
+        r2.add(T.Btn(r2, "删除阶段", lambda: self.del_stage(s["id"]), "danger"))
 
     def _kv(self, parent, key, val, edit=None, note=""):
         row = tk.Frame(parent, bg=T.CARD)
-        row.pack(fill="x", pady=(0, 6))
-        tk.Label(row, text=key, bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                 width=7, anchor="w").pack(side="left")
-        tk.Label(row, text=val, bg=T.CARD, fg=T.TXT2, font=T.T_BODY_SM(),
-                 anchor="w", justify="left", wraplength=T.wrap(280)).pack(
-            side="left", fill="x", expand=True)
+        row.pack(fill="x", pady=(0, T.sp(12)))
+        head = tk.Frame(row, bg=T.CARD)
+        head.pack(fill="x", pady=(0, 4))
         if edit:
-            b = T.Btn(row, "改", edit, "ghost")
-            b.pack(side="right")
+            T.Btn(head, "修改", edit, "ghost").pack(side="right")
+        tk.Label(head, text=key, bg=T.CARD, fg=T.TXT3,
+                 font=T.T_CAPTION(), anchor="w").pack(side="left")
+        label = tk.Label(row, text=val, bg=T.CARD, fg=T.TXT2, font=T.T_BODY_SM(),
+                         anchor="w", justify="left", wraplength=1)
+        label.pack(fill="x")
+        T.fill_wrap(label, pad=4)
+        if note:
+            hint = tk.Label(row, text=note, bg=T.CARD, fg=T.TXT4,
+                            font=T.T_CAPTION(), anchor="w", justify="left", wraplength=1)
+            hint.pack(fill="x", pady=(3, 0))
+            T.fill_wrap(hint, pad=4)
+        UK.divider(row, pady=(8, 0))
         return row
 
     # ------------------------------------------------------------ 交互
@@ -530,6 +980,7 @@ class PlanPage(tk.Frame):
         self._render_todos()
         self._render_stages()
         self._render_detail()
+        self.detail_scroll.scroll_to_top()
 
     def pick_stage(self, sid):
         self.sel_stage = sid
@@ -537,6 +988,7 @@ class PlanPage(tk.Frame):
         self._render_todos()
         self._render_stages()
         self._render_detail()
+        self.detail_scroll.scroll_to_top()
 
     def toggle(self, tid):
         PS.toggle_todo(tid)

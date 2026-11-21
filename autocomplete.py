@@ -16,7 +16,7 @@
 
 词来源（按可信度排序）
 ----------------------
-  field   方向库 387 个细分领域（含 24 个类目）—— 最推荐
+  field   方向库 536 个细分领域（含 25 个类目）—— 最推荐
   alias   方向别名表 152 组
   method  方法词（对比学习/Mamba/扩散模型…）
   task    任务词（检测/分割/跟踪…）
@@ -168,7 +168,7 @@ def build_items(force=False):
     for cn, en in _COMBOS.items():
         _add(items, seen, cn, "combo", 120, "常用组合 · 检索式 " + en)
 
-    # 1) 方向库（387 个细分领域 + 24 类目）
+    # 1) 方向库（536 个细分领域 + 25 类目）
     try:
         import kb_widget as kb
         lib = kb.load_direction_library() or {}

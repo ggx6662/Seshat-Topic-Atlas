@@ -19,6 +19,7 @@ import math
 import re
 import threading
 import time
+import unicodedata
 from pathlib import Path
 
 try:
@@ -87,7 +88,7 @@ def _merge(rows):
     insts = {}
 
     def key_of(a):
-        name = " ".join((a.get("name") or "").split()).lower()
+        name = _fold(a.get("name"))
         if not name:
             return None
         orcid = (a.get("orcid") or "").strip().lower()
@@ -99,7 +100,7 @@ def _merge(rows):
             # 同名 + 同引用 + 同论文数 → 同一人的重复记录
             return ("cited", name, int(cited), int(works))
         iid = (a.get("institution_id") or "").strip()
-        inst = " ".join((a.get("institution") or "").split()).lower()
+        inst = _fold(a.get("institution"))
         return (name, iid or inst)
 
     for a in rows:
@@ -151,8 +152,7 @@ def _merge(rows):
     final = {}
     final_order = []
     for a in out:
-        key = (" ".join((a.get("name") or "").split()).lower(),
-               " ".join((a.get("institution") or "").split()).lower())
+        key = (_fold(a.get("name")), _fold(a.get("institution")))
         if key not in final:
             final[key] = a
             final_order.append(key)
@@ -264,6 +264,27 @@ def _normalize_cn_name(name):
     return name
 
 
+# ---- 去重用的键归一 -------------------------------------------------------
+# 名字里的「看着一样、编码不同」的字符会把同一个人拆成多条：
+#   U+2010 连字符 "-"   Zhi‐Hua Zhou / Zhi-Hua Zhou
+#   U+2011 不换行连字符  Ming–Hsuan Yang
+#   U+00FC ü          Martin Müller / Möller
+# 实测 advisor_directory_full.json 里有 340 个名字含这类字符。
+# 只在**算合并键**时折叠，展示用的 name 保持原样，界面上不会出现被改过的名字。
+_NAME_FOLD = str.maketrans({
+    "\u2010": "-", "\u2011": "-", "\u2012": "-", "\u2013": "-",
+    "\u2014": "-", "\u2015": "-", "\u2212": "-", "\u00ad": "",
+})
+
+
+def _fold(text):
+    """折叠到「比较用」的形式：统一连字符、去掉重音、压平空白、转小写。"""
+    t = (text or "").translate(_NAME_FOLD)
+    t = unicodedata.normalize("NFKD", t)
+    t = "".join(ch for ch in t if not unicodedata.combining(ch))
+    return " ".join(t.split()).lower()
+
+
 # 归一化后的境外院校没有省份（它们不在中国院校目录里），
 # 但因为「可推荐学者」要求有省份，会导致斯坦福、MIT 这类顶级学者被过滤掉。
 # 这里给常见境外院校补上国家/地区标识。
@@ -325,6 +346,12 @@ COUNTRY_ZH = {
 
 _DISK_CACHE = _DATA(".cache_advisors.json")
 
+# 合并规则自身的版本号。规则一改，缓存里那 1.8 万条就是旧规则算出来的：
+# 源文件 mtime 没变、sig 照样命中，于是「改了代码却不生效」。
+# 实测踩过一次 —— 给姓名加字符折叠后，跑出来仍是旧的 18,354 / 18,282，
+# 白排查两条支线。以后改 _merge / key_of / _fold 就 +1。
+_MERGE_VERSION = 2
+
 
 def _disk_cache_load(sig):
     """读合并结果的磁盘缓存。
@@ -335,7 +362,7 @@ def _disk_cache_load(sig):
     """
     try:
         raw = json.loads(_DISK_CACHE.read_text(encoding="utf-8"))
-        if raw.get("sig") == list(sig):
+        if raw.get("sig") == list(sig) and raw.get("ver") == _MERGE_VERSION:
             return raw.get("rows")
     except Exception:
         pass
@@ -350,7 +377,8 @@ def _disk_cache_save(sig, rows):
             slim.append({k: v for k, v in a.items()
                          if not k.startswith("_") or k == "_complete"})
         _DISK_CACHE.write_text(json.dumps(
-            {"sig": list(sig), "rows": slim}, ensure_ascii=False),
+            {"sig": list(sig), "ver": _MERGE_VERSION, "rows": slim},
+            ensure_ascii=False),
             encoding="utf-8")
     except Exception:
         pass

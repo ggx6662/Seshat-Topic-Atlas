@@ -143,6 +143,14 @@ def _venue(cv, s, fg):
     _line(cv, s, fg, 10, 6, 16, 4, 17, 14, 10, 17)
 
 
+def _materials(cv, s, fg):
+    # 素材库：一个文件夹（与「文献库」的三本书脊区分开）。
+    # 2026-11-19：此前 ICONS 里漏了 materials，_paint_nav 拿到空 id 列表不报错，
+    # 于是侧栏那一行**只有文字、没有图标**，看起来像整列缩进错了一格。
+    _line(cv, s, fg, 3, 6, 8, 6, 9.6, 8, 17, 8, 17, 16.5, 3, 16.5, 3, 6)
+    _line(cv, s, fg, 3, 10, 17, 10)
+
+
 def _library(cv, s, fg):
     # 文献库：三本竖立的书脊
     _rect(cv, s, fg, 4, 4, 7, 17)
@@ -203,7 +211,7 @@ def _plan(cv, s, fg):
 ICONS = {
     "home": _home, "topic": _topic, "gap": _gap, "latest": _latest,
     "ideas": _ideas, "skills": _skills, "mentor": _mentor,
-    "venue": _venue, "library": _library, "map": _map,
+    "venue": _venue, "materials": _materials, "library": _library, "map": _map,
     "profile": _profile, "settings": _settings, "search": _search,
     "plan": _plan,
 }

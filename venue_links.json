@@ -1,134 +1,3532 @@
 {
-  "links": {
-    "3DV": {"url": "https://3dvconf.github.io/", "label": "3DV 会议主页"},
-    "AAAI": {"url": "https://aaai.org/conference/aaai/", "label": "AAAI 会议主页"},
-    "ACL": {"url": "https://aclanthology.org/venues/acl/", "label": "ACL 会议页"},
-    "ACM MM": {"url": "https://www.acmmm.org/", "label": "ACM Multimedia 会议主页"},
-    "ACM TALG": {"url": "https://dl.acm.org/journal/talg", "label": "ACM TALG 期刊主页"},
-    "AIES": {"url": "https://www.aies-conference.org/", "label": "AIES 会议主页"},
-    "Algorithmica": {"url": "https://link.springer.com/journal/453", "label": "Algorithmica 期刊主页"},
-    "Annals of Statistics": {"url": "https://projecteuclid.org/journals/annals-of-statistics", "label": "Annals of Statistics 期刊主页"},
-    "ASE": {"url": "https://conf.researchr.org/series/ase", "label": "ASE 会议主页"},
-    "ASPLOS": {"url": "https://www.asplos-conference.org/", "label": "ASPLOS 会议主页"},
-    "ATC": {"url": "https://www.usenix.org/conference/atc", "label": "USENIX ATC 会议主页"},
-    "CAV": {"url": "https://i-cav.org/", "label": "CAV 会议主页"},
-    "CCS": {"url": "https://www.sigsac.org/ccs.html", "label": "ACM CCS 会议主页"},
-    "Bioinformatics": {"url": "https://academic.oup.com/bioinformatics", "label": "Bioinformatics 期刊主页"},
-    "CHI": {"url": "https://dl.acm.org/conference/chi", "label": "ACM CHI 会议页"},
-    "CIKM": {"url": "https://www.cikmconference.org/", "label": "CIKM 会议主页"},
-    "COLING": {"url": "https://aclanthology.org/venues/coling/", "label": "COLING 会议页"},
-    "CRYPTO": {"url": "https://iacr.org/conferences/", "label": "IACR 会议主页"},
-    "CSCW": {"url": "https://dl.acm.org/conference/cscw", "label": "CSCW 会议页"},
-    "CVPR": {"url": "https://cvpr.thecvf.com/", "label": "CVPR 会议主页"},
-    "CoNEXT": {"url": "https://conext.org/", "label": "CoNEXT 会议主页"},
-    "CoRL": {"url": "https://www.corl.org/", "label": "CoRL 会议主页"},
-    "Computational Linguistics": {"url": "https://aclanthology.org/journal/cl/", "label": "Computational Linguistics 期刊页"},
-    "DAC": {"url": "https://dac.com/", "label": "DAC 会议主页"},
-    "DATE": {"url": "https://www.date-conference.com/", "label": "DATE 会议主页"},
-    "Designs, Codes and Cryptography": {"url": "https://link.springer.com/journal/10623", "label": "DCC 期刊主页"},
-    "ECCV": {"url": "https://eccv.ecva.net/", "label": "ECCV 会议主页"},
-    "EMNLP": {"url": "https://aclanthology.org/venues/emnlp/", "label": "EMNLP 会议页"},
-    "EMSE": {"url": "https://link.springer.com/journal/10664", "label": "EMSE 期刊主页"},
-    "EMSOFT": {"url": "https://esweek.org/emsoft/", "label": "EMSOFT 会议主页"},
-    "EUROCRYPT": {"url": "https://iacr.org/conferences/", "label": "IACR 会议主页"},
-    "EuroSys": {"url": "https://www.eurosys.org/", "label": "EuroSys 会议主页"},
-    "FAccT": {"url": "https://facctconference.org/", "label": "FAccT 会议主页"},
-    "FIE": {"url": "https://fie-conference.org/", "label": "FIE 会议主页"},
-    "FOCS": {"url": "https://ieee-focs.org/", "label": "FOCS 会议主页"},
-    "FSE": {"url": "https://conf.researchr.org/series/fse", "label": "FSE 会议主页"},
-    "Financial Cryptography": {"url": "https://fc-conference.org/", "label": "Financial Cryptography 会议主页"},
-    "HPCA": {"url": "https://www.hpca-conf.org/", "label": "HPCA 会议主页"},
-    "ICALP": {"url": "https://eatcs.org/", "label": "EATCS 会议页"},
-    "ICCAD": {"url": "https://iccad.com/", "label": "ICCAD 会议主页"},
-    "ICCV": {"url": "https://iccv.thecvf.com/", "label": "ICCV 会议主页"},
-    "ICDE": {"url": "https://icde.org/", "label": "ICDE 会议页"},
-    "ICER": {"url": "https://icer.acm.org/", "label": "ICER 会议主页"},
-    "ICFP": {"url": "https://icfpconference.org/", "label": "ICFP 会议主页"},
-    "ICLR": {"url": "https://iclr.cc/", "label": "ICLR 会议主页"},
-    "ICML": {"url": "https://icml.cc/", "label": "ICML 会议主页"},
-    "ICRA": {"url": "https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra", "label": "ICRA 会议主页"},
-    "ICSE": {"url": "https://www.icse-conferences.org/", "label": "ICSE 会议主页"},
-    "IEEE CSF": {"url": "https://www.ieee-security.org/TC/CSF/", "label": "IEEE CSF 会议主页"},
-    "IEEE S&P": {"url": "https://www.ieee-security.org/TC/SP-Index.html", "label": "IEEE S&P 会议主页"},
-    "IEEE TCAD": {"url": "https://www.ieee.org/publications/tcad", "label": "IEEE TCAD 期刊页"},
-    "IEEE TGRS": {"url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=36", "label": "IEEE TGRS 期刊页"},
-    "IEEE TMI": {"url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=42", "label": "IEEE TMI 期刊页"},
-    "IEEE TVCG": {"url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=2945", "label": "IEEE TVCG 期刊页"},
-    "IGARSS": {"url": "https://www.igarss.org/", "label": "IGARSS 会议主页"},
-    "IJCAI": {"url": "https://www.ijcai.org/", "label": "IJCAI 会议主页"},
-    "IJCV": {"url": "https://link.springer.com/journal/11263", "label": "IJCV 期刊主页"},
-    "INFOCOM": {"url": "https://infocom.ieee.org/", "label": "INFOCOM 会议主页"},
-    "IPSN": {"url": "https://ipsn.acm.org/", "label": "IPSN 会议主页"},
-    "IROS": {"url": "https://www.iros.org/", "label": "IROS 会议主页"},
-    "ISBI": {"url": "https://biomedicalimaging.org/", "label": "ISBI 会议主页"},
-    "ISCA": {"url": "https://iscaconf.org/", "label": "ISCA 会议主页"},
-    "ISPRS Journal": {"url": "https://www.sciencedirect.com/journal/isprs-journal-of-photogrammetry-and-remote-sensing", "label": "ISPRS Journal 期刊页"},
-    "ISSTA": {"url": "https://conf.researchr.org/series/issta", "label": "ISSTA 会议主页"},
-    "ITiCSE": {"url": "https://sigcse.org/programs/iticse/", "label": "ITiCSE 会议页"},
-    "IoTDI": {"url": "https://iotdi.org/", "label": "IoTDI 会议主页"},
-    "JACM": {"url": "https://dl.acm.org/journal/jacm", "label": "JACM 期刊主页"},
-    "JAMIA": {"url": "https://academic.oup.com/jamia", "label": "JAMIA 期刊主页"},
-    "JMLR": {"url": "https://jmlr.org/", "label": "JMLR 期刊主页"},
-    "Journal of Cryptology": {"url": "https://link.springer.com/journal/145", "label": "Journal of Cryptology 期刊主页"},
-    "KDD": {"url": "https://www.kdd.org/", "label": "ACM SIGKDD 会议页"},
-    "MICCAI": {"url": "https://www.miccai.org/", "label": "MICCAI 会议主页"},
-    "MICRO": {"url": "https://www.microarch.org/", "label": "MICRO 会议主页"},
-    "MedIA": {"url": "https://www.sciencedirect.com/journal/medical-image-analysis", "label": "Medical Image Analysis 期刊页"},
-    "MobiCom": {"url": "https://www.sigmobile.org/mobicom/", "label": "MobiCom 会议主页"},
-    "MobiSys": {"url": "https://www.sigmobile.org/mobisys/", "label": "MobiSys 会议主页"},
-    "NAACL": {"url": "https://aclanthology.org/venues/naacl/", "label": "NAACL 会议页"},
-    "NDSS": {"url": "https://www.ndss-symposium.org/", "label": "NDSS 会议主页"},
-    "NSDI": {"url": "https://www.usenix.org/conference/nsdi", "label": "NSDI 会议主页"},
-    "Nature Machine Intelligence": {"url": "https://www.nature.com/natmachintell/", "label": "Nature Machine Intelligence 期刊页"},
-    "NeurIPS": {"url": "https://neurips.cc/", "label": "NeurIPS 会议主页"},
-    "OOPSLA": {"url": "https://www.sigplan.org/Conferences/OOPSLA/", "label": "OOPSLA 会议页"},
-    "OSDI": {"url": "https://www.usenix.org/conference/osdi", "label": "OSDI 会议主页"},
-    "PETS": {"url": "https://petsymposium.org/", "label": "PETS 会议主页"},
-    "PLDI": {"url": "https://pldi.org/", "label": "PLDI 会议主页"},
-    "POPL": {"url": "https://popl.acm.org/", "label": "POPL 会议主页"},
-    "PRX Quantum": {"url": "https://journals.aps.org/prxquantum/", "label": "PRX Quantum 期刊主页"},
-    "PoPETs": {"url": "https://petsymposium.org/", "label": "PoPETs 期刊页"},
-    "QIP": {"url": "https://qipconference.org/", "label": "QIP 会议主页"},
-    "Quantum": {"url": "https://quantum-journal.org/", "label": "Quantum 期刊主页"},
-    "RA-L": {"url": "https://www.ieee-ras.org/publications/ra-l", "label": "IEEE RA-L 期刊页"},
-    "RSS": {"url": "https://roboticsconference.org/", "label": "RSS 会议主页"},
-    "RTSS": {"url": "https://rtss.org/", "label": "RTSS 会议主页"},
-    "SC": {"url": "https://supercomputing.org/", "label": "SC 会议主页"},
-    "SICOMP": {"url": "https://epubs.siam.org/journal/smjcat", "label": "SIAM SICOMP 期刊页"},
-    "SIGCOMM": {"url": "https://www.sigcomm.org/", "label": "SIGCOMM 会议页"},
-    "SIGCSE": {"url": "https://sigcse.org/", "label": "SIGCSE 会议页"},
-    "SIGGRAPH": {"url": "https://www.siggraph.org/", "label": "SIGGRAPH 会议主页"},
-    "SIGGRAPH Asia": {"url": "https://asia.siggraph.org/", "label": "SIGGRAPH Asia 会议主页"},
-    "SIGIR": {"url": "https://sigir.org/", "label": "SIGIR 会议页"},
-    "SIGMOD": {"url": "https://sigmod.org/", "label": "SIGMOD 会议主页"},
-    "SODA": {"url": "https://www.siam.org/conferences/cm/conference/soda", "label": "SODA 会议页"},
-    "SOSP": {"url": "https://sigops.org/s/conferences/sosp/", "label": "SOSP 会议主页"},
-    "SOUPS": {"url": "https://www.usenix.org/conference/soups", "label": "SOUPS 会议主页"},
-    "STOC": {"url": "https://www.sigact.org/conferences/stoc/", "label": "STOC 会议页"},
-    "SenSys": {"url": "https://sensys.acm.org/", "label": "SenSys 会议主页"},
-    "T-RO": {"url": "https://www.ieee-ras.org/publications/t-ro", "label": "IEEE T-RO 期刊页"},
-    "TACAS": {"url": "https://www.etaps.org/", "label": "ETAPS/TACAS 会议页"},
-    "TACL": {"url": "https://transacl.org/", "label": "TACL 期刊主页"},
-    "TCC": {"url": "https://iacr.org/conferences/", "label": "IACR 会议主页"},
-    "TDSC": {"url": "https://www.computer.org/csdl/journal/tq", "label": "IEEE TDSC 期刊页"},
-    "TIP": {"url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=83", "label": "IEEE TIP 期刊页"},
-    "TKDE": {"url": "https://www.computer.org/csdl/journal/tk", "label": "IEEE TKDE 期刊页"},
-    "TOCE": {"url": "https://dl.acm.org/journal/toce", "label": "ACM TOCE 期刊页"},
-    "TOCHI": {"url": "https://dl.acm.org/journal/tochi", "label": "ACM TOCHI 期刊页"},
-    "TODS": {"url": "https://dl.acm.org/journal/tods", "label": "ACM TODS 期刊页"},
-    "TOG": {"url": "https://dl.acm.org/journal/tog", "label": "ACM TOG 期刊页"},
-    "TOPLAS": {"url": "https://dl.acm.org/journal/toplas", "label": "ACM TOPLAS 期刊页"},
-    "TPAMI": {"url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=34", "label": "IEEE TPAMI 期刊页"},
-    "TPDS": {"url": "https://www.computer.org/csdl/journal/td", "label": "IEEE TPDS 期刊页"},
-    "TRO": {"url": "https://www.ieee-ras.org/publications/t-ro", "label": "IEEE T-RO 期刊页"},
-    "TSE": {"url": "https://www.computer.org/csdl/journal/ts", "label": "IEEE TSE 期刊页"},
-    "TVCG": {"url": "https://www.computer.org/csdl/journal/tg", "label": "IEEE TVCG 期刊页"},
-    "UIST": {"url": "https://dl.acm.org/conference/uist", "label": "UIST 会议页"},
-    "USENIX ATC": {"url": "https://www.usenix.org/conference/atc", "label": "USENIX ATC 会议主页"},
-    "USENIX Security": {"url": "https://www.usenix.org/conference/usenixsecurity", "label": "USENIX Security 会议主页"},
-    "VLDB": {"url": "https://www.vldb.org/", "label": "VLDB 会议主页"},
-    "VLDBJ": {"url": "https://link.springer.com/journal/778", "label": "VLDB Journal 期刊主页"},
-    "WSDM": {"url": "https://www.wsdm-conference.org/", "label": "WSDM 会议主页"},
-    "WWW": {"url": "https://www.thewebconf.org/", "label": "The Web Conference 主页"}
+ "version": "2026-11-20",
+ "note": "每条链接带 kind：official=组委会/出版社官网，dblp=DBLP 历年论文集目录（不是官网，看不到截稿日期），search=DBLP 站内检索兜底。页面按 kind 显示不同文案，避免让用户以为点进去就能看到投稿信息。",
+ "count": 705,
+ "links": {
+  "3DV": {
+   "url": "https://3dvconf.github.io/",
+   "label": "3DV 会议主页",
+   "kind": "official"
+  },
+  "AAAI": {
+   "url": "https://aaai.org/conference/aaai/",
+   "label": "AAAI 会议主页",
+   "kind": "official"
+  },
+  "AAMAS": {
+   "url": "https://dblp.uni-trier.de/db/conf/ifaamas/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "AAMAS（期刊）": {
+   "url": "http://dblp.uni-trier.de/db/journals/aamas/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ACCV": {
+   "url": "http://dblp.uni-trier.de/db/conf/accv/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ACISP": {
+   "url": "http://dblp.uni-trier.de/db/conf/acisp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ACL": {
+   "url": "https://aclanthology.org/venues/acl/",
+   "label": "ACL 会议页",
+   "kind": "official"
+  },
+  "ACM DLT": {
+   "url": "https://dblp.uni-trier.de/db/journals/distribledger/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ACM MM": {
+   "url": "https://www.acmmm.org/",
+   "label": "ACM Multimedia 会议主页",
+   "kind": "official"
+  },
+  "ACM TALG": {
+   "url": "https://dl.acm.org/journal/talg",
+   "label": "ACM TALG 期刊主页",
+   "kind": "official"
+  },
+  "ACML": {
+   "url": "http://dblp.uni-trier.de/db/conf/acml/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ACNS": {
+   "url": "http://dblp.uni-trier.de/db/conf/acns/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ACSAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/acsac/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ACTA": {
+   "url": "http://dblp.uni-trier.de/db/journals/acta/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Ad hoc Networks": {
+   "url": "http://dblp.uni-trier.de/db/journals/adhoc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ADMA": {
+   "url": "https://dblp.org/db/conf/adma/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "AEI": {
+   "url": "http://dblp.uni-trier.de/db/journals/aei/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "AFT": {
+   "url": "https://dblp.uni-trier.de/db/conf/aft/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "AI": {
+   "url": "https://www.sciencedirect.com/journal/artificial-intelligence",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "AIES": {
+   "url": "https://www.aies-conference.org/",
+   "label": "AIES 会议主页",
+   "kind": "official"
+  },
+  "AIM": {
+   "url": "http://dblp.uni-trier.de/db/journals/artmed/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "AISTATS": {
+   "url": "https://aistats.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "Algorithmica": {
+   "url": "https://link.springer.com/journal/453",
+   "label": "Algorithmica 期刊主页",
+   "kind": "official"
+  },
+  "ALT": {
+   "url": "http://dblp.uni-trier.de/db/conf/alt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "AMIA": {
+   "url": "http://dblp.uni-trier.de/db/conf/amia/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ANCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ancs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Annals of Statistics": {
+   "url": "https://projecteuclid.org/journals/annals-of-statistics",
+   "label": "Annals of Statistics 期刊主页",
+   "kind": "official"
+  },
+  "APAL": {
+   "url": "http://dblp.uni-trier.de/db/journals/apal/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "APBC": {
+   "url": "http://dblp.uni-trier.de/db/conf/apbc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "APLAS": {
+   "url": "http://dblp.uni-trier.de/db/conf/aplas/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "APNet": {
+   "url": "https://dblp.org/db/conf/apnet/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "APNOMS": {
+   "url": "http://dblp.uni-trier.de/db/conf/apnoms/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Applied Intelligence": {
+   "url": "http://dblp.uni-trier.de/db/journals/apin/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "APPT": {
+   "url": "https://dblp.uni-trier.de/db/conf/appt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "APSEC": {
+   "url": "http://dblp.uni-trier.de/db/conf/apsec/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "APWeb": {
+   "url": "http://dblp.uni-trier.de/db/conf/apweb/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Artificial Life": {
+   "url": "http://dblp.uni-trier.de/db/journals/alife/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ASAP": {
+   "url": "http://dblp.uni-trier.de/db/conf/asap",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ASE": {
+   "url": "https://conf.researchr.org/series/ase",
+   "label": "ASE 会议主页",
+   "kind": "official"
+  },
+  "ASE（期刊）": {
+   "url": "https://conf.researchr.org/series/ase",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "AsiaCCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ccs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ASIACRYPT": {
+   "url": "http://dblp.uni-trier.de/db/conf/asiacrypt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ASP-DAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/aspdac",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ASPLOS": {
+   "url": "https://www.asplos-conference.org/",
+   "label": "ASPLOS 会议主页",
+   "kind": "official"
+  },
+  "ASRU": {
+   "url": "https://dblp.uni-trier.de/db/conf/asru/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ASSETS": {
+   "url": "http://dblp.uni-trier.de/db/conf/assets",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ATC": {
+   "url": "https://www.usenix.org/conference/atc",
+   "label": "USENIX ATC 会议主页",
+   "kind": "official"
+  },
+  "ATS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ats/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ATVA": {
+   "url": "http://dblp.uni-trier.de/db/conf/atva/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "AVI": {
+   "url": "http://dblp.uni-trier.de/db/conf/avi/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "BCRA": {
+   "url": "https://dblp.uni-trier.de/search?q=BCRA",
+   "label": "DBLP 检索",
+   "kind": "search"
+  },
+  "BIBM": {
+   "url": "http://dblp.uni-trier.de/db/conf/bibm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Bioinformatics": {
+   "url": "https://academic.oup.com/bioinformatics",
+   "label": "Bioinformatics 期刊主页",
+   "kind": "official"
+  },
+  "BIT": {
+   "url": "http://dblp.uni-trier.de/db/journals/behaviourIT/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "BlockSys": {
+   "url": "https://dblp.uni-trier.de/db/conf/blocksys/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "BMC Bioinformatics": {
+   "url": "http://dblp.uni-trier.de/db/journals/bmcbi/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "BMVC": {
+   "url": "http://dblp.uni-trier.de/db/conf/bmvc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Briefings in Bioinformatics": {
+   "url": "http://dblp.uni-trier.de/db/journals/bib/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "C&G": {
+   "url": "http://dblp.uni-trier.de/db/journals/cg/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CAD": {
+   "url": "http://dblp.uni-trier.de/db/journals/cad/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CAD/Graphics": {
+   "url": "https://dblp.uni-trier.de/db/conf/cadgraphics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CADE": {
+   "url": "http://dblp.uni-trier.de/db/conf/cade/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CAGD": {
+   "url": "http://dblp.uni-trier.de/db/journals/cagd/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CAiSE": {
+   "url": "http://dblp.uni-trier.de/db/conf/caise/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CASAXR": {
+   "url": "http://dblp.uni-trier.de/db/conf/ca/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CASES": {
+   "url": "http://dblp.uni-trier.de/db/conf/cases/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CAV": {
+   "url": "https://i-cav.org/",
+   "label": "CAV 会议主页",
+   "kind": "official"
+  },
+  "CAVW": {
+   "url": "https://dblp.org/db/journals/jvca/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CC": {
+   "url": "https://dblp.uni-trier.de/db/conf/cc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/coco/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CCF TPCI": {
+   "url": "https://dblp.uni-trier.de/db/journals/ccftpci/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CCF-THPC": {
+   "url": "https://dblp.org/db/journals/ccfthpc/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CCGRID": {
+   "url": "http://dblp.uni-trier.de/db/conf/ccgrid/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CCS": {
+   "url": "https://www.sigsac.org/ccs.html",
+   "label": "ACM CCS 会议主页",
+   "kind": "official"
+  },
+  "CC（计算机科学理论）": {
+   "url": "http://dblp.uni-trier.de/db/journals/cc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CC（计算机网络）": {
+   "url": "http://dblp.uni-trier.de/db/journals/comcom/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CF": {
+   "url": "http://dblp.uni-trier.de/db/conf/cf",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CGF": {
+   "url": "http://dblp.uni-trier.de/db/journals/cgf/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CGI": {
+   "url": "http://dblp.uni-trier.de/db/conf/cgi/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CGO": {
+   "url": "https://cgo-conference.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "CGTA": {
+   "url": "http://dblp.uni-trier.de/db/journals/comgeo/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CHES": {
+   "url": "http://dblp.uni-trier.de/db/conf/ches/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CHI": {
+   "url": "https://dl.acm.org/conference/chi",
+   "label": "ACM CHI 会议页",
+   "kind": "official"
+  },
+  "CIDR": {
+   "url": "http://dblp.uni-trier.de/db/conf/cidr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CIKM": {
+   "url": "https://www.cikmconference.org/",
+   "label": "CIKM 会议主页",
+   "kind": "official"
+  },
+  "CL": {
+   "url": "http://dblp.uni-trier.de/db/journals/cl/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CLSR": {
+   "url": "https://dblp.org/db/journals/clsr/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CLUSTER": {
+   "url": "https://dblp.uni-trier.de/db/conf/cluster/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CN": {
+   "url": "http://dblp.uni-trier.de/db/journals/cn/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "COCOON": {
+   "url": "https://dblp.org/db/conf/cocoon/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CODASPY": {
+   "url": "https://dblp.uni-trier.de/db/conf/codaspy/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CODES+ISSS": {
+   "url": "https://dblp.uni-trier.de/db/conf/codesisss/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Cognition": {
+   "url": "http://www.journals.elsevier.com/cognition/",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "CogSci": {
+   "url": "https://dblp.uni-trier.de/db/conf/cogsci",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "COLING": {
+   "url": "https://aclanthology.org/venues/coling/",
+   "label": "COLING 会议页",
+   "kind": "official"
+  },
+  "CollaborateCom": {
+   "url": "https://dblp.uni-trier.de/db/conf/colcom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "COLT": {
+   "url": "https://www.learningtheory.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "COMPSAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/compsac/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Computational Intelligence": {
+   "url": "http://dblp.uni-trier.de/db/journals/ci/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Computational Linguistics": {
+   "url": "https://aclanthology.org/journal/cl/",
+   "label": "Computational Linguistics 期刊页",
+   "kind": "official"
+  },
+  "Computer Speech & Language": {
+   "url": "http://dblp.uni-trier.de/db/journals/csl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Computers & Security": {
+   "url": "http://dblp.uni-trier.de/db/journals/compsec/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CONCUR": {
+   "url": "http://dblp.uni-trier.de/db/conf/concur/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Concurrency and Computation: Practice and Experience": {
+   "url": "http://dblp.uni-trier.de/db/journals/concurrency/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CoNEXT": {
+   "url": "https://conext.org/",
+   "label": "CoNEXT 会议主页",
+   "kind": "official"
+  },
+  "CoNLL": {
+   "url": "http://dblp.uni-trier.de/db/conf/conll",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Connection Science": {
+   "url": "http://dblp.uni-trier.de/db/journals/connection/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CoopIS": {
+   "url": "http://dblp.uni-trier.de/db/conf/coopis/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CoRL": {
+   "url": "https://www.corl.org/",
+   "label": "CoRL 会议主页",
+   "kind": "official"
+  },
+  "COSIT": {
+   "url": "http://dblp.uni-trier.de/db/conf/cosit/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CP": {
+   "url": "http://dblp.uni-trier.de/db/conf/cp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CRYPTO": {
+   "url": "https://iacr.org/conferences/",
+   "label": "IACR 会议主页",
+   "kind": "official"
+  },
+  "CSCloud": {
+   "url": "https://dblp.uni-trier.de/db/conf/cscloud/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CSCW": {
+   "url": "https://cscw.acm.org/",
+   "label": "CSCW 会议页",
+   "kind": "official"
+  },
+  "CSCWD": {
+   "url": "http://dblp.uni-trier.de/db/conf/cscwd/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CSCW（期刊）": {
+   "url": "https://dl.acm.org/conference/cscw",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "CSL": {
+   "url": "http://dblp.uni-trier.de/db/conf/csl/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CT-RSA": {
+   "url": "http://dblp.uni-trier.de/db/conf/ctrsa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CVIU": {
+   "url": "http://dblp.uni-trier.de/db/journals/cviu/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CVM": {
+   "url": "https://dblp.org/db/conf/cvm/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "CVMJ": {
+   "url": "https://dblp.org/db/journals/cvm/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "CVPR": {
+   "url": "https://cvpr.thecvf.com/",
+   "label": "CVPR 会议主页",
+   "kind": "official"
+  },
+  "Cybernetics and Systems": {
+   "url": "http://dblp.uni-trier.de/db/journals/cas/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Cybersecurity": {
+   "url": "https://dblp.uni-trier.de/db/journals/cybersec/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DAC": {
+   "url": "https://dac.com/",
+   "label": "DAC 会议主页",
+   "kind": "official"
+  },
+  "DAI": {
+   "url": "https://dblp.uni-trier.de/db/conf/dai2/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DAM": {
+   "url": "http://dblp.uni-trier.de/db/journals/dam/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DASFAA": {
+   "url": "http://dblp.uni-trier.de/db/conf/dasfaa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DATE": {
+   "url": "https://www.date-conference.com/",
+   "label": "DATE 会议主页",
+   "kind": "official"
+  },
+  "DC": {
+   "url": "http://dblp.uni-trier.de/db/journals/dc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/dcc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DCG": {
+   "url": "http://dblp.uni-trier.de/db/journals/dcg/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Designs, Codes and Cryptography": {
+   "url": "https://link.springer.com/journal/10623",
+   "label": "DCC 期刊主页",
+   "kind": "official"
+  },
+  "DEXA": {
+   "url": "http://dblp.uni-trier.de/db/conf/dexa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DFRWS": {
+   "url": "http://dblp.uni-trier.de/db/conf/dfrws/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DIMVA": {
+   "url": "http://dblp.uni-trier.de/db/conf/dimva/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DIS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ACMdis/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Discover Computing": {
+   "url": "http://dblp.uni-trier.de/db/journals/ir/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DKE": {
+   "url": "http://dblp.uni-trier.de/db/journals/dke/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DMKD": {
+   "url": "http://dblp.uni-trier.de/db/journals/datamine/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DPD": {
+   "url": "http://dblp.uni-trier.de/db/journals/dpd/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DRM": {
+   "url": "http://dblp.uni-trier.de/db/conf/drm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DSAA": {
+   "url": "https://dblp.uni-trier.de/db/conf/dsaa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DSE": {
+   "url": "https://dblp.org/db/journals/dase/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "DSN": {
+   "url": "http://dblp.uni-trier.de/db/conf/dsn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "DSS": {
+   "url": "http://dblp.uni-trier.de/db/journals/dss/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "EAAI": {
+   "url": "http://dblp.uni-trier.de/db/journals/eaai/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "EASE": {
+   "url": "http://dblp.uni-trier.de/db/conf/ease/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ECAI": {
+   "url": "http://dblp.uni-trier.de/db/conf/ecai/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ECCV": {
+   "url": "https://eccv.ecva.net/",
+   "label": "ECCV 会议主页",
+   "kind": "official"
+  },
+  "ECIR": {
+   "url": "http://dblp.uni-trier.de/db/conf/ecir/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ECML-PKDD": {
+   "url": "http://dblp.uni-trier.de/db/conf/ecml/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ECOOP": {
+   "url": "http://dblp.uni-trier.de/db/conf/ecoop/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ECSCW": {
+   "url": "http://dblp.uni-trier.de/db/conf/ecscw/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EDBT": {
+   "url": "http://dblp.uni-trier.de/db/conf/edbt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EGSR": {
+   "url": "http://dblp.uni-trier.de/db/conf/rt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EITEE": {
+   "url": "https://www.academax.com/EITEE/home",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "EJIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ejis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "EMNLP": {
+   "url": "https://aclanthology.org/venues/emnlp/",
+   "label": "EMNLP 会议页",
+   "kind": "official"
+  },
+  "EMSE": {
+   "url": "https://link.springer.com/journal/10664",
+   "label": "EMSE 期刊主页",
+   "kind": "official"
+  },
+  "EMSOFT": {
+   "url": "https://esweek.org/emsoft/",
+   "label": "EMSOFT 会议主页",
+   "kind": "official"
+  },
+  "ER": {
+   "url": "http://dblp.uni-trier.de/db/conf/er/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ESA": {
+   "url": "http://dblp.uni-trier.de/db/conf/esa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ESE": {
+   "url": "http://dblp.uni-trier.de/db/journals/ese/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ESEM": {
+   "url": "http://dblp.uni-trier.de/db/conf/esem/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ESORICS": {
+   "url": "http://dblp.uni-trier.de/db/conf/esorics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ESWA": {
+   "url": "http://dblp.uni-trier.de/db/journals/eswa/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ESWC": {
+   "url": "http://dblp.uni-trier.de/db/conf/esws/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ETAPS": {
+   "url": "http://dblp.uni-trier.de/db/conf/etaps/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ETS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ets/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EURASIP Journal on Information Security": {
+   "url": "http://dblp.uni-trier.de/db/journals/ejisec/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Euro-Par": {
+   "url": "http://dblp.uni-trier.de/db/conf/europar/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EUROCRYPT": {
+   "url": "https://iacr.org/conferences/",
+   "label": "IACR 会议主页",
+   "kind": "official"
+  },
+  "Eurographics": {
+   "url": "http://dblp.uni-trier.de/db/conf/eurographics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EuroS&P": {
+   "url": "https://dblp.org/db/conf/eurosp/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "EuroSys": {
+   "url": "https://www.eurosys.org/",
+   "label": "EuroSys 会议主页",
+   "kind": "official"
+  },
+  "EuroVis": {
+   "url": "http://dblp.uni-trier.de/db/conf/vissym/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Evolutionary Computation": {
+   "url": "http://dblp.uni-trier.de/db/journals/ec/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Expert Systems": {
+   "url": "http://dblp.uni-trier.de/db/journals/es/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "FAC": {
+   "url": "http://dblp.uni-trier.de/db/journals/fac/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "FAccT": {
+   "url": "https://facctconference.org/",
+   "label": "FAccT 会议主页",
+   "kind": "official"
+  },
+  "FAST": {
+   "url": "https://www.usenix.org/conference/fast",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "FCCM": {
+   "url": "http://dblp.uni-trier.de/db/conf/fccm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/fcsc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "FG": {
+   "url": "http://dblp.uni-trier.de/db/conf/fgr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FGCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/fgcs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "FIE": {
+   "url": "https://fie-conference.org/",
+   "label": "FIE 会议主页",
+   "kind": "official"
+  },
+  "Financial Cryptography": {
+   "url": "https://fc-conference.org/",
+   "label": "Financial Cryptography 会议主页",
+   "kind": "official"
+  },
+  "FM": {
+   "url": "http://dblp.uni-trier.de/db/conf/fm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FMCAD": {
+   "url": "http://dblp.uni-trier.de/db/conf/fmcad/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FMSD": {
+   "url": "http://dblp.uni-trier.de/db/journals/fmsd/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "FOCS": {
+   "url": "https://ieee-focs.org/",
+   "label": "FOCS 会议主页",
+   "kind": "official"
+  },
+  "FORTE": {
+   "url": "http://dblp.uni-trier.de/db/conf/forte/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FPGA": {
+   "url": "https://www.fpga.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "FPL": {
+   "url": "http://dblp.uni-trier.de/db/conf/fpl/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FPT": {
+   "url": "http://dblp.uni-trier.de/db/conf/fpt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FSCD": {
+   "url": "https://dblp.org/db/conf/fscd/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FSE": {
+   "url": "https://conf.researchr.org/series/fse",
+   "label": "FSE 会议主页",
+   "kind": "official"
+  },
+  "FSE（网络与信息安全）": {
+   "url": "https://fse.iacr.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "FSTTCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/fsttcs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "FUIN": {
+   "url": "http://dblp.uni-trier.de/db/journals/fuin/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Fuzzy Sets and Systems": {
+   "url": "http://dblp.uni-trier.de/db/journals/fss/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "GECCO": {
+   "url": "http://dblp.uni-trier.de/db/conf/gecco/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GeoInformatica": {
+   "url": "http://dblp.uni-trier.de/db/journals/geoinformatica/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "GI": {
+   "url": "http://dblp.uni-trier.de/db/conf/graphicsinterface/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GLOBECOM": {
+   "url": "http://dblp.uni-trier.de/db/conf/globecom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GLSVLSI": {
+   "url": "http://dblp.uni-trier.de/db/conf/glvlsi/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GMOD": {
+   "url": "http://dblp.uni-trier.de/db/journals/cvgip/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "GMP": {
+   "url": "http://dblp.uni-trier.de/db/conf/gmp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GPC": {
+   "url": "https://dblp.uni-trier.de/db/conf/gpc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "GROUP": {
+   "url": "http://dblp.uni-trier.de/db/conf/group/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HCC": {
+   "url": "https://www.journals.elsevier.com/high-confidence-computing",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "HCI": {
+   "url": "http://dblp.uni-trier.de/db/journals/hhci/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "HEALTH": {
+   "url": "https://dblp.uni-trier.de/db/journals/health/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "HiPC": {
+   "url": "http://dblp.uni-trier.de/db/conf/hipc/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HiPEAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/hipeac/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HOT CHIPS": {
+   "url": "https://dblp.org/db/conf/hotchips/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HOTI": {
+   "url": "http://dblp.uni-trier.de/db/conf/hoti/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HotNets": {
+   "url": "https://hotnets.sigcomm.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "HotOS": {
+   "url": "http://dblp.uni-trier.de/db/conf/hotos/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HotSec": {
+   "url": "http://www.usenix.org/events/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "HotStorage": {
+   "url": "https://dblp.uni-trier.de/db/conf/hotstorage/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HPCA": {
+   "url": "https://www.hpca-conf.org/",
+   "label": "HPCA 会议主页",
+   "kind": "official"
+  },
+  "HPCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/hpcc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "HPDC": {
+   "url": "https://www.hpdc.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "HSCC": {
+   "url": "https://hscc-conference.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "I&M": {
+   "url": "http://dblp.uni-trier.de/db/journals/iam/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "I3D": {
+   "url": "http://dblp.uni-trier.de/db/conf/si3d/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IANDC": {
+   "url": "http://dblp.uni-trier.de/db/journals/iandc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ICA3PP": {
+   "url": "http://dblp.uni-trier.de/db/conf/ica3pp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICALP": {
+   "url": "https://eatcs.org/",
+   "label": "EATCS 会议页",
+   "kind": "official"
+  },
+  "ICANN": {
+   "url": "http://dblp.uni-trier.de/db/conf/icann/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICAPS": {
+   "url": "https://dblp.uni-trier.de/db/conf/icaps/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICASSP": {
+   "url": "http://dblp.uni-trier.de/db/conf/icassp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICC": {
+   "url": "http://dblp.uni-trier.de/db/conf/icc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICCAD": {
+   "url": "https://iccad.com/",
+   "label": "ICCAD 会议主页",
+   "kind": "official"
+  },
+  "ICCBR": {
+   "url": "http://dblp.uni-trier.de/db/conf/iccbr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICCCN": {
+   "url": "http://dblp.uni-trier.de/db/conf/icccn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICCD": {
+   "url": "http://dblp.uni-trier.de/db/conf/iccd/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICCV": {
+   "url": "https://iccv.thecvf.com/",
+   "label": "ICCV 会议主页",
+   "kind": "official"
+  },
+  "ICDAR": {
+   "url": "http://dblp.uni-trier.de/db/conf/icdar/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICDCS": {
+   "url": "https://icdcs.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "ICDE": {
+   "url": "https://icde.org/",
+   "label": "ICDE 会议页",
+   "kind": "official"
+  },
+  "ICDF2C": {
+   "url": "http://dblp.uni-trier.de/db/conf/icdf2c/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICDM": {
+   "url": "http://dblp.uni-trier.de/db/conf/icdm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICDT": {
+   "url": "http://dblp.uni-trier.de/db/conf/icdt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICECCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/iceccs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICER": {
+   "url": "https://icer.acm.org/",
+   "label": "ICER 会议主页",
+   "kind": "official"
+  },
+  "ICFEM": {
+   "url": "http://dblp.uni-trier.de/db/conf/icfem/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICFP": {
+   "url": "https://icfpconference.org/",
+   "label": "ICFP 会议主页",
+   "kind": "official"
+  },
+  "ICIC": {
+   "url": "https://dblp.org/db/conf/icic/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICICS": {
+   "url": "http://dblp.uni-trier.de/db/conf/icics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICIG": {
+   "url": "https://dblp.uni-trier.de/db/conf/icig/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICIP": {
+   "url": "http://dblp.uni-trier.de/db/conf/icip/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICLR": {
+   "url": "https://iclr.cc/",
+   "label": "ICLR 会议主页",
+   "kind": "official"
+  },
+  "ICME": {
+   "url": "http://dblp.uni-trier.de/db/conf/icmcs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICMI": {
+   "url": "http://dblp.uni-trier.de/db/conf/icmi/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICML": {
+   "url": "https://icml.cc/",
+   "label": "ICML 会议主页",
+   "kind": "official"
+  },
+  "ICMR": {
+   "url": "http://dblp.uni-trier.de/db/conf/mir/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICNP": {
+   "url": "http://dblp.uni-trier.de/db/conf/icnp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICONIP": {
+   "url": "http://dblp.uni-trier.de/db/conf/iconip/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICPADS": {
+   "url": "http://dblp.uni-trier.de/db/conf/icpads/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICPC": {
+   "url": "http://dblp.uni-trier.de/db/conf/iwpc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICPP": {
+   "url": "http://dblp.uni-trier.de/db/conf/icpp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICPR": {
+   "url": "http://dblp.uni-trier.de/db/conf/icpr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICRA": {
+   "url": "https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra",
+   "label": "ICRA 会议主页",
+   "kind": "official"
+  },
+  "ICS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICSE": {
+   "url": "https://www.icse-conferences.org/",
+   "label": "ICSE 会议主页",
+   "kind": "official"
+  },
+  "ICSME": {
+   "url": "http://dblp.uni-trier.de/db/conf/icsm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICSOC": {
+   "url": "http://dblp.uni-trier.de/db/conf/icsoc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICSR": {
+   "url": "http://dblp.uni-trier.de/db/conf/icsr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICSS": {
+   "url": "https://dblp.uni-trier.de/db/conf/icss/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICSSP": {
+   "url": "http://dblp.uni-trier.de/db/conf/ispw/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICST": {
+   "url": "http://dblp.uni-trier.de/db/conf/icst/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICTAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/ictac/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICTAI": {
+   "url": "http://dblp.uni-trier.de/db/conf/ictai/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICWE": {
+   "url": "http://dblp.uni-trier.de/db/conf/icwe/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICWS": {
+   "url": "http://dblp.uni-trier.de/db/conf/icws/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICWSM": {
+   "url": "https://dblp.org/db/conf/icwsm/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ICXR": {
+   "url": "https://dblp.uni-trier.de/db/conf/icxr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IDA": {
+   "url": "http://dblp.uni-trier.de/db/journals/ida/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IDC": {
+   "url": "http://dblp.uni-trier.de/db/conf/acmidc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IEEE BigData": {
+   "url": "https://dblp.uni-trier.de/db/conf/bigdataconf/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IEEE CEC": {
+   "url": "https://dblp.uni-trier.de/db/conf/cec/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IEEE CLOUD": {
+   "url": "http://dblp.uni-trier.de/db/conf/IEEEcloud/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IEEE CSF": {
+   "url": "https://www.ieee-security.org/TC/CSF/",
+   "label": "IEEE CSF 会议主页",
+   "kind": "official"
+  },
+  "IEEE Geoscience and Remote Sensing Letters": {
+   "url": "http://dblp.uni-trier.de/db/journals/lgrs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IEEE S&P": {
+   "url": "https://www.ieee-security.org/TC/SP-Index.html",
+   "label": "IEEE S&P 会议主页",
+   "kind": "official"
+  },
+  "IEEE TCAD": {
+   "url": "https://www.ieee.org/publications/tcad",
+   "label": "IEEE TCAD 期刊页",
+   "kind": "official"
+  },
+  "IEEE TGRS": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=36",
+   "label": "IEEE TGRS 期刊页",
+   "kind": "official"
+  },
+  "IEEE TMI": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=42",
+   "label": "IEEE TMI 期刊页",
+   "kind": "official"
+  },
+  "IEEE Transactions on Cybernetics": {
+   "url": "http://dblp.uni-trier.de/db/journals/tcyb/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IEEE Transactions on Human-Machine Systems": {
+   "url": "http://dblp.uni-trier.de/db/journals/thms/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IEEE Transactions on Reliability": {
+   "url": "https://dblp.org/db/journals/tr/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IEEE TVCG": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=2945",
+   "label": "IEEE TVCG 期刊页",
+   "kind": "official"
+  },
+  "IEEE VIS": {
+   "url": "http://dblp.uni-trier.de/db/conf/visualization/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IEEE World Haptics Conference": {
+   "url": "http://dblp.uni-trier.de/db/conf/haptics/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IET Communications": {
+   "url": "http://dblp.uni-trier.de/db/journals/iet-com/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IET Information Security": {
+   "url": "http://dblp.uni-trier.de/db/journals/iet-ifs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IET Intelligent Transport Systems": {
+   "url": "http://digital-library.theiet.org/content/journals/iet-its",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "IET Signal Processing": {
+   "url": "https://dblp.org/db/journals/iet-spr/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IET-CVI": {
+   "url": "https://dblp.org/db/journals/iet-cvi/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IET-IPR": {
+   "url": "http://dblp.uni-trier.de/db/journals/iet-ipr/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IETS": {
+   "url": "https://dblp.uni-trier.de/db/journals/iet-sen",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IFIP WG 11.9": {
+   "url": "https://dblp.org/db/conf/ifip11-9/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IGARSS": {
+   "url": "https://www.igarss.org/",
+   "label": "IGARSS 会议主页",
+   "kind": "official"
+  },
+  "IH&MMSec": {
+   "url": "http://dblp.uni-trier.de/db/conf/ih/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IJAR": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijar/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJCAI": {
+   "url": "https://www.ijcai.org/",
+   "label": "IJCAI 会议主页",
+   "kind": "official"
+  },
+  "IJCB": {
+   "url": "http://dblp.uni-trier.de/db/conf/icb/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IJCIA": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijcia/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJCIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijcis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJCNN": {
+   "url": "http://dblp.uni-trier.de/db/conf/ijcnn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IJCV": {
+   "url": "https://link.springer.com/journal/11263",
+   "label": "IJCV 期刊主页",
+   "kind": "official"
+  },
+  "IJDAR": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijdar/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJGIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/gis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJHCI": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijhci/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJHCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijmms/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJICS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijics/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJISP": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijisp/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJKM": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijkm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJNS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijns/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJPRAI": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijprai/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJSEKE": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijseke/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJSWIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijswis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IJTCS-FAW": {
+   "url": "https://dblp.uni-trier.de/db/conf/faw/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IJUFKS": {
+   "url": "https://dblp.uni-trier.de/db/journals/ijufks/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ILP": {
+   "url": "http://dblp.uni-trier.de/db/conf/ilp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IM": {
+   "url": "http://dblp.uni-trier.de/db/conf/im/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IMAGE": {
+   "url": "http://dblp.uni-trier.de/db/journals/spic/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IMC": {
+   "url": "https://conferences.sigcomm.org/imc/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "IMCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/imcs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "INFOCOM": {
+   "url": "https://infocom.ieee.org/",
+   "label": "INFOCOM 会议主页",
+   "kind": "official"
+  },
+  "Information Sciences": {
+   "url": "http://dblp.uni-trier.de/db/journals/isci/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "INFORMS": {
+   "url": "http://dblp.uni-trier.de/db/journals/informs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Inscrypt": {
+   "url": "https://dblp.org/db/conf/cisc/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Integration": {
+   "url": "http://dblp.uni-trier.de/db/journals/integration/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "INTERACT": {
+   "url": "http://dblp.uni-trier.de/db/conf/interact/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Internetware": {
+   "url": "https://dblp.org/db/conf/internetware/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "INTERSPEECH": {
+   "url": "http://dblp.uni-trier.de/db/conf/interspeech/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IOT": {
+   "url": "https://dblp.org/db/journals/iotj/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IoTDI": {
+   "url": "https://iotdi.org/",
+   "label": "IoTDI 会议主页",
+   "kind": "official"
+  },
+  "IPCCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/ipccc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IPCO": {
+   "url": "http://dblp.uni-trier.de/db/conf/ipco/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IPDPS": {
+   "url": "https://ipdps.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "IPL": {
+   "url": "http://dblp.uni-trier.de/db/journals/ipl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IPM": {
+   "url": "http://dblp.uni-trier.de/db/journals/ipm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IPSN": {
+   "url": "https://ipsn.acm.org/",
+   "label": "IPSN 会议主页",
+   "kind": "official"
+  },
+  "IROS": {
+   "url": "https://www.iros.org/",
+   "label": "IROS 会议主页",
+   "kind": "official"
+  },
+  "IS": {
+   "url": "http://dblp.uni-trier.de/db/journals/is/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ISAAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/isaac/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISBI": {
+   "url": "https://biomedicalimaging.org/",
+   "label": "ISBI 会议主页",
+   "kind": "official"
+  },
+  "ISBRA": {
+   "url": "https://dblp.uni-trier.de/db/conf/isbra/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISC": {
+   "url": "http://dblp.uni-trier.de/db/conf/isw/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISCA": {
+   "url": "https://iscaconf.org/",
+   "label": "ISCA 会议主页",
+   "kind": "official"
+  },
+  "ISCAS": {
+   "url": "http://dblp.uni-trier.de/db/conf/iscas/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/iscc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISLPED": {
+   "url": "http://dblp.uni-trier.de/db/conf/islped/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISMAR": {
+   "url": "http://dblp.uni-trier.de/db/conf/ismar/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISMB": {
+   "url": "https://dblp.org/db/conf/ismb/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISPA": {
+   "url": "http://dblp.uni-trier.de/db/conf/ispa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISPASS": {
+   "url": "http://dblp.uni-trier.de/db/conf/ispass/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISPD": {
+   "url": "http://dblp.uni-trier.de/db/conf/ispd/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISPRS Journal": {
+   "url": "https://www.sciencedirect.com/journal/isprs-journal-of-photogrammetry-and-remote-sensing",
+   "label": "ISPRS Journal 期刊页",
+   "kind": "official"
+  },
+  "ISS": {
+   "url": "http://dblp.uni-trier.de/db/conf/tabletop/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISSRE": {
+   "url": "http://dblp.uni-trier.de/db/conf/issre/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ISSTA": {
+   "url": "https://conf.researchr.org/series/issta",
+   "label": "ISSTA 会议主页",
+   "kind": "official"
+  },
+  "IST": {
+   "url": "http://dblp.uni-trier.de/db/journals/infsof/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "ISWC": {
+   "url": "http://dblp.uni-trier.de/db/conf/semweb/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ITC": {
+   "url": "http://dblp.uni-trier.de/db/conf/itc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ITC-Asia": {
+   "url": "https://dblp.org/db/conf/itc-asia/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "ITiCSE": {
+   "url": "https://sigcse.org/programs/iticse/",
+   "label": "ITiCSE 会议页",
+   "kind": "official"
+  },
+  "IUI": {
+   "url": "http://dblp.uni-trier.de/db/conf/iui/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "IVC": {
+   "url": "http://dblp.uni-trier.de/db/journals/ivc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IWC": {
+   "url": "http://dblp.uni-trier.de/db/journals/iwc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "IWQoS": {
+   "url": "http://dblp.uni-trier.de/db/conf/iwqos/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "JACM": {
+   "url": "https://dl.acm.org/journal/jacm",
+   "label": "JACM 期刊主页",
+   "kind": "official"
+  },
+  "JAIR": {
+   "url": "https://www.jair.org/",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "JAMIA": {
+   "url": "https://academic.oup.com/jamia",
+   "label": "JAMIA 期刊主页",
+   "kind": "official"
+  },
+  "JASA": {
+   "url": "http://scitation.aip.org/content/asa/journal/jasa",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "JASIST": {
+   "url": "http://dblp.uni-trier.de/db/journals/jasis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JATS": {
+   "url": "https://dblp.org/search?q=Journal+on+Autonomous+Transportation+Systems",
+   "label": "DBLP 检索",
+   "kind": "search"
+  },
+  "JBHI": {
+   "url": "http://dblp.uni-trier.de/db/journals/titb/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JBI": {
+   "url": "https://dblp.uni-trier.de/db/journals/jbi/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JCC": {
+   "url": "https://dblp.org/search?q=Joint+Cloud+Computing",
+   "label": "DBLP 检索",
+   "kind": "search"
+  },
+  "JCIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jcis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JCOMPLEXITY": {
+   "url": "http://dblp.uni-trier.de/db/journals/jc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jcs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JCSS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jcss/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JCST": {
+   "url": "http://dblp.uni-trier.de/db/journals/jcst/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JDM": {
+   "url": "http://dblp.uni-trier.de/db/journals/jdm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JETAI": {
+   "url": "http://dblp.uni-trier.de/db/journals/jetai/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JETC": {
+   "url": "http://dblp.uni-trier.de/db/journals/jetc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JETTA": {
+   "url": "https://dblp.org/db/journals/et/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JFP": {
+   "url": "http://dblp.uni-trier.de/db/journals/jfp/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JGC": {
+   "url": "http://link.springer.com/journal/10723",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "JGITM": {
+   "url": "https://dblp.org/db/journals/jgim/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JGO": {
+   "url": "http://dblp.uni-trier.de/db/journals/jgo/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JIIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jiis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JISA": {
+   "url": "http://dblp.uni-trier.de/db/journals/istr/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JLAMP": {
+   "url": "https://dblp.uni-trier.de/db/journals/jlap/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JMLR": {
+   "url": "https://jmlr.org/",
+   "label": "JMLR 期刊主页",
+   "kind": "official"
+  },
+  "JNCA": {
+   "url": "http://dblp.uni-trier.de/db/journals/jnca/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Journal of Automated Reasoning": {
+   "url": "http://dblp.uni-trier.de/db/journals/jar/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Journal of Cryptology": {
+   "url": "https://link.springer.com/journal/145",
+   "label": "Journal of Cryptology 期刊主页",
+   "kind": "official"
+  },
+  "Journal of Software: Evolution and Process": {
+   "url": "http://dblp.uni-trier.de/db/journals/smr/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JPDC": {
+   "url": "http://dblp.uni-trier.de/db/journals/jpdc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSA": {
+   "url": "http://dblp.uni-trier.de/db/journals/jsa/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSAC": {
+   "url": "http://dblp.uni-trier.de/db/journals/jsac/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSC": {
+   "url": "http://dblp.uni-trier.de/db/journals/jsc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jsis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSL": {
+   "url": "http://dblp.uni-trier.de/db/journals/jsyml/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JSLHR": {
+   "url": "http://jslhr.pubs.asha.org/",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "JSS": {
+   "url": "http://dblp.uni-trier.de/db/journals/jss/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JVCIR": {
+   "url": "http://dblp.uni-trier.de/db/journals/jvcir/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JWE": {
+   "url": "http://dblp.uni-trier.de/db/journals/jwe/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "JWS": {
+   "url": "http://dblp.uni-trier.de/db/journals/ws/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "KAIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/kais/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "KBS": {
+   "url": "http://dblp.uni-trier.de/db/journals/kbs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "KDD": {
+   "url": "https://www.kdd.org/",
+   "label": "ACM SIGKDD 会议页",
+   "kind": "official"
+  },
+  "KR": {
+   "url": "http://dblp.uni-trier.de/db/conf/kr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "KSEM": {
+   "url": "http://dblp.uni-trier.de/db/conf/ksem/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "LCN": {
+   "url": "http://dblp.uni-trier.de/db/conf/lcn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "LCTES": {
+   "url": "http://dblp.uni-trier.de/db/conf/lctrts/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "LICS": {
+   "url": "https://lics.siglog.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "LISA": {
+   "url": "http://dblp.uni-trier.de/db/conf/lisa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "LMCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/lmcs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "LOGCOM": {
+   "url": "http://dblp.uni-trier.de/db/journals/logcom/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "LOPSTR": {
+   "url": "http://dblp.uni-trier.de/db/conf/lopstr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Machine Learning": {
+   "url": "http://dblp.uni-trier.de/db/journals/ml/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Machine Translation": {
+   "url": "http://dblp.uni-trier.de/db/journals/mt/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Machine Vision and Applications": {
+   "url": "http://dblp.uni-trier.de/db/journals/mva/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "MASCOTS": {
+   "url": "http://dblp.uni-trier.de/db/conf/mascots/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MASS": {
+   "url": "http://dblp.uni-trier.de/db/conf/mass/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MDM": {
+   "url": "http://dblp.uni-trier.de/db/conf/mdm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MedIA": {
+   "url": "https://www.sciencedirect.com/journal/medical-image-analysis",
+   "label": "Medical Image Analysis 期刊页",
+   "kind": "official"
+  },
+  "Medical Image Analysis": {
+   "url": "http://dblp.uni-trier.de/db/journals/mia/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "MEMOCODE": {
+   "url": "https://dblp.uni-trier.de/db/conf/memocode/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MFCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/mfcs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MICCAI": {
+   "url": "https://www.miccai.org/",
+   "label": "MICCAI 会议主页",
+   "kind": "official"
+  },
+  "MICRO": {
+   "url": "https://www.microarch.org/",
+   "label": "MICRO 会议主页",
+   "kind": "official"
+  },
+  "Middleware": {
+   "url": "http://dblp.uni-trier.de/db/conf/middleware/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MMAsia": {
+   "url": "https://dblp.uni-trier.de/db/conf/mmasia/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MMM": {
+   "url": "http://dblp.uni-trier.de/db/conf/mmm/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MobiCom": {
+   "url": "https://www.sigmobile.org/mobicom/",
+   "label": "MobiCom 会议主页",
+   "kind": "official"
+  },
+  "MobiHoc": {
+   "url": "http://dblp.uni-trier.de/db/conf/mobihoc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MobileHCI": {
+   "url": "http://dblp.uni-trier.de/db/conf/mhci/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MobiQuitous": {
+   "url": "http://dblp.uni-trier.de/db/conf/mobiquitous/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MobiSys": {
+   "url": "https://www.sigmobile.org/mobisys/",
+   "label": "MobiSys 会议主页",
+   "kind": "official"
+  },
+  "MoDELS": {
+   "url": "http://dblp.uni-trier.de/db/conf/models/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MONET": {
+   "url": "http://dblp.uni-trier.de/db/journals/monet/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "MS": {
+   "url": "http://dblp.uni-trier.de/db/journals/mms/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "MSCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/mscs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "MSN": {
+   "url": "https://dblp.uni-trier.de/db/conf/msn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MSR": {
+   "url": "http://dblp.uni-trier.de/db/conf/msr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MSST": {
+   "url": "http://dblp.uni-trier.de/db/conf/mss/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MSWiM": {
+   "url": "http://dblp.uni-trier.de/db/conf/mswim/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "MTA": {
+   "url": "http://dblp.uni-trier.de/db/journals/mta/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NAACL": {
+   "url": "https://aclanthology.org/venues/naacl/",
+   "label": "NAACL 会议页",
+   "kind": "official"
+  },
+  "NAS": {
+   "url": "https://dblp.uni-trier.de/db/conf/nas/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Natural Computing": {
+   "url": "http://dblp.uni-trier.de/db/journals/nc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Nature Machine Intelligence": {
+   "url": "https://www.nature.com/natmachintell/",
+   "label": "Nature Machine Intelligence 期刊页",
+   "kind": "official"
+  },
+  "NCA": {
+   "url": "http://dblp.uni-trier.de/db/journals/nca/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NCMMSC": {
+   "url": "https://dblp.uni-trier.de/search?q=NCMMSC",
+   "label": "DBLP 检索",
+   "kind": "search"
+  },
+  "NDSS": {
+   "url": "https://www.ndss-symposium.org/",
+   "label": "NDSS 会议主页",
+   "kind": "official"
+  },
+  "Networking": {
+   "url": "http://dblp.uni-trier.de/db/conf/networking/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Networks": {
+   "url": "http://dblp.uni-trier.de/db/journals/networks/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Neural Computation": {
+   "url": "http://dblp.uni-trier.de/db/journals/neco/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Neural Networks": {
+   "url": "http://dblp.uni-trier.de/db/journals/nn/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NeurIPS": {
+   "url": "https://neurips.cc/",
+   "label": "NeurIPS 会议主页",
+   "kind": "official"
+  },
+  "Neurocomputing": {
+   "url": "http://dblp.uni-trier.de/db/journals/ijon/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NLE": {
+   "url": "http://dblp.uni-trier.de/db/journals/nle/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NLPCC": {
+   "url": "https://dblp.uni-trier.de/db/conf/nlpcc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "NOCS": {
+   "url": "http://dblp.uni-trier.de/db/conf/nocs",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "NOSSDAV": {
+   "url": "http://dblp.uni-trier.de/db/conf/nossdav/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "NPC": {
+   "url": "http://dblp.uni-trier.de/db/conf/npc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "NPL": {
+   "url": "http://dblp.uni-trier.de/db/journals/npl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "NSDI": {
+   "url": "https://www.usenix.org/conference/nsdi",
+   "label": "NSDI 会议主页",
+   "kind": "official"
+  },
+  "NSPW": {
+   "url": "http://dblp.uni-trier.de/db/conf/nspw/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "OOPSLA": {
+   "url": "https://www.sigplan.org/Conferences/OOPSLA/",
+   "label": "OOPSLA 会议页",
+   "kind": "official"
+  },
+  "OSDI": {
+   "url": "https://www.usenix.org/conference/osdi",
+   "label": "OSDI 会议主页",
+   "kind": "official"
+  },
+  "P2P": {
+   "url": "http://dblp.uni-trier.de/db/conf/p2p/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PAA": {
+   "url": "http://dblp.uni-trier.de/db/journals/paa/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PacificVis": {
+   "url": "http://dblp.uni-trier.de/db/conf/apvis/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PACM PL": {
+   "url": "https://dblp.org/db/journals/pacmpl/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PACMHCI": {
+   "url": "https://dblp.org/db/journals/pacmhci/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PACT": {
+   "url": "https://pactconf.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "PAKDD": {
+   "url": "http://dblp.uni-trier.de/db/conf/pakdd/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PAM": {
+   "url": "http://dblp.uni-trier.de/db/conf/pam/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Parallel Computing": {
+   "url": "https://dblp.org/db/journals/pc/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PASTE": {
+   "url": "http://dblp.uni-trier.de/db/conf/paste/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PEPM": {
+   "url": "http://dblp.uni-trier.de/db/conf/pepm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PERCOM": {
+   "url": "http://dblp.uni-trier.de/db/conf/percom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Performance": {
+   "url": "http://dblp.uni-trier.de/db/conf/performance/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Performance Evaluation: An International Journal": {
+   "url": "https://dblp.org/db/journals/pe/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PETS": {
+   "url": "https://petsymposium.org/",
+   "label": "PETS 会议主页",
+   "kind": "official"
+  },
+  "PG": {
+   "url": "http://dblp.uni-trier.de/db/conf/pg/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PKC": {
+   "url": "http://dblp.uni-trier.de/db/conf/pkc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PLDI": {
+   "url": "https://pldi.org/",
+   "label": "PLDI 会议主页",
+   "kind": "official"
+  },
+  "PLOS Computational Biology": {
+   "url": "http://dblp.uni-trier.de/db/journals/ploscb/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PMC": {
+   "url": "http://dblp.uni-trier.de/db/journals/percom/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PODC": {
+   "url": "https://www.podc.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "PODS": {
+   "url": "http://dblp.uni-trier.de/db/conf/pods/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PoPETs": {
+   "url": "https://petsymposium.org/",
+   "label": "PoPETs 期刊页",
+   "kind": "official"
+  },
+  "POPL": {
+   "url": "https://popl.acm.org/",
+   "label": "POPL 会议主页",
+   "kind": "official"
+  },
+  "PPNA": {
+   "url": "http://dblp.uni-trier.de/db/journals/ppna/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PPoPP": {
+   "url": "https://ppopp.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "PPSN": {
+   "url": "http://dblp.uni-trier.de/db/conf/ppsn/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PR": {
+   "url": "http://dblp.uni-trier.de/db/conf/par/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PRCV": {
+   "url": "https://dblp.org/db/conf/prcv/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PRICAI": {
+   "url": "http://dblp.uni-trier.de/db/conf/pricai/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "PRL": {
+   "url": "http://dblp.uni-trier.de/db/journals/prl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Proc. IEEE": {
+   "url": "http://dblp.uni-trier.de/db/journals/pieee/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "PRX Quantum": {
+   "url": "https://journals.aps.org/prxquantum/",
+   "label": "PRX Quantum 期刊主页",
+   "kind": "official"
+  },
+  "PUC": {
+   "url": "http://dblp.uni-trier.de/db/journals/puc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "QIP": {
+   "url": "https://qipconference.org/",
+   "label": "QIP 会议主页",
+   "kind": "official"
+  },
+  "QRS": {
+   "url": "https://dblp.uni-trier.de/db/conf/qrs",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Quantum": {
+   "url": "https://quantum-journal.org/",
+   "label": "Quantum 期刊主页",
+   "kind": "official"
+  },
+  "RA-L": {
+   "url": "https://www.ieee-ras.org/publications/ra-l",
+   "label": "IEEE RA-L 期刊页",
+   "kind": "official"
+  },
+  "RAID": {
+   "url": "http://dblp.uni-trier.de/db/conf/raid/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "RE": {
+   "url": "http://dblp.uni-trier.de/db/conf/re/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "RECOMB": {
+   "url": "http://dblp.uni-trier.de/db/conf/recomb/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "RecSys": {
+   "url": "https://recsys.acm.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "REFSQ": {
+   "url": "http://dblp.uni-trier.de/db/conf/refsq/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "RE（期刊）": {
+   "url": "http://dblp.uni-trier.de/db/journals/re/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "RSS": {
+   "url": "https://roboticsconference.org/",
+   "label": "RSS 会议主页",
+   "kind": "official"
+  },
+  "RTAS": {
+   "url": "http://dblp.uni-trier.de/db/conf/rtas/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "RTS": {
+   "url": "http://dblp.uni-trier.de/db/journals/rts/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "RTSS": {
+   "url": "https://rtss.org/",
+   "label": "RTSS 会议主页",
+   "kind": "official"
+  },
+  "RV": {
+   "url": "https://dblp.org/db/conf/rv/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SAC": {
+   "url": "http://dblp.uni-trier.de/db/conf/sacrypt/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SACMAT": {
+   "url": "http://dblp.uni-trier.de/db/conf/sacmat/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SAGT": {
+   "url": "https://dblp.org/db/conf/sagt/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SANER": {
+   "url": "http://dblp.uni-trier.de/db/conf/wcre/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SAS": {
+   "url": "http://dblp.uni-trier.de/db/conf/sas/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SAT": {
+   "url": "http://dblp.uni-trier.de/db/conf/sat/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SC": {
+   "url": "https://supercomputing.org/",
+   "label": "SC 会议主页",
+   "kind": "official"
+  },
+  "SCA": {
+   "url": "http://dblp.uni-trier.de/db/conf/sca/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SCAM": {
+   "url": "http://dblp.uni-trier.de/db/conf/scam/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SCIS": {
+   "url": "http://dblp.uni-trier.de/db/journals/chinaf/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SCN": {
+   "url": "http://dblp.uni-trier.de/db/journals/scn/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SCP": {
+   "url": "http://dblp.uni-trier.de/db/journals/scp/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SDM": {
+   "url": "http://dblp.uni-trier.de/db/conf/sdm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SECON": {
+   "url": "http://dblp.uni-trier.de/db/conf/secon/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SecureComm": {
+   "url": "http://dblp.uni-trier.de/db/conf/securecomm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SEC（体系结构 / 并行与存储）": {
+   "url": "https://dblp.uni-trier.de/db/conf/IEEEsec/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SEC（网络与信息安全）": {
+   "url": "http://dblp.uni-trier.de/db/conf/sec/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SEKE": {
+   "url": "http://dblp.uni-trier.de/db/conf/seke/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SenSys": {
+   "url": "https://sensys.acm.org/",
+   "label": "SenSys 会议主页",
+   "kind": "official"
+  },
+  "SETTA": {
+   "url": "https://dblp.org/db/conf/setta/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SGP": {
+   "url": "http://dblp.uni-trier.de/db/conf/sgp/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SICOMP": {
+   "url": "https://epubs.siam.org/journal/smjcat",
+   "label": "SIAM SICOMP 期刊页",
+   "kind": "official"
+  },
+  "SIDMA": {
+   "url": "http://dblp.uni-trier.de/db/journals/siamdm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SIGCOMM": {
+   "url": "https://www.sigcomm.org/",
+   "label": "SIGCOMM 会议页",
+   "kind": "official"
+  },
+  "SIGCSE": {
+   "url": "https://sigcse.org/",
+   "label": "SIGCSE 会议页",
+   "kind": "official"
+  },
+  "SIGGRAPH": {
+   "url": "https://www.siggraph.org/",
+   "label": "SIGGRAPH 会议主页",
+   "kind": "official"
+  },
+  "SIGGRAPH Asia": {
+   "url": "https://asia.siggraph.org/",
+   "label": "SIGGRAPH Asia 会议主页",
+   "kind": "official"
+  },
+  "SIGIR": {
+   "url": "https://sigir.org/",
+   "label": "SIGIR 会议页",
+   "kind": "official"
+  },
+  "SIGMETRICS": {
+   "url": "https://www.sigmetrics.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "SIGMOD": {
+   "url": "https://sigmod.org/",
+   "label": "SIGMOD 会议主页",
+   "kind": "official"
+  },
+  "SIGPRO": {
+   "url": "http://dblp.uni-trier.de/db/journals/sigpro/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SIGSPATIAL": {
+   "url": "https://dblp.org/db/journals/sigspatial/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SIIMS": {
+   "url": "http://dblp.uni-trier.de/db/journals/siamis/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SLT": {
+   "url": "https://dblp.uni-trier.de/db/conf/slt/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SMC": {
+   "url": "https://dblp.uni-trier.de/db/conf/smc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SMI": {
+   "url": "http://dblp.uni-trier.de/db/conf/smi/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SOCA": {
+   "url": "http://dblp.uni-trier.de/db/journals/soca/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SoCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/cloud/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SoCG": {
+   "url": "http://dblp.uni-trier.de/db/conf/compgeom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SODA": {
+   "url": "https://www.siam.org/conferences/cm/conference/soda",
+   "label": "SODA 会议页",
+   "kind": "official"
+  },
+  "Soft Computing": {
+   "url": "http://dblp.uni-trier.de/db/journals/soco/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SOSP": {
+   "url": "https://sigops.org/s/conferences/sosp/",
+   "label": "SOSP 会议主页",
+   "kind": "official"
+  },
+  "SoSyM": {
+   "url": "http://dblp.uni-trier.de/db/journals/sosym/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SOUPS": {
+   "url": "https://www.usenix.org/conference/soups",
+   "label": "SOUPS 会议主页",
+   "kind": "official"
+  },
+  "SPAA": {
+   "url": "https://spaa.acm.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "SPE": {
+   "url": "http://dblp.uni-trier.de/db/journals/spe/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SPECOM": {
+   "url": "http://dblp.uni-trier.de/db/journals/speech/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SPIN": {
+   "url": "http://dblp.uni-trier.de/db/conf/spin/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SPL": {
+   "url": "http://dblp.uni-trier.de/db/journals/spl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SPM": {
+   "url": "http://dblp.uni-trier.de/db/conf/sma/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SQJ": {
+   "url": "http://dblp.uni-trier.de/db/journals/sqj/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SRDS": {
+   "url": "http://dblp.uni-trier.de/db/conf/srds/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SSDBM": {
+   "url": "http://dblp.uni-trier.de/db/conf/ssdbm/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SSE": {
+   "url": "http://dblp.uni-trier.de/db/conf/IEEEscc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "SSTD": {
+   "url": "http://dblp.uni-trier.de/db/conf/ssd/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "STACS": {
+   "url": "http://dblp.uni-trier.de/db/conf/stacs/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "STOC": {
+   "url": "https://www.sigact.org/conferences/stoc/",
+   "label": "STOC 会议页",
+   "kind": "official"
+  },
+  "STTT": {
+   "url": "http://dblp.uni-trier.de/db/journals/sttt/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "STVR": {
+   "url": "http://dblp.uni-trier.de/db/journals/stvr/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "SYSTOR": {
+   "url": "http://dblp.uni-trier.de/db/conf/systor/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "T-RO": {
+   "url": "https://www.ieee-ras.org/publications/t-ro",
+   "label": "IEEE T-RO 期刊页",
+   "kind": "official"
+  },
+  "TAAS": {
+   "url": "http://dblp.uni-trier.de/db/journals/taas/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TAC": {
+   "url": "http://dblp.uni-trier.de/db/journals/taffco/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TACAS": {
+   "url": "https://www.etaps.org/",
+   "label": "ETAPS/TACAS 会议页",
+   "kind": "official"
+  },
+  "TACL": {
+   "url": "https://transacl.org/",
+   "label": "TACL 期刊主页",
+   "kind": "official"
+  },
+  "TACO": {
+   "url": "https://dl.acm.org/journal/taco",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TALLIP": {
+   "url": "http://dblp.uni-trier.de/db/journals/talip/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TAP": {
+   "url": "http://dblp.uni-trier.de/db/journals/tap/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TASAE": {
+   "url": "http://dblp.uni-trier.de/db/journals/tase/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TASE": {
+   "url": "http://dblp.uni-trier.de/db/conf/tase/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "TASLP": {
+   "url": "http://dblp.uni-trier.de/db/journals/taslp/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TBD": {
+   "url": "https://dblp.uni-trier.de/db/journals/tbd/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TC": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=12",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TCASI": {
+   "url": "https://dblp.org/db/journals/tcasI/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCBB": {
+   "url": "http://dblp.uni-trier.de/db/journals/tcbb/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCC": {
+   "url": "http://dblp.uni-trier.de/db/conf/tcc/",
+   "label": "IACR 会议主页",
+   "kind": "dblp"
+  },
+  "TCC（期刊）": {
+   "url": "https://iacr.org/conferences/",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TCOM": {
+   "url": "http://dblp.uni-trier.de/db/journals/tcom/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCPS": {
+   "url": "https://dblp.org/db/journals/tcps/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tcs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCSS": {
+   "url": "https://dblp.org/db/journals/tcss/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TCSVT": {
+   "url": "http://dblp.uni-trier.de/db/journals/tcsv/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TDSC": {
+   "url": "https://www.computer.org/csdl/journal/tq",
+   "label": "IEEE TDSC 期刊页",
+   "kind": "official"
+  },
+  "TEC": {
+   "url": "http://dblp.uni-trier.de/db/journals/tec/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TECS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tecs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TELO": {
+   "url": "https://dblp.uni-trier.de/db/journals/telo/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TFS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tfs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TG": {
+   "url": "http://dblp.uni-trier.de/db/journals/tciaig/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TGARS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tgrs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "The Computer Journal": {
+   "url": "http://dblp.uni-trier.de/db/journals/cj/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "Theory of Computing Systems": {
+   "url": "http://dblp.uni-trier.de/db/journals/mst/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "THRI": {
+   "url": "https://dblp.uni-trier.de/db/journals/thri/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TIFS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tifs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TII": {
+   "url": "https://dblp.org/db/journals/tii/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TIIS": {
+   "url": "https://dblp.org/db/journals/tiis/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TIOT": {
+   "url": "https://dblp.uni-trier.de/db/journals/tiot/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TIP": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=83",
+   "label": "IEEE TIP 期刊页",
+   "kind": "official"
+  },
+  "TIST": {
+   "url": "https://dl.acm.org/journal/tist",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TIT": {
+   "url": "http://dblp.uni-trier.de/db/journals/tit/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TITS": {
+   "url": "http://dblp.uni-trier.de/db/journals/tits/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TJSC": {
+   "url": "http://dblp.uni-trier.de/db/journals/tjs/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TKDD": {
+   "url": "http://dblp.uni-trier.de/db/journals/tkdd/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TKDE": {
+   "url": "https://www.computer.org/csdl/journal/tk",
+   "label": "IEEE TKDE 期刊页",
+   "kind": "official"
+  },
+  "TMC": {
+   "url": "http://dblp.uni-trier.de/db/journals/tmc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TMM": {
+   "url": "http://dblp.uni-trier.de/db/journals/tmm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TNNLS": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=5962385",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TNSM": {
+   "url": "http://dblp.uni-trier.de/db/journals/tnsm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOCE": {
+   "url": "https://dl.acm.org/journal/toce",
+   "label": "ACM TOCE 期刊页",
+   "kind": "official"
+  },
+  "TOCHI": {
+   "url": "https://dl.acm.org/journal/tochi",
+   "label": "ACM TOCHI 期刊页",
+   "kind": "official"
+  },
+  "TOCL": {
+   "url": "http://dblp.uni-trier.de/db/journals/tocl/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOCS": {
+   "url": "https://dl.acm.org/journal/tocs",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TODAES": {
+   "url": "http://dblp.uni-trier.de/db/journals/todaes/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TODS": {
+   "url": "https://dl.acm.org/journal/tods",
+   "label": "ACM TODS 期刊页",
+   "kind": "official"
+  },
+  "TOG": {
+   "url": "https://dl.acm.org/journal/tog",
+   "label": "ACM TOG 期刊页",
+   "kind": "official"
+  },
+  "TOIS": {
+   "url": "https://dl.acm.org/journal/tois",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TOIT": {
+   "url": "http://dblp.uni-trier.de/db/journals/toit/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOMM": {
+   "url": "http://dblp.uni-trier.de/db/journals/tomccap/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOMS": {
+   "url": "http://dblp.uni-trier.de/db/journals/toms/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TON": {
+   "url": "http://dblp.uni-trier.de/db/journals/ton/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOPLAS": {
+   "url": "https://dl.acm.org/journal/toplas",
+   "label": "ACM TOPLAS 期刊页",
+   "kind": "official"
+  },
+  "TOPS": {
+   "url": "https://dl.acm.org/journal/tops",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TORS": {
+   "url": "https://dblp.uni-trier.de/db/journals/tors/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TOS": {
+   "url": "https://dl.acm.org/journal/tos",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TOSEM": {
+   "url": "https://dl.acm.org/journal/tosem",
+   "label": "期刊官网",
+   "kind": "official"
+  },
+  "TOSN": {
+   "url": "http://dblp.uni-trier.de/db/journals/tosn/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TPAMI": {
+   "url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=34",
+   "label": "IEEE TPAMI 期刊页",
+   "kind": "official"
+  },
+  "TPDS": {
+   "url": "https://www.computer.org/csdl/journal/td",
+   "label": "IEEE TPDS 期刊页",
+   "kind": "official"
+  },
+  "TPLP": {
+   "url": "http://dblp.uni-trier.de/db/journals/tplp/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TQC": {
+   "url": "https://dblp.uni-trier.de/db/journals/tqc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TR": {
+   "url": "http://dblp.uni-trier.de/db/journals/trob/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TRETS": {
+   "url": "http://dblp.uni-trier.de/db/journals/trets/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TRO": {
+   "url": "https://www.ieee-ras.org/publications/t-ro",
+   "label": "IEEE T-RO 期刊页",
+   "kind": "official"
+  },
+  "TrustCom": {
+   "url": "http://dblp.uni-trier.de/db/conf/trustcom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "TSC": {
+   "url": "http://dblp.uni-trier.de/db/journals/tsc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TSE": {
+   "url": "https://www.computer.org/csdl/journal/ts",
+   "label": "IEEE TSE 期刊页",
+   "kind": "official"
+  },
+  "TSMC": {
+   "url": "https://dblp.org/db/journals/tsmc/tsmc12.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TSUSC": {
+   "url": "https://dblp.org/db/journals/tsusc/index.html",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TVC": {
+   "url": "http://dblp.uni-trier.de/db/journals/vc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TVCG": {
+   "url": "https://www.computer.org/csdl/journal/tg",
+   "label": "IEEE TVCG 期刊页",
+   "kind": "official"
+  },
+  "TVLSI": {
+   "url": "http://dblp.uni-trier.de/db/journals/tvlsi/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TWC": {
+   "url": "http://dblp.uni-trier.de/db/journals/twc/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "TWEB": {
+   "url": "http://dblp.uni-trier.de/db/journals/tweb/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "UAI": {
+   "url": "https://www.auai.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "UbiComp": {
+   "url": "https://dblp.uni-trier.de/db/conf/huc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "UIC": {
+   "url": "http://dblp.uni-trier.de/db/conf/uic/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "UIST": {
+   "url": "https://dl.acm.org/conference/uist",
+   "label": "UIST 会议页",
+   "kind": "official"
+  },
+  "UMUAI": {
+   "url": "http://dblp.uni-trier.de/db/journals/umuai/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "USENIX ATC": {
+   "url": "https://www.usenix.org/conference/atc",
+   "label": "USENIX ATC 会议主页",
+   "kind": "official"
+  },
+  "USENIX Security": {
+   "url": "https://www.usenix.org/conference/usenixsecurity",
+   "label": "USENIX Security 会议主页",
+   "kind": "official"
+  },
+  "VEE": {
+   "url": "https://veekonf.org/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "VI": {
+   "url": "https://dblp.uni-trier.de/db/journals/vi/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "VLDB": {
+   "url": "https://www.vldb.org/",
+   "label": "VLDB 会议主页",
+   "kind": "official"
+  },
+  "VLDBJ": {
+   "url": "https://link.springer.com/journal/778",
+   "label": "VLDB Journal 期刊主页",
+   "kind": "official"
+  },
+  "VMCAI": {
+   "url": "http://dblp.uni-trier.de/db/conf/vmcai/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "VR": {
+   "url": "http://dblp.uni-trier.de/db/conf/vr/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "VRIH": {
+   "url": "https://dblp.uni-trier.de/db/journals/vrih/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "VRST": {
+   "url": "http://dblp2.uni-trier.de/db/conf/vrst/",
+   "label": "会议官网",
+   "kind": "official"
+  },
+  "VTS": {
+   "url": "http://dblp.uni-trier.de/db/conf/vts/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WAIM": {
+   "url": "http://dblp.uni-trier.de/db/conf/waim/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WASA": {
+   "url": "http://dblp.uni-trier.de/db/conf/wasa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WCMC": {
+   "url": "http://dblp.uni-trier.de/db/journals/wicomm/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "WCNC": {
+   "url": "http://dblp.uni-trier.de/db/conf/wcnc/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WebDB": {
+   "url": "http://dblp.uni-trier.de/db/conf/webdb/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WI": {
+   "url": "http://dblp.uni-trier.de/db/journals/wias/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "WICSA": {
+   "url": "http://dblp.uni-trier.de/db/conf/wicsa/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WINE": {
+   "url": "https://dblp.org/db/conf/wine/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "Wireless Networks": {
+   "url": "http://dblp.uni-trier.de/db/journals/winet/",
+   "label": "DBLP 期刊目录",
+   "kind": "dblp"
+  },
+  "WISA": {
+   "url": "https://dblp.uni-trier.de/db/conf/IEEEwisa/index.html",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WISE": {
+   "url": "http://dblp.uni-trier.de/db/conf/wise/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WiSec": {
+   "url": "http://dblp.uni-trier.de/db/conf/wisec/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WoWMoM": {
+   "url": "http://dblp.uni-trier.de/db/conf/wowmom/",
+   "label": "DBLP 会议目录",
+   "kind": "dblp"
+  },
+  "WSDM": {
+   "url": "https://www.wsdm-conference.org/",
+   "label": "WSDM 会议主页",
+   "kind": "official"
+  },
+  "WWW": {
+   "url": "https://www.thewebconf.org/",
+   "label": "The Web Conference 主页",
+   "kind": "official"
+  },
+  "WWW（期刊）": {
+   "url": "https://www.thewebconf.org/",
+   "label": "期刊官网",
+   "kind": "official"
   }
+ }
 }

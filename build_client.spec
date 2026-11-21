@@ -42,9 +42,12 @@ READONLY = [
     "advisor_arxiv.json",
     "paper_meta.json",
     "pdf_text_index.json",
-    "config.json",
+    "config.example.json",
     "widget_settings.json",
     "web_static",          # 网页版前端（目录）
+    "logo_128.png",        # 侧栏品牌标记（显示前由 app_theme 预缩）
+    "logo_48.png",
+    "logo_32.png",
 ]
 
 datas = []
@@ -61,6 +64,14 @@ for name in READONLY:
 
 if missing:
     print("[build_client] 缺文件，已跳过：%s" % ", ".join(missing))
+
+# 素材库数据与竞赛站共用一份快照，单独放进 site_data/（app_paths.RES 读取）
+for _name in ("materials.json",):
+    _p = os.path.join(HERE, "competition", "site", "data", _name)
+    if os.path.exists(_p):
+        datas.append((_p, "site_data"))
+    else:
+        print("[build_client] 缺素材库数据：%s" % _name)
 
 # 打包后首次启动要拷一份到 exe 旁边的「可写文件」
 SEED = ["config.json", "widget_settings.json"]

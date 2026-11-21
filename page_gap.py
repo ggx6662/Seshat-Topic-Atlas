@@ -24,6 +24,7 @@ import profile_memory as PM
 import research_gap as G
 import topic_constraint
 import ui_parts as U
+import ui_kit as UK
 _card_head = T.card_head
 
 PAGE_HINT = "从本地 343 篇论文里找还没人做的组合"
@@ -75,10 +76,9 @@ def _gap_wrap(owner, pad=30):
 
 def _tag(head, c):
     """右侧「全库 603 篇」色块。三档配色和结论一一对应，扫一眼就知道该不该做。"""
-    fg, bg = {"真空白": ("#0B2410", T.OK),
-              "稀疏": ("#2A1F00", T.WARN),
-              "拥挤": ("#2A0A0A", T.ERR)}.get(c["level"], (T.TXT3, T.BG))
-    tk.Label(head, text="全库 %s 篇" % _cn_num(c["count"]), bg=bg, fg=fg,
+    col = {"真空白": T.OK, "稀疏": T.WARN, "拥挤": T.ERR}.get(c["level"], T.TXT3)
+    bg = T.tint(col, 0.14, T.CARD)
+    tk.Label(head, text="全库 %s 篇" % _cn_num(c["count"]), bg=bg, fg=col,
              font=T.M(8, True)).pack(side="right", padx=(6, 8))
 
 
@@ -91,18 +91,24 @@ def _modal_line(row, c):
     n = c.get("modal_count")
     if not n:
         return
-    tk.Label(row, text="该场景在全库 %s 篇文献里是活跃赛道 —— 空白是场景内的细分缺口，"
-                       "不是场景本身没人做" % _cn_num(n),
-             bg=T.CARD_HI, fg=T.TXT4, font=T.F(8), anchor="w", justify="left",
-             wraplength=_gap_wrap(row, 30)).pack(fill="x", padx=10, pady=(0, 2))
+    _ml = tk.Label(row, text="该场景在全库 %s 篇文献里是活跃赛道 —— 空白是场景内的细分缺口，"
+                             "不是场景本身没人做" % _cn_num(n),
+                   bg=T.CARD_HI, fg=T.TXT4, font=T.F(8), anchor="w", justify="left")
+    _ml.pack(fill="x", padx=10, pady=(0, 2))
+    T.fill_wrap(_ml, pad=30)
 
 
 def _check_line(row, c):
     """条目下方的核实结论。拥挤时不写红字警告，只降成灰 —— 红字满屏反而没人看。"""
     color = {"真空白": T.OK, "稀疏": T.WARN, "拥挤": T.TXT4}.get(c["level"], T.TXT3)
-    tk.Label(row, text="全库核实 · %s · %s" % (c["level"], c["note"]),
-             bg=T.CARD_HI, fg=color, font=T.F(8), anchor="w", justify="left",
-             wraplength=_gap_wrap(row, 30)).pack(fill="x", padx=10, pady=(0, 7))
+    # 2026-11-19：原来是在**构建时**算一次 `wraplength=_gap_wrap(row, 30)`。
+    # 那一刻 row 还没布局（宽度是 1），于是全都退到 `T.wrap(430)`；
+    # 而实际卡片宽 560，430 的折行宽度对不上，文字就被卡片边缘切掉。
+    # 改成 fill_wrap，由容器 <Configure> 驱动，宽度变了自动重折。
+    _cl = tk.Label(row, text="全库核实 · %s · %s" % (c["level"], c["note"]),
+                   bg=T.CARD_HI, fg=color, font=T.F(8), anchor="w", justify="left")
+    _cl.pack(fill="x", padx=10, pady=(0, 7))
+    T.fill_wrap(_cl, pad=30)
 
 
 def _fit_line(row, cons, angle_key, title, check=None):
@@ -204,19 +210,25 @@ class GapPage(tk.Frame):
     def _build(self):
         top = tk.Frame(self, bg=T.BG)
         top.pack(fill="x", padx=T.PAD, pady=(4, 8))
-        # 说明文字默认收成一行，点 ? 才展开 —— 这一页的第一屏应该留给结论
-        self._hint = U.Hint(top, GAP_HELP, summary="怎么读这一页", bg=T.BG)
-        self._hint.pack(side="left", fill="x", expand=True)
-
-        bar = tk.Frame(self, bg=T.BG)
-        bar.pack(fill="x", padx=T.PAD, pady=(0, 6))
+        tk.Label(top, text="文献空白", bg=T.BG, fg=T.TXT,
+                 font=T.T_PAGE_TITLE()).pack(side="left")
+        self._hint = U.Hint(top, GAP_HELP, summary="核查范围与边界", bg=T.BG)
+        self._hint.pack(side="right")
+        note = tk.Label(self, text="从本地文献寻找组合线索，再看全库核实；库里没有，不等于学界没人做。",
+                        bg=T.BG, fg=T.TXT3, font=T.T_BODY_SM(), justify="left", anchor="w")
+        note.pack(fill="x", padx=T.PAD, pady=(0, 8))
+        T.fill_wrap(note)
+        search_card = T.Card(self, pad=10, fill_y=False)
+        search_card.pack(fill="x", padx=T.PAD, pady=(0, 8))
+        bar = tk.Frame(search_card.body, bg=T.CARD)
+        bar.pack(fill="x")
         # 「重新分析」放这一行最右：它和输入框是一组动作，而页头那行
         # 只剩说明文字，字号一大按钮就会把说明挤成一条缝。
         T.Btn(bar, "重新分析", lambda: self.analyze(self._current_kw()),
               "primary").pack(side="right", padx=(8, 0))
-        tk.Label(bar, text="聚焦方向", bg=T.BG, fg=T.TXT3,
-                 font=T.F(9)).pack(side="left", padx=(0, 8))
-        self.entry = tk.Entry(bar, bg=T.CARD, fg=T.TXT, insertbackground=T.ACCENT,
+        tk.Label(bar, text="聚焦方向", bg=T.CARD, fg=T.TXT3,
+                 font=T.T_CAPTION()).pack(side="left", padx=(0, 8))
+        self.entry = tk.Entry(bar, bg=T.CARD_HI, fg=T.TXT, insertbackground=T.ACCENT,
                               relief="flat", highlightbackground=T.LINE,
                               highlightthickness=1, font=T.F(10))
         self.entry.pack(side="left", fill="x", expand=True, ipady=6)
@@ -228,13 +240,13 @@ class GapPage(tk.Frame):
             print("联想词挂载失败:", exc)
         # 快捷词 + 全库：字号放大后放不下要能折行，否则「全库」被剪掉
         # 快捷词单独占一行（原来挤在输入框右边，字号一大就折成瀑布）
-        self._quick_row = U.WrapRow(self, bg=T.BG)
-        self._quick_row.pack(fill="x", padx=T.PAD, pady=(0, 6))
+        self._quick_row = U.WrapRow(search_card.body, gap=6, bg=T.CARD)
+        self._quick_row.pack(fill="x", pady=(8, 0))
         for t in ("红外", "Mamba", "融合", "小目标", "医学"):
-            self._quick_row.add(
-                T.Btn(self._quick_row, t, lambda x=t: self._quick(x)))
-        self._quick_row.add(
-            T.Btn(self._quick_row, "全库", lambda: self._quick("")))
+            self._quick_row.add(UK.Chip(
+                self._quick_row, t, command=lambda x=t: self._quick(x), bg=T.CARD))
+        self._quick_row.add(UK.Chip(
+            self._quick_row, "全库", command=lambda: self._quick(""), bg=T.CARD))
 
         # wraplength 不能用 T.wrap(固定像素)：1.5 倍字号下它算成 1543px，
         # 比窗口还宽，整页被顶出可视区（实测 reqw 1583 vs 可用 1078）。
@@ -250,18 +262,20 @@ class GapPage(tk.Frame):
 
         body = tk.Frame(self, bg=T.BG)
         body.pack(fill="both", expand=True, padx=T.PAD, pady=(0, 14))
-        # 第 10 版：两栏不再强制等高撑满。原来 grid_rowconfigure(0, weight=1)
-        # + sticky="nsew" 让两块卡片一路顶到窗口底，内容少的右栏下方留一大片空；
-        # 现在卡片高度随内容，滚动区给一个可视下限。
+        # 两栏必须撑满窗口（第 31 版）：早先「高度随内容」在 2560 宽的最大化窗口里
+        # 变成两张顶在左上角的矮卡片，下面 60% 全是空白 —— 看起来像加载失败。
+        # 现在两栏等高撑满，滚动区吃掉剩余高度。
         # uniform="c" 会强制两栏等宽，宽的那栏把整页请求宽度顶上去；
         # 去掉 uniform 按内容分：左边组合多、右边空白短。
-        body.grid_columnconfigure(0, weight=3)
-        body.grid_columnconfigure(1, weight=2)
+        body.grid_rowconfigure(0, weight=1)
+        body.grid_columnconfigure(0, weight=1, uniform="gap")
+        body.grid_columnconfigure(1, weight=1, uniform="gap")
 
         # 左：已密集
-        left = T.Card(body, pad=12, fill_y=False)
-        left.grid(row=0, column=0, sticky="new", padx=(0, 10))
-        _card_head(left.body, "已经做得很密", "这些组合文献很多，再做需要明确的差异化理由")
+        left = T.Card(body, pad=12)
+        left.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        UK.eyebrow(left.body, "已有组合", "01").pack(fill="x", pady=(0, 4))
+        _card_head(left.body, "研究密度", "组合计数仅限本地文献，不代表学界饱和度")
 # 方法 × 任务密度：用文字行代替热力矩阵
         # （2026-11-15 用户要求「可视化表去除」—— 7×5 的色块网格要
         #  你记住行列标签才能读，换成「方法 → 任务(n)」反而更快，
@@ -272,9 +286,10 @@ class GapPage(tk.Frame):
         self.combo_box.pack(fill="both", expand=True)
 
         # 右：空白
-        right = T.Card(body, pad=12, fill_y=False)
-        right.grid(row=0, column=1, sticky="new")
-        _card_head(right.body, "潜在空白", "空白不一定是机会，要看证据再判断")
+        right = T.Card(body, pad=12)
+        right.grid(row=0, column=1, sticky="nsew")
+        UK.eyebrow(right.body, "待核实线索", "02").pack(fill="x", pady=(0, 4))
+        _card_head(right.body, "潜在空白", "先核对证据，再判断是否值得做")
         # 两个页签：方法组合 / 问题维度。原来两块塞进同一根滚动条，
         # 「问题维度空白」那组的组标题落在视口之外，读起来像方法组合的下一节。
         self._tab = ["combo"]
@@ -343,6 +358,15 @@ class GapPage(tk.Frame):
             pass
         if key == "issue":
             self.gap_box.pack_forget()
+            if not self.issue_box.inner.winfo_children():
+                _ie = tk.Label(self.issue_box.inner,
+                               text="当前范围里还没有「问题维度」空白。"
+                                    "这类空白来自文献的失效场景标注，库里篇数少时给不出结论 —— "
+                                    "点上方「全库」，或换一个更大的方向词再看。",
+                               bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(),
+                               anchor="w", justify="left")
+                _ie.pack(fill="x", pady=18, padx=6)
+                T.fill_wrap(_ie, pad=14)
             self.issue_box.pack(fill="both", expand=True)
             try:
                 self.issue_box.refresh()
@@ -450,7 +474,8 @@ class GapPage(tk.Frame):
         if not data.get("global_check") and data.get("gaps"):
             self.check_note.config(
                 text="正在拿 arXiv 全库核实这些空白（首次约 20 秒）…")
-            self.check_note.pack(fill="x", pady=(0, 6))
+            self.check_note.pack(fill="x", padx=T.PAD, pady=(0, 6), after=self.summary)
+            T.fill_wrap(self.check_note)
 
     def _render_matrix(self, data):
         """方法 × 任务密度：每个方法一行，列出它在你库里最密的任务。
@@ -466,11 +491,41 @@ class GapPage(tk.Frame):
             for cb in data.get("combos") or []:
                 pair[(cb["method"], cb["task"])] = cb["count"]
             if not pair:
+                # 空框架在 Tk 里仍会报出一段请求高度（实测 152px），
+                # 把「组合为空」的解释文字压到卡片中段。没有数据就整个收起来。
+                if self.matrix.winfo_manager():
+                    self.matrix.pack_forget()
                 return
+            if not self.matrix.winfo_manager():
+                self.matrix.pack(fill="x", pady=(0, 8), before=self.combo_box)
             msum = {}
             for (m, _t), n in pair.items():
                 msum[m] = msum.get(m, 0) + n
             rows = [m for m, _ in sorted(msum.items(), key=lambda kv: -kv[1])][:5]
+            # 2026-11-19：按卡片真实可用高度限制行数。
+            # 这里的几何链是：`left` 是 grid(sticky="nsew") 的 Card，
+            # 高度由窗口定死；`left.body` 的高度是 Card._sync 写上去的；
+            # 下面的 combo_box 是 pack(expand=True)，吃剩下的空间。
+            # 所以 matrix 是**不 expand 的兄弟**，总高不够时 pack 先克扣它，
+            # 第二条直接被压成 15px（1080×680 实测「需要 66 只有 15」）。
+            # 折成两行后每条约 66px，按 body 余量反推能放几条。
+            try:
+                card_h = int(self.matrix.master.winfo_reqheight())
+                body_h = int(self.matrix.master.master.winfo_height()) - 24
+                fixed = 0
+                for sib in self.matrix.master.winfo_children():
+                    if sib is self.matrix or sib is self.combo_box:
+                        fixed += int(sib.winfo_reqheight())
+                room = body_h - fixed
+                if room > 0:
+                    keep = max(2, min(len(rows), int(room / 70)))
+                    if keep < len(rows):
+                        rows = rows[:keep]
+            except Exception:
+                pass
+            # 首帧渲染时 body 高度可能还是旧值，等这一轮布局算完再校一次。
+            # 无限循环风险：_trim_matrix 只在行数真的变少时才重画。
+            self.after_idle(self._trim_matrix)
             for m in rows:
                 cells = sorted(((t, n) for (mm, t), n in pair.items() if mm == m),
                                key=lambda kv: -kv[1])[:5]
@@ -483,7 +538,64 @@ class GapPage(tk.Frame):
         except Exception:
             pass
 
-    def _render_issue_gaps(self, issue_gaps, box):
+    def _trim_matrix(self):
+        """布局定下来后，把 matrix 里放不下的行藏掉。
+
+        2026-11-19：`_render_matrix` 跑的时候卡片 body 的高度还没结算
+        （Card._sync 有 16~180ms 防抖），按那时的旧高度算会多留一行，
+        结果最后一条被 pack 压扁（1080×680 下「需要 66 只有 44」）。
+        这里等 idle 再量一次，超了就从尾部 pack_forget。
+        只在真有行被隐藏时才动作，不会自我触发死循环。
+        """
+        try:
+            body = self.matrix.master
+            card = body.master
+            rows_kids = [w for w in self.matrix.winfo_children()
+                         if w.winfo_manager() == "pack"]
+            if not rows_kids:
+                return
+            avail = int(card.winfo_height())
+            used = 0
+            for sib in body.winfo_children():
+                if sib is not self.matrix:
+                    used += int(sib.winfo_reqheight())
+            room = avail - used - 16
+            # 2026-11-20：room <= 0 原来直接 return，等于「放不下也不管」，
+            # 结果 matrix（不 expand）被 pack 压成 15px，行文字整行消失。
+            # 高度连一行矩阵都放不下时，矩阵本来就不该占位：下面的
+            # combo_box 是 fill=both/expand，它才是这块的主体。
+            if room <= 0 or room < int(rows_kids[0].winfo_reqheight()) + 2:
+                hid = False
+                for w in rows_kids:
+                    if w.winfo_manager() == "pack":
+                        w.pack_forget()
+                        hid = True
+                if hid:
+                    # 整块收起来后，把组合列表的区域让给它重新量一次。
+                    try:
+                        self.combo_box._fit_height(sync_width=True)
+                    except Exception:
+                        pass
+                return
+            acc = 0
+            shown = 0
+            for i, w in enumerate(rows_kids):
+                need = int(w.winfo_reqheight()) + 2
+                # 2026-11-20：原来硬留 2 行（`i >= 2`），但左右分栏一窄，
+                # 每行文字折成 3 行、单行就要 66px，1080×680 下 room 只够
+                # 一行，硬留 2 行会让两行都被压成 15px（「需要66 只有15」）。
+                # 改成「至少留 1 行，且这一行必须真的放得下」。
+                if acc + need > room and shown >= 1:
+                    w.pack_forget()
+                else:
+                    acc += need
+                    shown += 1
+                    if w.winfo_manager() != "pack":
+                        w.pack(fill="x", pady=(0, 2))
+        except Exception:
+            pass
+
+    def _render_issue_gaps(self, issue_gaps, holder):
         """问题维度空白：某模态活跃，但某个具体失效场景几乎没人研究。
 
         这类空白往往比「方法组合」更值得做——它对应真实的失败现场。
@@ -492,6 +604,10 @@ class GapPage(tk.Frame):
         """
         if not issue_gaps:
             return
+        # 容器从调用方传进来（两个调用点分别给 gap_box.inner 和 issue_box.inner）。
+        # 第 17 版之前这里写的是 `box`，而 `_render_issue_gaps` 里根本没有这个名字，
+        # 于是每张卡片都抛 NameError: name 'box' is not defined，右栏永远空白。
+        box = holder
         # 页签已经写了「问题维度」，这里不再重复打二级标题（第 16 版）。
         checks = {(c.get("modal"), c.get("issue")): c
                   for c in ((self.data or {}).get("global_check") or [])
@@ -516,8 +632,6 @@ class GapPage(tk.Frame):
             head = tk.Frame(row, bg=T.CARD)
             head.pack(fill="x", padx=2, pady=(6, 0))
             # 先 pack 右侧固定列，再让左侧文本 expand —— 反了会把按钮挤出可视区
-            T.Btn(head, "存为创新点", lambda e, gg=g, cc=c: self.save_issue_gap(gg, cc),
-                  "ok").pack(side="right", padx=(6, 0))
             if c:
                 _tag(head, c)
             # 标题独占一行并可折行：右栏只有 420px，再让按钮挤在同一行，
@@ -548,6 +662,8 @@ class GapPage(tk.Frame):
             # 硬条件放最后一行：先看「有没有人做」，再问「你做不做得动」
             _fit_line(row, self._cons, _guess_angle(g["modal"], g["issue"]),
                       "%s场景下%s问题的检测方法" % (g["modal"], g["issue"]), c)
+            T.Btn(row, "存为创新点", lambda gg=g, cc=c: self.save_issue_gap(gg, cc)).pack(
+                anchor="w", padx=2, pady=(4, 6))
 
     def save_issue_gap(self, g, c=None):
         idea = {
@@ -578,8 +694,13 @@ class GapPage(tk.Frame):
     def _render_combos(self, combos):
         self.combo_box.clear()
         if not combos:
-            tk.Label(self.combo_box.inner, text="库里暂时没有重复出现的组合。",
-                     bg=T.CARD, fg=T.TXT4, font=T.F(9)).pack(pady=20, padx=8)
+            _ce = tk.Label(self.combo_box.inner,
+                           text="当前范围里没有同时出现两次的组合。本地库只有这几篇时，"
+                                "这一栏本来就是空的 —— 点上方「全库」，或换一个更大的方向词。",
+                           bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(),
+                           anchor="w", justify="left")
+            _ce.pack(fill="x", pady=20, padx=8)
+            T.fill_wrap(_ce, pad=18)
             return
         for c in combos:
             # 行样式与右栏一致：淡分隔线 + 文字，数量用「篇」小字贴右，
@@ -591,13 +712,17 @@ class GapPage(tk.Frame):
             head.pack(fill="x", padx=2, pady=(6, 0))
             tk.Label(head, text="%d 篇" % c["count"], bg=T.CARD, fg=T.WARN,
                      font=T.T_BODY_SM()).pack(side="right")
-            tk.Label(head, text="%s × %s" % (c["method"], c["task"]), bg=T.CARD,
-                     fg=T.TXT, font=T.T_BODY()).pack(side="left")
+            title = tk.Label(head, text="%s × %s" % (c["method"], c["task"]), bg=T.CARD,
+                             fg=T.TXT, font=T.T_LABEL(), anchor="w", justify="left")
+            title.pack(side="left", fill="x", expand=True)
+            T.fill_wrap(title)
             if c.get("examples"):
-                tk.Label(row, text="例：" + "；".join(e[:38] for e in c["examples"]),
-                         bg=T.CARD, fg=T.TXT4, font=T.T_BODY_SM(), anchor="w",
-                         justify="left", wraplength=_gap_wrap(row, 30)).pack(fill="x", padx=2,
-                                                              pady=(2, 6))
+                # 同上：构建时 _gap_wrap 量不到宽度，改用 fill_wrap 跟着容器走
+                _ex = tk.Label(row, text="例：" + "；".join(c["examples"]),
+                               bg=T.CARD, fg=T.TXT4, font=T.T_BODY_SM(), anchor="w",
+                               justify="left")
+                _ex.pack(fill="x", padx=2, pady=(2, 6))
+                T.fill_wrap(_ex, pad=30)
 
     def _render_gaps(self, gaps, data):
         box = self.gap_box.inner
@@ -614,10 +739,12 @@ class GapPage(tk.Frame):
             _wl.pack(fill="x", padx=10, pady=5)
             T.fill_wrap(_wl, pad=22)
         if not gaps:
-            tk.Label(box, text="在当前范围里没有发现明显空白。"
-                               "可以换一个更具体的方向词，或先补充文献。",
-                     bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), justify="left",
-                     anchor="w").pack(pady=20, padx=8, fill="x")
+            _nl = tk.Label(box, text="在当前范围里没有发现明显空白。"
+                                     "可以换一个更具体的方向词，或先补充文献。",
+                           bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(), justify="left",
+                           anchor="w")
+            _nl.pack(pady=20, padx=8, fill="x")
+            T.fill_wrap(_nl, pad=18)
             return
         if self._has_issue:
             tk.Label(box, text="库里从没同时出现过", bg=T.CARD, fg=T.TXT3,
@@ -644,12 +771,12 @@ class GapPage(tk.Frame):
             head = tk.Frame(row, bg=T.CARD)
             head.pack(fill="x", padx=2, pady=(6, 0))
             # 先 pack 右侧固定列，再让左侧文本 expand —— 反了会把按钮挤出可视区
-            T.Btn(head, "存为创新点", lambda e, gg=g, cc=c: self.save_gap(gg, cc),
-                  "ok").pack(side="right", padx=(6, 0))
             if c:
                 _tag(head, c)
-            tk.Label(head, text="%s × %s" % (g["method"], g["task"]), bg=T.CARD,
-                     fg=T.TXT, font=T.T_BODY()).pack(side="left")
+            title = tk.Label(head, text="%s × %s" % (g["method"], g["task"]), bg=T.CARD,
+                             fg=T.TXT, font=T.T_LABEL(), anchor="w", justify="left")
+            title.pack(side="left", fill="x", expand=True)
+            T.fill_wrap(title)
             _why = tk.Label(row, text=g["why"], bg=T.CARD, fg=T.TXT3,
                             font=T.T_BODY_SM(), anchor="w", justify="left")
             _why.pack(fill="x", padx=2, pady=(2, 4))
@@ -666,6 +793,8 @@ class GapPage(tk.Frame):
                 T.fill_wrap(_pn, pad=6)
             _fit_line(row, self._cons, _guess_angle(g["method"], g["task"]),
                       "%s × %s" % (g["method"], g["task"]), c)
+            T.Btn(row, "存为创新点", lambda gg=g, cc=c: self.save_gap(gg, cc)).pack(
+                anchor="w", padx=2, pady=(4, 6))
 
     def _evidence_block(self, g, c):
         """把「本地库篇数」和「全库篇数」放在一起，替用户判断这个空白值不值得做。

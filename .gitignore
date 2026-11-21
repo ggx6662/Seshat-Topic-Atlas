@@ -40,10 +40,16 @@ env/
 # ---- 临时脚本与截图（开发过程产物）----
 _tmp_*.py
 _t.py
-screenshots/
+# 只忽略仓库根下那堆随手截的图；docs/images 里的配图要提交
+/screenshots/
+/tmp_shots/
 *.bak
 *.bak[0-9]*
 *.pre-v*.json
+
+# 参赛材料截图是交付证据，例外保留
+!competition/screenshots/
+!competition/screenshots/*.png
 
 # ---- 编辑器/系统 ----
 .vscode/
@@ -54,3 +60,32 @@ desktop.ini
 
 # ---- 归档 ----
 _archive/
+
+# ---- 2026-11-20 追加：换电脑可移植性相关 ----
+# 本机运行缓存与临时排查产物（体积大、可重建、含本机路径）
+.tmp/
+__pycache__/
+backup/
+competition/scripts/.cache/
+*.pre-sync
+*.pre-rebase
+.venv/
+
+# 助手记忆是用户自己的使用记录，不随仓库走
+assistant_memory.json
+
+# ---- 2026-11-21 追加：首次推送 GitHub 前补漏 ----
+# ORCID 抓取缓存：9750 个文件、107 MB，删了重新拉即可
+competition/.cache_orcid/
+competition/logs/
+# 发布到 qoder.website 的构建产物（源在 competition/site/）
+competition/site/dist/
+competition/site/dist.url
+# 数据文件的旧版本备份（源仍在，备份只是本机留底）
+*.pre-titleclean
+*.pre-noquote
+*backup*.png
+
+# ---- 2026-11-21 追加：前端依赖与构建缓存 ----
+node_modules/
+*.tsbuildinfo

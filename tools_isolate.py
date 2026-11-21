@@ -52,10 +52,12 @@ _TMP = None
 # 加新文件就在这里补一行，不用改每个测试脚本。
 TARGETS = [
     ("kb_widget", "RESEARCH_MEMORY"),
+    ("kb_widget", "PROMPT_DIR"),
     ("kb_widget", "SEEN_IDS"),
     ("kb_widget", "CONFIG_FILE"),
     ("profile_memory", "PROFILE_FILE"),
     ("profile_memory", "LOCK_FILE"),
+    ("plan_store", "PLAN_FILE"),
     ("kb_download", "FAILURES_FILE"),
     ("kb_download", "SEEN_FILE"),
     ("llm_bridge", "CONFIG"),

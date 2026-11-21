@@ -43,7 +43,7 @@ def main():
         time.sleep(0.05)
     pump(app, 1.5)
     print("拿到 %d 篇" % len((pg.result or {}).get("papers", [])))
-    doc = tools_shot.find_window("知识库助手", True)
+    doc = tools_shot.find_window("塞莎特——题谱", True)
     if doc:
         ok = tools_shot.grab(doc[0], doc[2], os.path.join(out, "12-latest.png"))
         print("saved 12-latest.png", ok)

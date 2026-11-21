@@ -238,6 +238,13 @@ def build(force=False):
     done = 0
     t0 = time.time()
     for path, rec in papers.items():
+        # 键可能是 `{kb}/...` 相对形式（换电脑也能用），解析 PDF 要用本机绝对路径；
+        # 元数据字典的键与全文索引保持一致，方便两边对照。
+        try:
+            import kb_paths
+            real = kb_paths.to_abs(path)
+        except Exception:
+            real = path
         text = rec.get("text", "") or ""
         mt = rec.get("mtime", 0)
 
@@ -248,9 +255,9 @@ def build(force=False):
             out[path] = prev
             continue
 
-        r = paper_meta.extract(path, text)
+        r = paper_meta.extract(real, text)
         t_pdf = r["title"]
-        t_file = title_from_filename(path)
+        t_file = title_from_filename(real)
 
         q = _title_quality(t_pdf)
         if q >= 3:
@@ -262,7 +269,7 @@ def build(force=False):
         else:
             title, src = None, "none"
             # 两路都失败时，至少给个可读的（文件名去扩展名）
-            stem = os.path.splitext(os.path.basename(path))[0]
+            stem = os.path.splitext(os.path.basename(real))[0]
             if len(stem) >= 3:
                 title, src = stem, "stem"
 

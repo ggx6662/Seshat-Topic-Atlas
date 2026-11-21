@@ -28,6 +28,26 @@ import app_main
 import app_theme
 
 X, Y, W, H = 30, 20, 1320, 880
+
+
+DEFAULT_SIZE = (W, H)
+
+
+def _apply_size_override():
+    """允许 `tools_shot_pages_all.py 1440x900` 覆盖默认的 1320×880。
+
+    2026-11-20 加：每档尺寸的截图都落在 `screenshots/` 同名文件上，
+    1320×880 与 1440×900 会互相覆盖，README 配图尤其容易被小窗口的版本顶掉。
+    """
+    global W, H
+    for arg in sys.argv[1:]:
+        if arg.startswith("-") or "x" not in arg:
+            continue
+        a, _, b = arg.partition("x")
+        if a.isdigit() and b.isdigit():
+            W, H = int(a), int(b)
+            return (W, H)
+    return DEFAULT_SIZE
 PAGES = (
     ("home", "01-home"),
     ("topic", "02-topic"),
@@ -43,9 +63,11 @@ PAGES = (
     ("settings", "12-settings"),
     # 2026-11-15 新增：研究计划页（侧栏「个人」分组）
     ("plan", "13-plan"),
+    # 2026-11-19 新增：素材库页（数据集目录）
+    ("materials", "14-materials"),
 )
 LIGHT = (("home", "20-home-light"), ("library", "21-library-light"),
-         ("plan", "22-plan-light"))
+         ("plan", "22-plan-light"), ("materials", "23-materials-light"))
 
 USER32 = ctypes.windll.user32
 GDI32 = ctypes.windll.gdi32
@@ -171,9 +193,11 @@ def _want_theme():
 
 
 def main():
-    only = {a for a in sys.argv[1:] if not a.startswith("-")}
+    _apply_size_override()
+    only = {a for a in sys.argv[1:] if not a.startswith("-") and "x" not in a}
     os.makedirs("screenshots", exist_ok=True)
     orig = _want_theme()
+    print("窗口尺寸：%dx%d" % (W, H))
 
     # ---- 深色 12 页 ----
     # **不能直接依赖配置文件里的主题**：上一轮跑浅色阶段会把它写成 light，

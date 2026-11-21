@@ -13,25 +13,25 @@
 
 :root {
   /* 令牌注入失败时的兜底，值必须与 design_tokens.COLORS 一致 */
-  --bg: #061220;
-  --nav: #08182A;
-  --card: #0C2135;
-  --card-hi: #0E2539;
-  --overlay: #10304A;
-  --line: #1B3A53;
-  --line-soft: #14304A;
-  --accent: #6BE7FF;
-  --accent-hi: #8FEEFF;
-  --accent-dim: #0E4B63;
-  --txt: #EDF8FF;
-  --txt2: #B4CFE0;
-  --txt3: #8AA8BF;
-  --txt4: #7794AB;
-  --ok: #43FFC9;
-  --warn: #FFD166;
-  --err: #FF6F91;
-  --purple: #B69CFF;
-  --orange: #FFB37A;
+  --bg: #f6efe3;
+  --nav: #f1e7d6;
+  --card: #fdf9f1;
+  --card-hi: #f2e7d5;
+  --overlay: #fffdf8;
+  --line: #d9c9b2;
+  --line-soft: #e9ddcb;
+  --accent: #5a3f2a;
+  --accent-hi: #6e4f36;
+  --accent-dim: #ead9b9;
+  --txt: #1f2438;
+  --txt2: #4a4136;
+  --txt3: #6b6155;
+  --txt4: #665b4e;
+  --ok: #2f6b45;
+  --warn: #8a5a00;
+  --err: #a13c2f;
+  --purple: #6b4a86;
+  --orange: #a0522d;
 
   --radius: 10px;
   --radius-sm: 6px;
@@ -68,8 +68,32 @@ html { scrollbar-color: var(--line) var(--bg); scrollbar-width: thin; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: #24506F; }
+::-webkit-scrollbar-thumb:hover { background: #c9b596; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------------- 科技线层 ---------------- */
+/* 开场页的差分机 / 神经网络 / 芯片罗盘语言在体验端的轻量回声：
+   只留在页面边缘与页头，卡片区域完全让给数据。 */
+.bg-tech {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  color: var(--accent); opacity: .11;
+  mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, transparent 44%, #000 100%);
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, transparent 44%, #000 100%);
+}
+.bg-tech svg {
+  display: block; width: 100%; height: 100%;
+  fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;
+}
+.bg-tech-dots circle { fill: currentColor; stroke: none; }
+main { position: relative; z-index: 1; }
+
+.top-tech {
+  flex: 0 0 auto; width: 170px; height: 34px; margin-left: auto;
+  color: var(--accent); opacity: .42;
+  fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (max-width: 1180px) { .top-tech { display: none; } }
+@media (max-width: 640px) { .bg-tech { opacity: .07; } }
 
 /* ---------------- 顶栏 ---------------- */
 .top {
@@ -86,26 +110,38 @@ html { scrollbar-color: var(--line) var(--bg); scrollbar-width: thin; }
 
 .brand { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
 
-/* 纯色标，不用渐变 —— 渐变徽标是「模板感」最强的信号之一 */
+/* 品牌标记与 Web 版同一枚六边形节点，不再用文字方块冒充 logo */
 .logo {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 34px; height: 34px;
-  border-radius: var(--radius-sm);
-  background: var(--accent-dim);
-  border: 1px solid var(--accent);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: .2px;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
+  border-radius: 9px;
+  flex: 0 0 auto;
 }
 
 .brand-txt { display: flex; flex-direction: column; line-height: 1.25; }
-.brand-txt b { font-size: var(--body-font); font-weight: 600; }
-.brand-txt i { font-style: normal; font-size: var(--caption-font); color: var(--txt3); }
+.brand-txt b { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif; font-size: 18px; font-weight: 700; letter-spacing: .12em; }
+/* 品牌名「塞莎特——题谱」：女神名用小一号单独点出，主字号不变。
+   整串只缩一方而不是整体降字号，字号下限（见 design_tokens）不能被破。 */
+.brand-txt b i { font-style: normal; font-size: 14px; letter-spacing: .04em; color: var(--txt2); }
+.brand-txt i {
+  margin-top: 3px;
+  font-style: normal;
+  font-family: "Cascadia Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--txt3);
+}
 
-.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+/* min-width:0 是横向滚动的前提：flex 子项的自动最小尺寸是 fit-content，
+   不写这行，五个标签会排成一整行 446px，把整个页面撑到 504px，
+   于是「分析」按钮落到 390px 屏幕之外（实测右边界 450px > 390px）。
+   有了它，.tabs 才会真的被父容器压到 100% 并自己横向滚动。 */
+.tabs {
+  display: flex; gap: 4px;
+  overflow-x: auto; scrollbar-width: none;
+  min-width: 0;
+  max-width: 100%;
+}
 .tabs::-webkit-scrollbar { display: none; }
 /* 手机上有 5 个标签放不下，必须横滑。但用户不知道能滑 —— 右边加一道渐隐，
    暗示「还有内容」。用 mask 而不是盖一个渐变 div：后者会挡住点击。 */
@@ -229,7 +265,7 @@ button.primary {
   cursor: pointer;
   transition: background .15s, border-color .15s;
 }
-button.primary:hover { background: #135A76; border-color: var(--accent-hi); }
+button.primary:hover { background: var(--accent-hi); border-color: var(--accent-hi); }
 button.primary:disabled {
   background: var(--card-hi);
   border-color: var(--line);

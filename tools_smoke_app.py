@@ -43,6 +43,15 @@ _kb.RESEARCH_MEMORY = __import__("pathlib").Path(_tmp_memory)
 # 只隔内存文件的话，冒烟一跑真实目录就会多个 researcher_profile.json。
 import tools_isolate  # noqa: E402
 
+# 测试开始前就存在的画像 / 失败清单属于用户数据，跑完既不能算泄漏、更不能删。
+# （2026-11-19：没传 preexisting，把用户真实画像当成测试产物删掉了。）
+_PRE_REAL = {}
+for _name in ("researcher_profile.json", "download_failures.json"):
+    _p = os.path.join(HERE, _name)
+    if os.path.exists(_p):
+        _st = os.stat(_p)
+        _PRE_REAL[_p] = (_st.st_size, _st.st_mtime)
+
 _ISO = tools_isolate.isolate()
 _mem_before = tools_isolate.snapshot_memory()
 
@@ -51,13 +60,28 @@ def snap(app, name):
     app.update()
     time.sleep(0.5)
     app.update()
-    hit = SHOT.find_window("知识库助手", True)
+    hit = SHOT.find_window("塞莎特——题谱", True)
     path = os.path.join(OUT, name + ".png")
     if not hit:
         print("  [shot] 未找到窗口")
         return
     hwnd, _t, r, _a = hit
     SHOT.grab(hwnd, r, path)
+    # 顶部窗口也可能是别的浅色应用；按侧栏底色抽查，确认截到的是塞莎特——题谱
+    try:
+        from PIL import Image
+        img = Image.open(path).convert("RGB")
+        want = T.hex_to_rgb(T.SIDEBAR)
+        probes = ((6, 60), (10, 120), (30, 200), (8, 400))
+        hits = sum(1 for x, y in probes
+                   if max(abs(img.getpixel((x, y))[i] - want[i]) for i in range(3)) <= 8)
+        ok = hits >= 2
+    except Exception:
+        ok = False
+    if not ok:
+        print("  [shot] 内容校验失败：截图不是塞莎特——题谱窗口")
+        result["fail"].append((name, "截图内容不是塞莎特——题谱"))
+        return
     print("  [shot]", path, "%dx%d" % (r.right - r.left, r.bottom - r.top))
 
 
@@ -187,6 +211,27 @@ def main():
         result["pdfs"] = len(pg.rows)
     step("文献库", library)
 
+    # 8b 素材库：数据集目录，筛选后选中一条
+    def materials():
+        app.goto("materials")
+        pg = app.page("materials")
+        for _ in range(80):
+            app.update()
+            time.sleep(0.1)
+            if pg.rows:
+                break
+        assert pg.rows, "素材库为空"
+        pg.entry.delete(0, "end")
+        pg.entry.insert(0, "检测")
+        pg.apply()
+        if not pg.rows:
+            pg.reset()
+        assert pg.rows, "素材库筛选后为空"
+        pg.select(0)
+        snap(app, "14-materials")
+        result["mats"] = len(pg.rows)
+    step("素材库", materials)
+
     # 9 科研方法论
     def skills():
         app.goto("skills")
@@ -224,7 +269,7 @@ def main():
         pass
 
     # 真实目录里不该冒出用户数据文件（跑了 12 个页面，其中导师页会写画像）
-    leaked = tools_isolate.check_clean()
+    leaked = tools_isolate.check_clean(preexisting=_PRE_REAL.keys())
     for p in leaked:
         try:
             os.remove(p)
@@ -232,6 +277,17 @@ def main():
             pass
     if leaked:
         result["fail"].append(("测试污染真实数据", ", ".join(leaked)))
+    changed = []
+    for p, sig in _PRE_REAL.items():
+        try:
+            st = os.stat(p)
+        except OSError:
+            changed.append(p + "（被删除）")
+            continue
+        if (st.st_size, st.st_mtime) != sig:
+            changed.append(p + "（被改动）")
+    if changed:
+        result["fail"].append(("真实用户数据被改动", ", ".join(changed)))
     try:
         tools_isolate.assert_memory_untouched(_mem_before)
     except AssertionError as exc:
@@ -242,7 +298,7 @@ def main():
     print("通过:", len(result["ok"]), "  失败:", len(result["fail"]))
     for n, e in result["fail"]:
         print("  FAIL", n, e)
-    for k in ("cands", "ideas", "cats", "mentors", "venues", "pdfs"):
+    for k in ("cands", "ideas", "cats", "mentors", "venues", "pdfs", "mats"):
         if k in result:
             print("  %-8s %s" % (k, result[k]))
     return 1 if result["fail"] else 0

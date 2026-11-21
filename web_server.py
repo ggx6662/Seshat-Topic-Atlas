@@ -171,7 +171,24 @@ def api_overview(q):
             mi = _mod("meta_index").stats()
         except Exception:
             mi = {}
-        return {"papers": st.get("total_pdf", 0), "cats": st.get("total_txt", 0),
+        # 2026-11-20：原来这里把 kb_stats() 的 total_txt（本地 PDF 转出的
+        # **文本文件**个数，16）当成「方向大类」抛给前端，页面上写着
+        # 「16 个方向大类」，而桌面端方向图谱是 25 个大类 / 536 个方向。
+        # 两个字段同名不同义，是同一个坑的一部分。改成直接数方向库。
+        try:
+            dir_total = len(kb.load_direction_library() or {})
+        except Exception:
+            dir_total = 0
+        try:
+            venues = len((json.loads(Path(str(_RES("venue_meta.json")))
+                                     .read_text(encoding="utf-8"))
+                          .get("venues") or {}))
+        except Exception:
+            venues = 0
+        return {"papers": st.get("total_pdf", 0),
+                "cats": dir_total,
+                "text_files": st.get("total_txt", 0),
+                "venues": venues,
                 "advisors": ai.get("advisors", 0),
                 "complete_advisors": ai.get("complete_advisors", 0),
                 "institutions": ai.get("institutions", 0),
@@ -182,10 +199,14 @@ def api_overview(q):
 
 def api_taxonomy(q):
     def build():
-        # 结构是 {大类: {venues: [...], subs: [{name, keywords}, ...]}}
-        lib = json.loads(Path(str(_RES("directions_library.json"))).read_text(encoding="utf-8"))
+        # 2026-11-20：这里原来直接读 directions_library.json（12 个大类 / 64 个
+        # 小类），而桌面端方向图谱用的是 kb.load_direction_library() 合并后的
+        # 25 大类 / 536 个方向 —— 同一份数据两套口径，网页版方向图谱凭空少一半。
+        # 改成走桌面端同一个函数，两边就只有一个真相。
+        # 返回结构保持 {category, count, fields:[{name, keywords}]} 不变。
+        lib = _mod("kb_widget").load_direction_library()
         out = []
-        for cat, body in lib.items():
+        for cat, body in (lib or {}).items():
             if not isinstance(body, dict):
                 continue
             subs = []
@@ -206,7 +227,7 @@ def api_topics(q):
     tg = _mod("topic_gen")
     cands = tg.build(dirn, "自动混合", limit)
     keep = ("title", "strategy", "angle", "reason", "questions",
-            "min_experiment", "novelty", "feasibility", "score")
+            "min_experiment", "relevance", "novelty", "feasibility", "score")
     return {"direction": dirn,
             "generic_questions": list(getattr(tg, "GENERIC_QUESTIONS", [])),
             "candidates": [{k: c.get(k) for k in keep} for c in cands]}

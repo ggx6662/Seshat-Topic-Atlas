@@ -402,6 +402,31 @@ def _pick_issues(items, local_gaps=None, per_modal=1):
     return out[:4]
 
 
+def index_status():
+    """arXiv 索引现在能不能用。给页面提示用，返回 (可用, 一句话说明)。
+
+    为什么单独做一个
+    ----------------
+    换电脑、或者索引目录没搬过来时，`_global_check` 会静默返回空列表 ——
+    页面上「全库核实」这一项直接消失，用户看不出是「没有空白」还是「查不了」。
+    这里给出一句能直接显示在界面上的说明，让对方知道该去配哪个变量。
+    """
+    try:
+        import kb_vector
+    except Exception as e:
+        return False, "arXiv 索引模块没加载起来（%s）" % e
+    try:
+        st = kb_vector.stats()
+    except Exception as e:
+        return False, "arXiv 索引读不出来（%s）：%s" % (kb_vector.OUT, e)
+    n = int(st.get("docs") or 0)
+    if n <= 0:
+        return False, ("arXiv 索引没装在这台机器上（找的是 %s）。"
+                       "把索引目录拷过来，或用环境变量 KB_VECTOR_DIR 指过去，"
+                       "或者跑一次 python kb_vector.py --build。" % kb_vector.OUT)
+    return True, "arXiv 全库 %d 篇可查" % n
+
+
 def _global_check(scope, data, max_check=3):
     """把本地「空白」拿到 arXiv 全库核实一遍。
 

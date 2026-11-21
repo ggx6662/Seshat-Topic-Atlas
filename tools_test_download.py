@@ -34,7 +34,7 @@ _ISO = tools_isolate.isolate()
 _orig_root, _orig_inbox = kb.kb_root, kb.inbox_dir
 _orig_paths = KB.kb_paths
 # 隔离：kb_download 内部一律走 kb_paths()，所以只要换掉它和 kb_widget 的两个入口，
-# 整个下载链路就落在临时库里，碰不到用户真实的 G:\相关内容\AuthorKit27\知识库
+# 整个下载链路就落在临时库里，碰不到用户真实的知识库目录
 kb.kb_root = lambda: FAKE_ROOT
 kb.inbox_dir = lambda: FAKE_ROOT / "新论文"
 KB.kb_paths = lambda: (FAKE_ROOT, FAKE_ROOT / "新论文")

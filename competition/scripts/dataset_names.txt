@@ -1,0 +1,365 @@
+3D-FRONT
+ACDC
+ADE20K
+Adult
+AdvBench
+AgentBench
+Agriculture-Vision
+AI2-THOR
+Alibaba Cluster Trace
+AlpacaEval
+AlphaFold DB
+Amazon Reviews
+AndroZoo
+APPS
+ARC
+Argoverse 2
+ARKitScenes
+ASDiv
+ASSISTments 2012
+Atari 100k
+AudioSet
+Avazu
+AVEC
+Azure VM Trace
+BBQ
+BDD100K
+BEIR
+BIG-bench
+Big-Vul
+BigCodeBench
+BigEarthNet
+BindingDB
+BIRD
+BoolQ
+Bot-IoT
+BraTS
+BugsInPy
+C-Eval
+C4
+CAIL
+CALVIN
+Camelyon17
+CASP15
+CelebA
+CELLxGENE
+ChartQA
+ChEMBL
+CheXpert
+Chinese Text Project
+Cholec80
+CICIDS2017
+CIFAR-10 / CIFAR-100
+Cityscapes
+ClassEval
+ClickBench
+ClimateBench
+CLINC150
+CloudSuite
+CMMLU
+CNN/DailyMail
+COCO
+COCO-WholeBody
+CodeContests
+CodeNet
+CodeSearchNet
+CodeXGLUE
+Common Crawl
+Common Voice
+COMPAS
+CompilerGym
+CoNLL-2003
+ConvFinQA
+CoQA
+Cora
+CoVoST
+Credit Card Fraud
+Criteo
+CrowdHuman
+CrowdPose
+CUAD
+CVEfixes
+CVRPLIB
+D4RL
+DAIC-WOZ
+DanceTrack
+DAVIS 2017
+DeathStarBench
+DeepFashion2
+DeepGlobe
+Defects4J
+Devign
+DIOR
+DM Control
+DocVQA
+DomainNet
+DOTA
+Drebin
+DRIVE
+DROP
+DS-1000
+DSEC
+DVS128 Gesture
+EdNet
+Ego4D
+Electricity
+EMBER
+EPFL Benchmarks
+EPIC-KITCHENS-100
+ERA5
+ESC-50
+ETH3D
+ETTh1 / ETTm1
+EuRoC MAV
+Europeana
+EuroSAT
+FaceForensics++
+Fashion-MNIST
+FEVER
+FewRel
+FFHQ
+FinQA
+FiQA
+Flores-200
+Folktables
+Foursquare
+Gaia
+GAIA
+gem5
+GISAID
+GitHub Archive
+GLUE
+Goodreads
+Google Cluster Trace
+Google Scanned Objects
+Gowalla
+GQA
+GSM8K
+GTSRB
+Habitat
+HarmBench
+HellaSwag
+HELM
+Home Credit
+HotpotQA
+Human3.6M
+HumanEval
+Hypersim
+ICDAR 2015
+IEEE-CIS Fraud
+ImageNet
+ImageNet-C
+iNaturalist
+IRSTD-1k
+Isaac Gym
+iSAID
+ISIC
+JailbreakBench
+JHU CSSE COVID-19
+Join Order Benchmark
+KiTS
+KITTI
+KITTI-360
+KuaiRec
+LAION
+Last.fm 360K
+LDBC SNB
+LEAF
+Lending Club
+LEVIR-CD
+LexGLUE
+LFW
+LIBERO
+LibriSpeech
+LiTS
+LiveCodeBench
+LLVIP
+LMSYS-Chat-1M
+LongBench
+LoveDA
+LVIS
+M4
+M5
+MAESTRO
+Magma
+ManiSkill
+Mapillary Vistas
+Market-1501
+MatBench
+Materials Project
+MATH
+MathVista
+MATPOWER
+Matterport3D
+MBPP
+MD17
+Medical Segmentation Decathlon
+MedMNIST
+MedQA
+MetaWorld
+METR-LA
+MIMIC-CXR
+MIMIC-III
+MIND
+Mind2Web
+MineRL
+MiniF2F
+Mip-NeRF 360
+MLPerf
+MLPerf Tiny
+MMBench
+MMLU
+MMMU
+MNIST
+MoleculeNet
+MOT Challenge
+MovieLens
+MQT Bench
+MS MARCO
+MSMT17
+MT-Bench
+MuJoCo
+Multi-News
+Multi30K
+MultiWOZ
+MUSDB18
+MVBench
+MVTec AD
+NarrativeQA
+NAS Parallel Benchmarks
+NASA C-MAPSS
+Natural Questions
+Netflix Prize
+NEU-DET
+NIH ChestX-ray14
+NSL-KDD
+NTU RGB+D
+NUAA-SIRST
+nuScenes
+NWPU VHR-10
+NYC Taxi
+NYU Depth V2
+Objaverse
+ObjectNet
+Office-31
+OGB
+Online Boutique
+OntoNotes 5.0
+Open Catalyst 2020
+Open Images
+Open X-Embodiment
+OpenNeuro
+OpenWebText
+OSWorld
+OULAD
+OWASP Benchmark
+PadChest
+PAMAP2
+PARSEC
+PaySim
+PCam
+PDB
+PEMS-BAY
+PIQA
+Places365
+PlantVillage
+PolyBench
+Porto Taxi
+Procgen
+ProteinNet
+PTB-XL
+PubLayNet
+PubMedQA
+QASMBench
+Qasper
+QM9
+QuAC
+QuixBugs
+R2R
+RealToxicityPrompts
+RefCOCO / RefCOCO+ / RefCOCOg
+Replica
+RepoBench
+RetailRocket
+RLBench
+RoboCasa
+RoboMimic
+Rodinia
+ScanNet
+ScanRefer
+ScienceQA
+SciFact
+SDSS
+SECOM
+SEED-Bench
+SEN12MS
+Sen1Floods11
+ShapeNet
+SIRST-Aug
+SKU110K
+Sleep-EDF
+SoccerNet
+Solomon VRP
+Something-Something V2
+SOREL-20M
+SPEC CPU 2017
+Speech Commands
+Spider
+SportsMOT
+SQuAD
+SROIE
+SUN RGB-D
+SuperGLUE
+SVHN
+SWE-bench
+TabFact
+Tanks and Temples
+Taobao User Behavior
+TAT-QA
+TCGA
+The Pile
+The Stack
+Tiny ImageNet
+TotalSegmentator
+Tox21
+ToxiGen
+TPC-C
+TPC-DS
+TPC-H
+Traffic
+TrainTicket
+TriviaQA
+TruthfulQA
+TUM RGB-D
+TyDi QA
+UAVDT
+UCI HAR
+UCR Archive
+Universal Dependencies
+UNSW-NB15
+Video-MME
+VIMA
+VinDr-CXR
+VisA
+VisDrone
+Visual Genome
+Visual Wake Words
+VoxCeleb
+VQAv2
+Waymo Open Dataset
+Weather
+WeatherBench
+WebArena
+WebLINX
+WESAD
+WikiText-103
+WILDS
+WinoBias
+WinoGrande
+WMT
+xBD
+XNLI
+XSum
+xView
+YCSB
+Yelp

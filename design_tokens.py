@@ -30,12 +30,12 @@
 这样改一个值，三端一起变。
 """
 
-# ---- 色彩：灰阶底 + 一个品牌色 -------------------------------------------
+# ---- 色彩：暖纸底 + 墨色文字 + 铜色品牌 ---------------------------------
 #
-# 2026-11 版：用户定了「做成灰阶，只把品牌色给要点」。所以表面是中性灰
-# （不带蓝、不带青），层级靠亮度台阶 + 1px 描边，不靠投影。
-# 品牌色只出现在三种地方：可点的文字/按钮、当前选中的导航项、关键数字。
-# 风险等级、图表数据、方法标签这些「有含义」的地方才用彩色。
+# 2026-11-18 第 27 版：桌面端也要和网页端同一套视觉，所以三端统一改用
+# 赛事网页的「米纸 / 墨 / 铜」配色。浅色是主形态（米纸画布 + 暖白卡片 +
+# 墨色文字 + 深铜主色），深色是同一气质的「墨底 + 暖金」，不再是中性灰。
+# 层级仍靠底色台阶，不靠投影；语义色各自调到暖色系里，保证对比度。
 #
 # 三端都从这里取。网页端 `web_server.py` 把它注入成 CSS 变量。
 
@@ -69,69 +69,60 @@ def _build(base, ink_base):
 # 所以不得不靠 1px 描边补层级 —— 结果是「到处都是框」。
 # 新版把三级拉开：canvas(最暗) < nav(微亮) < card(明显亮) < raised。
 _GREY_DARK = {
-    "canvas":          "#0b0d10",   # 页面底：近纯黑，内容区因此显得「浮起来」
-    "surface_nav":     "#101216",   # 侧栏：比画布略亮，形成一条窄柱
-    "surface_card":    "#15181c",   # 卡片：ΔL 明显，不用描边也分得开
-    "surface_raised":  "#1d2126",   # 行内次级块、输入框、悬停
-    "surface_overlay": "#22272d",   # 浮层、弹出
-    "hairline":        "#262b31",   # 只在必须画线的地方用（表格行、分隔）
-    "hairline_soft":   "#1a1e22",   # 极弱分隔
+    "canvas":          "#17120e",   # 墨底：对应网页深色主题
+    "surface_nav":     "#1d1712",   # 侧栏比画布略亮
+    "surface_card":    "#221a14",   # 卡片：暖褐，靠底色差分层
+    "surface_raised":  "#2b2119",   # 行内次级块、输入框、悬停
+    "surface_overlay": "#33281e",   # 浮层、弹出
+    "hairline":        "#3d3125",   # 表格行、真正的分隔
+    "hairline_soft":   "#2a211a",   # 极弱分隔
 }
 _GREY_DARK_INK = {
-    "ink":             "#e8eaed",   # 主文字
-    "ink_secondary":   "#b9bec5",
-    "ink_tertiary":    "#8c939b",   # 说明、列头
-    "ink_quaternary":  "#7d848c",   # 占位符：卡片上仍 ≥4.5:1
+    "ink":             "#f3e9d8",   # 主文字：暖白
+    "ink_secondary":   "#cfc0ac",
+    "ink_tertiary":    "#a99a84",   # 说明、列头
+    "ink_quaternary":  "#9a8b76",   # 占位符：卡片上仍 ≥4.5:1
 }
 
 _GREY_LIGHT = {
-    # 2026-11-15：画布从 #ffffff 改到 #f7f8f9。
-    # 原因：画布和卡片都是纯白时，卡片完全「融进」页面，唯一能区分它们的是
-    # 一圈描边 —— 而描边在 Canvas 上被反锯齿成 2px 灰框，用户说「太丑」。
-    # 把画布压深一档、卡片保持纯白，层级就由底色差承担了，一条线都不用画。
-    # 这是 GitHub / Linear / Notion 都在用的做法：内容区白，底灰。
-    # 2026-11-15 第 11 版：参考图（Linear 式看板）的底是极浅的中性灰，
-    # 卡片纯白浮在上面，侧栏和画布同色系、只差一两档。层级全靠底色差，
-    # 一条描边都不画 —— 描边在 Canvas 上会被反锯齿成 2px 灰框。
-    "canvas":          "#eff0f3",
-    # 侧栏比画布深一档：浅色下白卡放在画布上，侧栏如果也接近白，
-    # 整屏会连成一片（截图里侧栏与内容区几乎分不开）。
-    "surface_nav":     "#e4e7ec",
-    "surface_card":    "#ffffff",
-    "surface_raised":  "#f5f6f8",
-    "surface_overlay": "#ffffff",
-    "hairline":        "#d6d9e0",
-    "hairline_soft":   "#e8eaee",
+    # 米纸主形态：画布取网页 --site-bg，卡片比画布再亮一档，靠底色分层。
+    # 不画描边（Tk 的反锯齿会把 1px 线糊成 2px 灰框）。
+    "canvas":          "#f6efe3",   # 米纸画布
+    "surface_nav":     "#f1e7d6",   # 侧栏比画布深半档
+    "surface_card":    "#fdf9f1",   # 暖白卡片
+    "surface_raised":  "#f2e7d5",   # 输入框、行内次级块
+    "surface_overlay": "#fffdf8",   # 浮层
+    "hairline":        "#d9c9b2",   # 暖灰分隔线
+    "hairline_soft":   "#e9ddcb",
 }
 _GREY_LIGHT_INK = {
-    "ink":             "#1b1d21",
-    "ink_secondary":   "#43474d",
-    "ink_tertiary":    "#5c6169",
-    "ink_quaternary":  "#5c6169",
+    "ink":             "#1f2438",   # 墨色主文字（网页 --site-fg）
+    "ink_secondary":   "#4a4136",
+    "ink_tertiary":    "#6b6155",
+    "ink_quaternary":  "#665b4e",   # 占位符：米纸/暖白上都 ≥4.5:1
 }
 
 # 语义色：两套各调一次，保证在自己那套底色上都 ≥4.5:1。
 _SEM_DARK = {
-    "primary":         "#2f81f7",   # 唯一的「可点」色
-    "primary_hover":   "#58a6ff",
-    "primary_muted":   "#1b3a5c",
-    "success":         "#3fb950",
-    "warning":         "#d29922",
-    "danger":          "#f85149",
-    "info":            "#a371f7",
-    "orange":          "#db6d28",
+    "primary":         "#d8b27a",   # 暖金：深色下的品牌色
+    "primary_hover":   "#e6c793",
+    "primary_muted":   "#3a2c1d",
+    "success":         "#7fbf8a",
+    "warning":         "#e0b15a",
+    "danger":          "#e08778",
+    "info":            "#c2a0e0",
+    "orange":          "#e0a070",
 }
 _SEM_LIGHT = {
-    # 参考图的强调色是紫色。白底上要 ≥4.5:1，所以取深一档的 #6d4bd8；
-    # primary_muted 是选中块/徽章的浅紫底。
-    "primary":         "#6d4bd8",
-    "primary_hover":   "#5a3cc0",
-    "primary_muted":   "#efecfd",
-    "success":         "#1a7f37",
-    "warning":         "#9a6700",
-    "danger":          "#cf222e",
-    "info":            "#8250df",
-    "orange":          "#bc4c00",
+    # 深铜色做「可点」与关键数字；白字压上去 ≥4.5:1。
+    "primary":         "#5a3f2a",
+    "primary_hover":   "#6e4f36",
+    "primary_muted":   "#ead9b9",   # 选中块 / 徽章的暖金浅底
+    "success":         "#2f6b45",
+    "warning":         "#8a5a00",
+    "danger":          "#a13c2f",
+    "info":            "#6b4a86",
+    "orange":          "#a0522d",
 }
 
 PALETTE = {
@@ -141,7 +132,7 @@ PALETTE = {
 
 # 当前生效的一套。`app_theme.set_mode()` 切它之前会给所有控件重建配色，
 # 这里只决定「下一次取色取哪一套」。
-CURRENT = "dark"
+CURRENT = "light"
 
 # 兼容旧名字：其余二十来个模块都是 `from design_tokens import COLORS`，
 # 直接绑到当前调色板，切主题后它们看到的是同一份 dict（原地更新）。

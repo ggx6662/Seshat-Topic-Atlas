@@ -1,0 +1,12 @@
+{
+  "kb_path": "",
+  "inbox_dir": "新论文",
+  "days_back": 7,
+  "max_results_per_query": 8,
+  "max_downloads": 6,
+  "strict_domain_terms": [],
+  "task_terms": [],
+  "queries": [],
+  "theme": "light",
+  "font_step": "normal"
+}

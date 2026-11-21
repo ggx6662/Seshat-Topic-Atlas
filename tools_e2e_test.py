@@ -22,23 +22,65 @@
   python tools_e2e_test.py --verbose   # 打印每步细节
 """
 
+import json
 import os
 import sys
 import time
 import traceback
+from pathlib import Path
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-import app_main  # noqa: E402
-import app_theme as T  # noqa: E402
-import kb_widget as kb  # noqa: E402
 
-# 必须在建任何界面之前隔离 —— MentorPage / TopicPage / IdeasPage / LatestPage
-# 都会在正常工作流程里写 profile_memory。
+def _snapshot_user_files():
+    """只取元数据：存在性、字节数、纳秒修改时间，不读取文件内容。"""
+    state = {}
+    for name in ("config.json", "llm_config.json", "research_memory.json",
+                 "research_plan.json", "researcher_profile.json", "widget_settings.json",
+                 "download_failures.json", "search_log.json"):
+        try:
+            st = (Path(HERE) / name).stat()
+        except FileNotFoundError:
+            state[name] = (False, None, None)
+        else:
+            state[name] = (True, st.st_size, st.st_mtime_ns)
+    return state
+
+
+_REAL_BEFORE = _snapshot_user_files()
+
+
+def _assert_user_files_untouched():
+    after = _snapshot_user_files()
+    changed = [name for name, before in _REAL_BEFORE.items() if after[name] != before]
+    assert not changed, "真实用户文件的存在性/size/mtime_ns 被改动：" + ", ".join(changed)
+
+
+# 必须先取消真实配置白名单、安装隔离，再导入任何应用/页面模块。
 import tools_isolate  # noqa: E402
 
+tools_isolate.ALLOW_REAL.clear()
 _ISO = tools_isolate.isolate()
+tmp = _ISO["__tmp__"]
+try:
+    import app_paths  # noqa: E402
+    app_paths.DATA = tmp
+
+    import search_log  # noqa: E402
+    search_log.LOG_FILE = str(tmp / "search_log.json")
+
+    import app_main  # noqa: E402
+    import app_theme as T  # noqa: E402
+    import kb_widget as kb  # noqa: E402
+except BaseException:
+    # 导入失败也只清理这次隔离目录，绝不恢复或删除真实路径。
+    try:
+        tools_isolate.cleanup(tmp)
+    finally:
+        _assert_user_files_untouched()
+    raise
 
 VERBOSE = "--verbose" in sys.argv
 results = []
@@ -89,34 +131,7 @@ def wait_until(app, cond, timeout=6.0):
     return False
 
 
-def main():
-    print("=" * 66)
-    print("知识库助手 · 全功能端到端测试")
-    print("=" * 66)
-
-    # 测试期间不污染真实数据。
-    # 注意：只隔离 research_memory.json 是不够的 —— MentorPage.search() 里会
-    # PM.bump_pref() + PM.remember() 写画像，TopicPage 也会写。所有会被界面
-    # 顺手写到盘上的文件都交给 tools_isolate 统一处理。
-    import shutil
-    import pathlib
-    import tempfile
-    # isolate() 已经把 kb.RESEARCH_MEMORY 指向一个还不存在的临时文件，
-    # 原始路径从 _ISO["__orig__"] 里取。
-    real_mem = _ISO["__orig__"].get("kb_widget.RESEARCH_MEMORY")
-    tmp_mem = os.path.join(tempfile.gettempdir(), "kb_e2e_memory.json")
-    if real_mem and real_mem.exists():
-        shutil.copy(real_mem, tmp_mem)
-        kb.RESEARCH_MEMORY = pathlib.Path(tmp_mem)
-    _mem_before = tools_isolate.snapshot_memory()
-    # 记下测试开始前真实目录里已存在的用户数据文件，收尾判「有没有泄漏」时
-    # 用排除法：本来就在的不算我们写的。（上一版只看「是否存在」，
-    # 用户自己用软件生成的 researcher_profile.json 会被误判成测试污染。）
-    _pre_files = [pathlib.Path(tools_isolate.HERE) / n
-                  for n in ("researcher_profile.json", "download_failures.json")
-                  if (pathlib.Path(tools_isolate.HERE) / n).exists()]
-
-    app = app_main.App()
+def _run_tests(app):
     app.geometry("1280x820+0+0")
     app.update()
     try:
@@ -433,16 +448,17 @@ def main():
     check("列表与详情渲染", ideas_list)
 
     def ideas_metric():
+        import research_diagnose as RD
         ip.reload(); pump(app, 0.2)
-        # 指标已折叠成一行（四项），不再是四张卡
-        vals = ip._metrics.values()
-        assert len(vals) == 4, "折叠指标应有 4 项"
-        assert str(len(ip.ideas)) == vals["选题总数"], "选题总数与实际不符"
-        ip._metrics.toggle(); pump(app, 0.2)
-        assert ip._metrics.expanded, "折叠指标展开失败"
-        ip._metrics.toggle(); pump(app, 0.2)
-        assert not ip._metrics.expanded, "折叠指标收起失败"
-    check("折叠指标的展开与收起", ideas_metric)
+        text = ip._metrics.cget("text")
+        assert text.startswith("共 %d 条选题" % len(ip.ideas)), "选题总数与实际不符"
+        ranks = [RD.stage_rank(RD.diagnose(__import__("page_ideas")._norm(it))["stage"])
+                 for it in ip.ideas]
+        for label, n in (("可进入实验", sum(r >= 3 for r in ranks)),
+                         ("需补证据", sum(r == 2 for r in ranks)),
+                         ("过早", sum(r <= 1 for r in ranks))):
+            assert "%s %d" % (label, n) in text, "结构阶段统计与诊断不符"
+    check("台账数量与结构阶段统计", ideas_metric)
 
     def ideas_new():
         before = len(ip.ideas)
@@ -531,19 +547,13 @@ def main():
     def mentor_export():
         mp.search("目标检测")
         assert wait_until(app, lambda: bool(mp.rows), 10)
-        import glob
-        before = set(glob.glob(os.path.join(str(kb.HERE), "exports", "导师清单-*.csv")))
-        mp.export_csv()
-        pump(app, 0.6)
-        after = set(glob.glob(os.path.join(str(kb.HERE), "exports", "导师清单-*.csv")))
-        new = after - before
-        assert new, "未生成 CSV"
-        # 清理
-        for f in new:
-            try:
-                os.remove(f)
-            except Exception:
-                pass
+        with patch.object(kb, "HERE", tmp), patch.object(os, "startfile", create=True):
+            before = set((tmp / "exports").glob("导师清单-*.csv"))
+            mp.export_csv()
+            pump(app, 0.6)
+            after = set((tmp / "exports").glob("导师清单-*.csv"))
+        assert after - before, "未生成 CSV"
+        # 导出文件随本次隔离目录统一清理。
     check("导出 CSV", mentor_export)
 
     def mentor_copy():
@@ -586,6 +596,7 @@ def main():
         lazy = lp._lazy
         before = len(lazy._slots)
         lp.scroll.canvas.yview_moveto(0.9); pump(app, 0.4)
+        lazy.fill()
         assert len(lazy._slots) > before, "滚到底后应当把后面的行建出来"
         assert len(lazy._slots) < len(lp.rows), "滚一下就把全部行建出来了，懒加载没生效"
     check("滚动时按需建行", lib_more)
@@ -725,11 +736,11 @@ def main():
 
     def global_nav():
         for key in ("home", "topic", "gap", "latest", "ideas", "skills", "mentor",
-                    "venue", "library", "map", "profile", "settings"):
+                    "venue", "library", "map", "plan", "materials", "profile", "settings"):
             app.goto(key)
             app.update()
             assert app.current == key, "导航失败：" + key
-    check("十二页导航切换", global_nav)
+    check("十四页导航切换", global_nav)
 
     def nav_history():
         # 跳进一条链，一路后退必须能退回起点；后退后跳新页要截断前进栈
@@ -824,30 +835,47 @@ def main():
 
     # ------------------------------------------------------------ 收尾
     pump(app, 0.3)
-    app.destroy()
-    kb.RESEARCH_MEMORY = real_mem
+
+
+def main():
+    print("=" * 66)
+    print("知识库助手 · 全功能端到端测试")
+    print("=" * 66)
+    app = None
+
+    def cleanup_tmp():
+        tools_isolate.cleanup(tmp)
+        assert not tmp.exists(), "隔离临时目录未清理干净"
+
     try:
-        os.remove(tmp_mem)
-    except Exception:
-        pass
+        # 仅写人工测试配置；不读取、复制真实配置或记忆，LLM 配置保持空。
+        assert kb.CONFIG_FILE == _ISO["kb_widget.CONFIG_FILE"], "配置路径未隔离"
+        assert kb.RESEARCH_MEMORY == _ISO["kb_widget.RESEARCH_MEMORY"], "记忆路径未隔离"
+        assert not kb.RESEARCH_MEMORY.exists(), "测试必须从空 memory 起步"
+        kb.CONFIG_FILE.write_text(json.dumps({
+            # 测试用临时目录，不指向任何真实知识库（换电脑也能跑）
+            "kb_path": str(tmp / "kb"),
+            "queries": ["all:infrared small target detection"],
+            "inbox_dir": str(tmp / "inbox"),
+            "theme": "light",
+            "font_auto": False,
+            "font_step": "normal",
+        }, ensure_ascii=False, indent=2), encoding="utf-8")
+        _ISO["llm_bridge.CONFIG_FILE"].write_text("{}", encoding="utf-8")
 
-    # 关键断言：跑完一圈界面之后，真实目录里不该冒出任何用户数据文件。
-    # （2026-11-13 就是这里漏了，MentorPage.search() 把画像写到真实目录。）
-    # 测试开始前就存在的文件不算泄漏（用户自己用软件就会生成）。
-    leaked = tools_isolate.check_clean(_pre_files)
-    for p in leaked:
+        # 先持有本次实例，构造中途失败时也能销毁已经创建的 Tk 窗口。
+        app = app_main.App.__new__(app_main.App)
+        app_main.App.__init__(app)
+        _run_tests(app)
+    finally:
         try:
-            os.remove(p)
-        except Exception:
-            pass
-
-    def no_leak():
-        if leaked:
-            raise AssertionError("界面写到了真实目录：" + ", ".join(leaked))
-
-    check("测试没有污染真实用户数据", no_leak)
-    tools_isolate.cleanup(_ISO.get("__tmp__"))
-    tools_isolate.assert_memory_untouched(_mem_before)
+            if app is not None and "tk" in vars(app):
+                check("销毁测试 App", app.destroy)
+        finally:
+            try:
+                check("清理隔离临时目录", cleanup_tmp)
+            finally:
+                check("测试没有污染真实用户数据", _assert_user_files_untouched)
 
     print("\n" + "=" * 66)
     total = len(C.passed) + len(C.failed)

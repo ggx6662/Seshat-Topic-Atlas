@@ -21,8 +21,16 @@ import time
 import zlib
 from pathlib import Path
 
-SRC = Path(r"G:\kb-vector\arxiv_cs")
-OUT = Path(r"G:\kb-vector\index\bodies.z")
+SRC, OUT = _base()
+
+
+def _base():
+    """目录从 kb_vector 统一取（支持 KB_VECTOR_DIR / config.json 的 kb_vector_path）。"""
+    try:
+        import kb_vector
+        return kb_vector.SRC, kb_vector.OUT / "bodies.z"
+    except Exception:
+        return Path(r"G:\kb-vector\arxiv_cs"), Path(r"G:\kb-vector\index\bodies.z")
 
 
 def source_sig(files=None):

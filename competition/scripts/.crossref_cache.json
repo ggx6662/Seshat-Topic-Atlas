@@ -1,0 +1,114 @@
+{
+  "ACDC: The Adverse Conditions Dataset with Correspondences for Semantic Driving Scene Understanding": {
+    "title": "ACDC: The Adverse Conditions Dataset with Correspondences for Semantic Driving Scene Understanding",
+    "url": "https://doi.org/10.1109/iccv48922.2021.01059"
+  },
+  "Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization": {
+    "title": "Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization",
+    "url": "https://doi.org/10.5220/0006639801080116"
+  },
+  "ClimateBench: A benchmark dataset for data-driven climate projections": {
+    "title": "ClimateBench: A benchmark dataset for data-driven climate projections",
+    "url": "https://doi.org/10.1002/essoar.10509765.1"
+  },
+  "CoVoST 2 and Massively Multilingual Speech Translation": {
+    "title": "CoVoST 2 and Massively Multilingual Speech Translation",
+    "url": "https://doi.org/10.21437/interspeech.2021-2027"
+  },
+  "Ridge-Based Vessel Segmentation in Color Images of the Retina": {
+    "title": "Ridge-Based Vessel Segmentation in Color Images of the Retina",
+    "url": "https://doi.org/10.1109/tmi.2004.825627"
+  },
+  "A Multi-view Stereo Benchmark with High-Resolution Images and Multi-camera Videos": {
+    "title": "A Multi-view Stereo Benchmark with High-Resolution Images and Multi-camera Videos",
+    "url": "https://doi.org/10.1109/cvpr.2017.272"
+  },
+  "Participatory Cultural Mapping Based on Collective Behavior Data in Location-Based Social Networks": {
+    "title": "Participatory Cultural Mapping Based on Collective Behavior Data in Location-Based Social Networks",
+    "url": "https://doi.org/10.1145/2814575"
+  },
+  "Item Recommendation on Monotonic Behavior Chains": {
+    "title": "Item recommendation on monotonic behavior chains",
+    "url": "https://doi.org/10.1145/3240323.3240369"
+  },
+  "The German Traffic Sign Recognition Benchmark: A Multi-Class Classification Competition": {
+    "title": "The German Traffic Sign Recognition Benchmark: A multi-class classification competition",
+    "url": "https://doi.org/10.1109/ijcnn.2011.6033395"
+  },
+  "How Good Are Query Optimizers, Really?": {
+    "title": "How good are query optimizers, really?",
+    "url": "https://doi.org/10.14778/2850583.2850594"
+  },
+  "Labeled Faces in the Wild: A Database for Studying Face Recognition in Unconstrained Environments": {
+    "title": "Quality labeled faces in the wild (QLFW): a database for studying face recognition in real-world environments",
+    "url": "https://doi.org/10.1117/12.2080393"
+  },
+  "LibriSpeech: An ASR Corpus Based on Public Domain Audio Books": {
+    "title": "Librispeech: An ASR corpus based on public domain audio books",
+    "url": "https://doi.org/10.1109/icassp.2015.7178964"
+  },
+  "The Mapillary Vistas Dataset for Semantic Understanding of Street Scenes": {
+    "title": "The Mapillary Vistas Dataset for Semantic Understanding of Street Scenes",
+    "url": "https://doi.org/10.1109/iccv.2017.534"
+  },
+  "Scalable Person Re-identification: A Benchmark": {
+    "title": "Scalable Person Re-identification: A Benchmark",
+    "url": "https://doi.org/10.1109/iccv.2015.133"
+  },
+  "MIMIC-CXR, a de-identified publicly available database of chest radiographs with free-text reports": {
+    "title": "MIMIC-CXR, a de-identified publicly available database of chest radiographs with free-text reports",
+    "url": "https://doi.org/10.1038/s41597-019-0322-0"
+  },
+  "MIND: A Large-scale Dataset for News Recommendation": {
+    "title": "MIND: A Large-scale Dataset for News Recommendation",
+    "url": "https://doi.org/10.18653/v1/2020.acl-main.331"
+  },
+  "Gradient-Based Learning Applied to Document Recognition": {
+    "title": "Gradient-based learning applied to document recognition",
+    "url": "https://doi.org/10.1109/5.726791"
+  },
+  "MVTec AD — A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection": {
+    "title": "MVTec AD — A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection",
+    "url": "https://doi.org/10.1109/cvpr.2019.00982"
+  },
+  "A Detailed Analysis of the KDD CUP 99 Data Set": {
+    "title": "A detailed analysis of the KDD CUP 99 data set",
+    "url": "https://doi.org/10.1109/cisda.2009.5356528"
+  },
+  "Adapting Visual Category Models to New Domains": {
+    "title": "Adapting Visual Category Models to New Domains",
+    "url": "https://doi.org/10.1007/978-3-642-15561-1_16"
+  },
+  "Places: A 10 Million Image Database for Scene Recognition": {
+    "title": "Places: A 10 Million Image Database for Scene Recognition",
+    "url": "https://doi.org/10.1109/tpami.2017.2723009"
+  },
+  "QASMBench: A Low-Level Quantum Benchmark Suite for NISQ Evaluation and Simulation": {
+    "title": "QASMBench: A Low-Level Quantum Benchmark Suite for NISQ Evaluation and Simulation",
+    "url": "https://doi.org/10.1145/3550488"
+  },
+  "QuixBugs: A Multi-Lingual Program Repair Benchmark Set Based on the Quixey Challenge": {
+    "title": "QuixBugs: a multi-lingual program repair benchmark set based on the quixey challenge",
+    "url": "https://doi.org/10.1145/3135932.3135941"
+  },
+  "Rodinia: A Benchmark Suite for Heterogeneous Computing": {
+    "title": "Rodinia: A benchmark suite for heterogeneous computing",
+    "url": "https://doi.org/10.1109/iiswc.2009.5306797"
+  },
+  "Sen1Floods11: a georeferenced dataset to train and test deep learning flood algorithms for Sentinel-1": {
+    "title": "Sen1Floods11: a georeferenced dataset to train and test deep learning flood algorithms for Sentinel-1",
+    "url": "https://doi.org/10.1109/cvprw50498.2020.00113"
+  },
+  "SUN RGB-D: A RGB-D Scene Understanding Benchmark Suite": {
+    "title": "SUN RGB-D: A RGB-D scene understanding benchmark suite",
+    "url": "https://doi.org/10.1109/cvpr.2015.7298655"
+  },
+  "UNSW-NB15: a comprehensive data set for network intrusion detection systems": {
+    "title": "UNSW-NB15: a comprehensive data set for network intrusion detection systems (UNSW-NB15 network data set)",
+    "url": "https://doi.org/10.1109/milcis.2015.7348942"
+  },
+  "WeatherBench: A Benchmark Data Set for Data-Driven Weather Forecasting": {
+    "title": "WeatherBench: A Benchmark Data Set for Data‐Driven Weather Forecasting",
+    "url": "https://doi.org/10.1029/2020ms002203"
+  }
+}

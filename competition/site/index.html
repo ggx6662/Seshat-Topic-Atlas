@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6efe3">
+  <title>塞莎特——题谱 · 从研究方向到可核查选题</title>
+  <meta name="description" content="塞莎特——题谱是一个面向高校师生的科研选题图谱：识别方向、生成候选、结构体检、匹配导师与期刊。Qoder 参赛 Web 版，打开即用。">
+  <meta property="og:title" content="塞莎特——题谱 · 从研究方向到可核查选题">
+  <meta property="og:description" content="输入一个研究方向，得到可核查的候选选题、结构体检、导师与期刊。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>
+    try {
+      const theme = localStorage.getItem("xtzk.v1.theme");
+      if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+    } catch {}
+    try {
+      const route = (location.hash || "").replace(/^#\/?/, "").split("?")[0];
+      if (!route || route === "intro") document.documentElement.dataset.intro = "1";
+    } catch {}
+  </script>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/refine.css">
+  <link rel="stylesheet" href="assets/intro.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2 6.2L20 11l-6 1.8L12 19l-2-6.2L4 11l6-1.8L12 3z"/><path d="M19 3v3M17.5 4.5h3"/></symbol>
+  <symbol id="i-gap" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 16l9 5 9-5"/></symbol>
+  <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="5" cy="6" r="1.2"/><circle cx="5" cy="12" r="1.2"/><circle cx="5" cy="18" r="1.2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.5-3.6 2.5-5.5 5.5-5.5s5 1.9 5.5 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.4c2.8-.2 4.6 1.5 5 4.4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13z"/><path d="M8 3v18"/><path d="M12 8h4M12 12h4"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="5" r="2.2"/><path d="M8.2 19h4.3a4.5 4.5 0 0 0 0-9h-1a4.5 4.5 0 0 1 0-9h4.3"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M8 14h2M14 14h2M8 17.5h2M14 17.5h2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 0 0 17z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4"/><path d="M10 6l-6 6 6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-2.6L17 21l-1.5-7.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-3.7L6 21V4.5z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/><path d="M10 11v5M14 11v5"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M8.2 14.5a6 6 0 1 1 7.6 0c-.8.7-1.2 1.4-1.2 2.5H9.4c0-1.1-.4-1.8-1.2-2.5z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5L22 21H2L12 3.5z"/><path d="M12 9v5M12 17.5v.4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+</svg>
+
+<section class="intro-screen" id="introScreen" aria-label="塞莎特——题谱启动页">
+  <div class="intro-aura" aria-hidden="true"><span class="aura-a"></span><span class="aura-b"></span></div>
+  <div class="intro-tech" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <g class="tc-circuits">
+        <path d="M-20 792 H148 l44 44 H372 l28-28 h86"/>
+        <path d="M-20 828 H126 l36 36 H412 l30-30 h64"/>
+        <path d="M-20 864 H96 l30 30 H520"/>
+        <path d="M64 792 V700 l40-40 H198 l26-26 V572"/>
+        <path d="M198 572 h64 l30-30 h96"/>
+        <circle cx="148" cy="792" r="3.2"/>
+        <circle cx="372" cy="836" r="3.2"/>
+        <circle cx="412" cy="834" r="3.2"/>
+        <circle cx="520" cy="894" r="3.2"/>
+        <circle cx="198" cy="572" r="3.2"/>
+        <circle cx="358" cy="542" r="3.2"/>
+        <rect x="82" y="524" width="34" height="34" rx="4"/>
+        <path d="M88 552 h22 M99 536 v22"/>
+        <path d="M1620 118 H1508 l-36-36 H1306"/>
+        <path d="M1620 156 H1532 l-32-32 H1380 l-30-30 H1244"/>
+        <path d="M1508 82 V34"/>
+        <path d="M1244 94 v-58 h-88"/>
+        <circle cx="1306" cy="82" r="3.2"/>
+        <circle cx="1244" cy="94" r="3.2"/>
+        <circle cx="1156" cy="36" r="3.2"/>
+        <rect x="1432" y="160" width="30" height="30" rx="3"/>
+        <path d="M1438 184 h18 M1447 168 v24"/>
+        <path d="M1584 640 v-92 l-34-34 V404 l28-28"/>
+        <circle cx="1584" cy="640" r="3.2"/>
+        <circle cx="1578" cy="376" r="3.2"/>
+      </g>
+      <g class="tc-neural">
+        <path d="M206 236 l96 54 92-42 70 66 88-28"/>
+        <path d="M206 236 l92 118 166-106 70 66"/>
+        <path d="M302 290 l-4 64"/>
+        <path d="M464 314 l62 78"/>
+        <circle cx="206" cy="236" r="4.4"/>
+        <circle cx="302" cy="290" r="5.6"/>
+        <circle cx="368" cy="248" r="4.4"/>
+        <circle cx="302" cy="354" r="4.4"/>
+        <circle cx="464" cy="314" r="5.6"/>
+        <circle cx="552" cy="286" r="4.4"/>
+        <circle cx="526" cy="392" r="4.4"/>
+      </g>
+      <g class="tc-orbit">
+        <circle cx="1290" cy="430" r="238"/>
+        <circle cx="1290" cy="430" r="292" stroke-dasharray="2 16"/>
+        <path d="M1290 132 v34 M1290 694 v34 M992 430 h34 M1522 430 h34"/>
+        <path d="M1070 210 l22 22 M1510 650 l-22-22 M1070 650 l22-22 M1510 210 l-22 22"/>
+      </g>
+      <g class="tc-grid">
+        <circle class="tc-dot" cx="1124" cy="742" r="1.5"/><circle class="tc-dot" cx="1156" cy="742" r="1.5"/><circle class="tc-dot" cx="1188" cy="742" r="1.5"/><circle class="tc-dot" cx="1220" cy="742" r="1.5"/><circle class="tc-dot" cx="1252" cy="742" r="1.5"/><circle class="tc-dot" cx="1284" cy="742" r="1.5"/><circle class="tc-dot" cx="1316" cy="742" r="1.5"/>
+        <circle class="tc-dot" cx="1124" cy="774" r="1.5"/><circle class="tc-dot" cx="1156" cy="774" r="1.5"/><circle class="tc-dot" cx="1188" cy="774" r="1.5"/><circle class="tc-dot" cx="1220" cy="774" r="1.5"/><circle class="tc-dot" cx="1252" cy="774" r="1.5"/><circle class="tc-dot" cx="1284" cy="774" r="1.5"/><circle class="tc-dot" cx="1316" cy="774" r="1.5"/>
+        <circle class="tc-dot" cx="1124" cy="806" r="1.5"/><circle class="tc-dot" cx="1156" cy="806" r="1.5"/><circle class="tc-dot" cx="1188" cy="806" r="1.5"/><circle class="tc-dot" cx="1220" cy="806" r="1.5"/><circle class="tc-dot" cx="1252" cy="806" r="1.5"/><circle class="tc-dot" cx="1284" cy="806" r="1.5"/><circle class="tc-dot" cx="1316" cy="806" r="1.5"/>
+      </g>
+      <g class="tc-hex">
+        <path d="M1414 776 l30-17.3 30 17.3v34.6l-30 17.3-30-17.3z"/>
+        <path d="M1414 718 l30-17.3 30 17.3v34.6l-30 17.3-30-17.3z" stroke-dasharray="3 5"/>
+        <circle cx="1444" cy="776" r="3"/>
+      </g>
+      <g class="tc-plot">
+        <path d="M74 196 h150 M74 196 v-96"/>
+        <path d="M86 176 l18-6 16-14 16 8 16-22 18 6 16-16 18 4 16-18"/>
+        <circle cx="248" cy="122" r="2.6"/>
+      </g>
+      <g class="tc-bars">
+        <path d="M1540 236 v180 M1552 254 v144 M1564 272 v108"/>
+      </g>
+      <g class="tc-chip">
+        <rect x="1196" y="836" width="132" height="64" rx="5"/>
+        <rect x="1224" y="856" width="76" height="24" rx="2"/>
+        <path d="M1208 828 v8 M1232 828 v8 M1256 828 v8 M1280 828 v8 M1304 828 v8"/>
+        <path d="M1208 900 v8 M1232 900 v8 M1256 900 v8 M1280 900 v8 M1304 900 v8"/>
+        <path d="M1188 852 h8 M1188 876 h8 M1328 852 h8 M1328 876 h8"/>
+      </g>
+    </svg>
+  </div>
+  <div class="intro-watermark" aria-hidden="true">
+    <svg viewBox="0 0 36 36">
+      <circle cx="18" cy="18" r="16.4"/>
+      <path d="M10.5 13.2 18 8.8l7.5 4.4v9.6L18 27.2l-7.5-4.4z"/>
+      <circle cx="18" cy="18" r="2.9"/>
+      <circle cx="10.5" cy="13.2" r="1.8"/>
+      <circle cx="25.5" cy="13.2" r="1.8"/>
+      <circle cx="18" cy="27.2" r="1.8"/>
+    </svg>
+  </div>
+
+  <header class="intro-top">
+    <div class="intro-brand">
+      <span class="intro-mark" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="17" fill="#6e4f36"/>
+          <path d="M10.5 13.2 18 8.8l7.5 4.4v9.6L18 27.2l-7.5-4.4z" fill="none" stroke="#f8efdf" stroke-width="1.25"/>
+          <circle cx="18" cy="18" r="2.9" fill="#e8c98a"/>
+          <circle cx="10.5" cy="13.2" r="1.8" fill="#f8efdf"/>
+          <circle cx="25.5" cy="13.2" r="1.8" fill="#f8efdf"/>
+          <circle cx="18" cy="27.2" r="1.8" fill="#f8efdf"/>
+        </svg>
+      </span>
+      <span class="intro-brand-text"><strong><i>塞莎特</i>——题谱</strong><small>RESEARCH QUESTION ATLAS</small></span>
+    </div>
+    <div class="intro-meta">
+      <span><i class="live-dot"></i> OFFLINE ATLAS</span>
+      <span>ATLAS / 2026.11.18</span>
+    </div>
+  </header>
+
+  <div class="intro-body">
+    <div class="intro-copy">
+      <div class="intro-eyebrow"><span class="intro-rule"></span><span>RESEARCH QUESTION ATLAS</span><b>00</b></div>
+      <h1>
+        <span class="intro-line"><span>知识是人类缔造</span></span>
+        <span class="intro-line"><span><em>巴别塔</em>的阶梯，</span></span>
+        <span class="intro-line"><span>思想是构建未来的桥梁</span></span>
+      </h1>
+      <p class="intro-lead">塞莎特——题谱是一个选题助手：输入研究方向，得到可验证的问题、公开数据集、导师与投稿去处。</p>
+      <div class="intro-actions">
+        <a class="intro-enter" id="introEnter" href="#/workshop">
+          <span class="intro-enter-label">进入系统</span>
+          <span class="intro-enter-key">ENTER</span>
+          <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+          <span class="intro-enter-ring" aria-hidden="true"></span>
+        </a>
+        <span class="intro-hint"><svg aria-hidden="true"><use href="#i-check"/></svg>无需登录 · 本地离线运行</span>
+      </div>
+      <span class="intro-mobile-hint">轻触屏幕任意位置也可进入</span>
+      <div class="intro-proof">
+        <div><b data-intro-stat="directions">536</b><span>研究方向</span></div>
+        <div><b data-intro-stat="datasets">552</b><span>公开数据集</span></div>
+        <div><b data-intro-stat="scholars">18,296</b><span>可浏览学者</span></div>
+        <div><b data-intro-stat="venues">701</b><span>期刊会议</span></div>
+      </div>
+    </div>
+
+    <div class="intro-visual">
+      <figure class="intro-herald">
+        <span class="ih-dial" aria-hidden="true"></span>
+        <img class="ih-art" id="ihArt" src="assets/seshat-atlas.webp" alt="古埃及纸草刻版风格的知识女神塞莎特：头戴七角星冠，手持芦苇笔与书写板，周围环绕古埃及水钟、青铜星盘、人脑解剖与编程字符汇聚成的无限符号。" width="1024" height="1280" fetchpriority="high" decoding="async">
+      </figure>
+    </div>
+  </div>
+
+</section>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="主导航">
+    <div class="brand-row">
+      <a class="brand" href="#/workshop">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="17" fill="#6e4f36"/>
+            <path d="M10.5 13.2 18 8.8l7.5 4.4v9.6L18 27.2l-7.5-4.4z" fill="none" stroke="#f8efdf" stroke-width="1.25"/>
+            <circle cx="18" cy="18" r="2.9" fill="#e8c98a"/>
+            <circle cx="10.5" cy="13.2" r="1.8" fill="#f8efdf"/>
+            <circle cx="25.5" cy="13.2" r="1.8" fill="#f8efdf"/>
+            <circle cx="18" cy="27.2" r="1.8" fill="#f8efdf"/>
+          </svg>
+        </span>
+        <span class="brand-text"><strong><i>塞莎特</i>——题谱</strong><small>RESEARCH QUESTION ATLAS</small></span>
+      </a>
+      <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="关闭导航"><svg><use href="#i-x"/></svg></button>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">选题与研究</div>
+      <a class="nav-item" data-route="workshop" href="#/workshop"><svg><use href="#i-spark"/></svg><span>选题工坊</span></a>
+      <a class="nav-item" data-route="materials" href="#/materials"><svg><use href="#i-library"/></svg><span>素材库</span></a>
+      <a class="nav-item" data-route="advisors" href="#/advisors"><svg><use href="#i-users"/></svg><span>导师与院校</span></a>
+      <a class="nav-item" data-route="papers" href="#/papers"><svg><use href="#i-book"/></svg><span>论文库</span></a>
+      <a class="nav-item" data-route="venues" href="#/venues"><svg><use href="#i-award"/></svg><span>期刊会议</span></a>
+      <div class="nav-label">方法与落地</div>
+      <a class="nav-item" data-route="methods" href="#/methods"><svg><use href="#i-route"/></svg><span>科研方法论</span></a>
+      <a class="nav-item" data-route="plan" href="#/plan"><svg><use href="#i-calendar"/></svg><span>研究计划</span><span class="nav-count" id="savedCount" hidden>0</span></a>
+      <div class="nav-label">关于</div>
+      <a class="nav-item" data-route="about" href="#/about"><svg><use href="#i-info"/></svg><span>关于与数据范围</span></a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="foot-grid">
+        <div class="foot-stat"><span id="footDirections">536</span><small>个方向</small></div>
+        <div class="foot-stat"><span id="footPapers">345</span><small>篇本地文献</small></div>
+      </div>
+      <div class="foot-note"><span class="live-dot"></span>LOCAL INDEX · 离线计算</div>
+      <div class="foot-ver">v5.3 · QODER WEB EDITION</div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开导航"><svg><use href="#i-menu"/></svg></button>
+      <div class="crumb" id="crumb">塞莎特——题谱 / 选题工坊</div>
+      <div class="top-actions">
+        <time class="top-clock" id="topClock" datetime="">
+          <b id="clockTime">--:--</b>
+          <small id="clockDate">本地时间</small>
+        </time>
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="切换深浅主题" title="切换深浅主题"><svg><use href="#i-contrast"/></svg></button>
+      </div>
+    </header>
+    <main id="view" tabindex="-1">
+      <div class="loading-page">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>正在读取本地索引…</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="mobile-nav" aria-label="移动端导航">
+  <a data-route="workshop" href="#/workshop"><svg><use href="#i-spark"/></svg><span>工坊</span></a>
+  <a data-route="materials" href="#/materials"><svg><use href="#i-library"/></svg><span>素材</span></a>
+  <a data-route="advisors" href="#/advisors"><svg><use href="#i-users"/></svg><span>导师</span></a>
+  <a data-route="papers" href="#/papers"><svg><use href="#i-book"/></svg><span>论文</span></a>
+  <a data-route="venues" href="#/venues"><svg><use href="#i-award"/></svg><span>期刊</span></a>
+  <a data-route="plan" href="#/plan"><svg><use href="#i-calendar"/></svg><span>计划</span></a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* 启动页插图：尺寸自适应 + 解码兜底。
+   两个问题都在 2026-11-20 的实测里复现过：
+   1) 窗口高而窄（如 1189×1475）时，堆叠布局把插图挤成一条细缝，
+      右半边只剩空轨道环 —— 这里按「插图栏实际可用的宽与高」算出
+      能放下整幅画的最大尺寸，写进 --ih-h / --ih-w / --dial。
+   2) webp 解码慢或失败时，那块区域是空的。解码成功才挂 .is-ready
+      （css 里默认 opacity:0），失败就整块隐藏，不留一块空洞。 */
+(function () {
+  var art = document.getElementById("ihArt");
+  if (!art) return;
+  var RATIO = art.naturalWidth && art.naturalHeight ? art.naturalWidth / art.naturalHeight : 1024 / 1280;
+  var box = art.closest(".intro-herald");
+  var root = document.documentElement;
+
+  function fit() {
+    if (!box) return;
+    var w = box.clientWidth;
+    var h = box.clientHeight;
+    if (!w || !h) return;
+    var hh = Math.min(h, w / RATIO);
+    var ww = hh * RATIO;
+    root.style.setProperty("--ih-h", Math.max(240, Math.round(hh)) + "px");
+    root.style.setProperty("--ih-w", Math.round(ww) + "px");
+    root.style.setProperty("--dial", Math.min(w, h) * 0.9 + "px");
+  }
+
+  function ok() {
+    if (art.naturalWidth) {
+      RATIO = art.naturalWidth / art.naturalHeight;
+      fit();
+      /* 先让浏览器把图放进版面，下一帧才淡入：直接挂 .is-ready 时图可能
+         还没解码完，淡入会变成「半透明色块 → 突然清晰」的闪一下。
+         requestAnimationFrame 在没有动画帧的环境（后台标签页）不保证
+         会跑，所以再排一个定时器兜底。 */
+      var entered = false;
+      var enter = function () {
+        if (entered) return;
+        entered = true;
+        art.classList.add("is-ready");
+      };
+      if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(enter); });
+      setTimeout(enter, 120);
+    } else {
+      art.hidden = true;
+      box && box.classList.add("is-missing");
+    }
+  }
+
+  if (art.complete) ok();
+  else {
+    art.addEventListener("load", ok, { once: true });
+    art.addEventListener("error", ok, { once: true });
+  }
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(box || art);
+  window.addEventListener("resize", fit, { passive: true });
+  window.addEventListener("orientationchange", fit, { passive: true });
+})();
+</script>
+
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>

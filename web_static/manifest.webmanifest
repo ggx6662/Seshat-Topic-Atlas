@@ -1,13 +1,13 @@
 {
-  "name": "550W·知识库助手",
-  "short_name": "知识库助手",
+  "name": "塞莎特——题谱 · 科研选题工作台",
+  "short_name": "塞莎特——题谱",
   "description": "科研选题工作台：选题候选、文献空白、导师院校、方向图谱、科研方法论",
   "start_url": "/?v=topics&source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#061220",
-  "theme_color": "#061220",
+  "background_color": "#f6efe3",
+  "theme_color": "#f6efe3",
   "lang": "zh-CN",
   "categories": ["productivity", "education"],
   "icons": [

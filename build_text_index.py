@@ -64,6 +64,35 @@ def pdf_paths():
     return out
 
 
+def _key(path):
+    """索引键统一写成 `{kb}/相对路径`，换电脑/换盘后仍然对得上。
+
+    老文件里已有的绝对路径键会在 load_index 里顺带改写（见 migrate_keys）。
+    """
+    try:
+        import kb_paths
+        return kb_paths.to_key(path)
+    except Exception:
+        return path
+
+
+def migrate_keys(papers):
+    """把已有的绝对路径键就地改成 `{kb}/` 键，返回改写条数。"""
+    try:
+        import kb_paths
+    except Exception:
+        return 0
+    fixed = 0
+    for k in list(papers):
+        nk = kb_paths.to_key(k)
+        if nk != k:
+            if nk not in papers:
+                papers[nk] = papers[k]
+            del papers[k]
+            fixed += 1
+    return fixed
+
+
 def extract_text(path, pages=6, max_chars=60000):
     """提取 PDF 前若干页的文本。"""
     if fitz is None:
@@ -104,8 +133,11 @@ def main():
 
     idx = {"version": 1, "papers": {}} if args.rebuild else load_index()
     papers = idx.setdefault("papers", {})
+    fixed = migrate_keys(papers)
+    if fixed:
+        print("已把 %d 条绝对路径键改写成 {kb}/ 相对键。" % fixed, flush=True)
 
-    targets = pdf_paths()
+    targets = [( _key(p), mt) for p, mt in pdf_paths()]
     todo = [(p, mt) for p, mt in targets
             if p not in papers or papers[p].get("mtime") != mt]
     # 清理已删除的文件

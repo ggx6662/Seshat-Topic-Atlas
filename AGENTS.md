@@ -1,4 +1,4 @@
-# AGENTS.md — 知识库助手 / 选题智库
+# AGENTS.md — 知识库助手 / 塞莎特——题谱
 
 面向 Qoder 等编码代理的项目约定。读代码前先读本文件。
 
@@ -38,6 +38,21 @@ D:\miniconda3\python.exe web_server.py          # 网页端，默认 8765
 
 GUI 测试需要桌面会话；无图形环境时至少跑 `check_tokens.py` 并说明未验证 UI。
 
+## 参赛 Web 版
+
+`competition/site/` 是 2026 Qoder 高校创造力大赛的静态演示版（StudyHack 赛道），
+不替代桌面端，也没有后端 / 在线模型 / API Key。
+
+```powershell
+D:\miniconda3\python.exe competition\scripts\export_web_data.py   # 只读导出静态数据
+cd competition\site; python -m http.server 4173                    # 本地预览
+node competition\scripts\check_site.mjs                            # 7 路由 × 3 宽度回归
+node competition\scripts\capture_screenshots.mjs                   # 21 张验收截图
+```
+
+改 Web 版后需重新导出数据（如涉及数据）、在本地跑 `check_site.mjs`，再更新 `dist/` 并发布。
+`dist/` 被 `.gitignore` 排除；`competition/screenshots/` 作为参赛证据保留。不要把 `llm_config.json` 或用户数据带入 Web 版。
+
 ## 架构速查
 
 | 文件 | 职责 |
@@ -61,8 +76,8 @@ GUI 测试需要桌面会话；无图形环境时至少跑 `check_tokens.py` 并
   这些文件被 `.gitignore` 排除；测试必须使用 `tools_isolate.py` 隔离，不得写入真实数据。
 - `llm_config.json`（含 API Key）**没有**复制到本目录。需要测大模型功能时，请手动在原项目与本目录之间复制，且不要提交。
 - 外部只读数据：
-  - 知识库 PDF：路径见 `config.json` 的 `kb_path`（当前 `G:\相关内容\AuthorKit27\知识库`）
-  - arXiv 向量索引：`G:\kb-vector\index`（约 1.4 GB），路径写死在 `kb_vector.py`
+  - 知识库 PDF：路径见 `config.json` 的 `kb_path`；没配时默认取程序目录下的 `知识库/`
+  - arXiv 向量索引（约 1.4 GB）：默认 `<KB_VECTOR_DIR>/index`；`KB_VECTOR_DIR` 依次取环境变量、`config.json` 的 `kb_vector_path`、最后退回 `G:\kb-vector`（见 `kb_vector.py` 的 `_base_dir()`）
 - 代码与界面上的数字必须来自真实计算，不得编造。
 
 ## 改动规则
@@ -78,5 +93,12 @@ GUI 测试需要桌面会话；无图形环境时至少跑 `check_tokens.py` 并
 - 约 40 条 PDF 标题抽取错误（双栏 PDF 上限约 74%）；
 - venue 首屏 3–3.9s、profile 首屏 6.5–10.5s 偏慢；
 - 浅色主题下卡片无描边，仅靠画布与卡片亮度差区分；
-- 387 个方向中约 211 个暂无学者（OpenAlex 主题颗粒度限制）；
+- 531 个真实方向中 35 个导师页推荐不出学者（另有 207 个在图谱页按关键词精确计数为 0）（OpenAlex 主题颗粒度限制；按方向名/关键词匹配学者 fields、keywords、lab 统计，2026-11-20 合并后现算）；
 - 跨学科边界判定是关键词 + venue 近似，非论文内容判定。
+
+## 文档约定（2026-11-20 起）
+
+- 顶层 `README.md` 是简体中文主文档，`README.en.md` / `README.zh-TW.md` 是同结构的完整翻译，`README.zh-CN.md` 只做目录与回链、**不重复正文**（三份正文各自漂移的教训来自上一版 1441 行的 README）。
+- 改数字时先跑 `.tmp/nums.py` 一类的现数脚本，不要凭记忆；口径要写清（例如学者 21,847 是文件行数，合并去重后 18,345 才是界面显示的「可推荐」数）。
+- 旧文档都在 `docs/origin/`，只作历史证据，不再更新。
+- README 配图用 `docs/images/`（由 `tools_shots_all.py` 1440×900 产出后拷入）；`screenshots/` 整个目录在 `.gitignore` 里，不要往里放要展示的图。

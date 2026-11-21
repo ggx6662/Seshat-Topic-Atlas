@@ -31,7 +31,7 @@ def stage_badge(parent, stage, big=False):
     rank = RD.stage_rank(stage)
     col = stage_color(stage)
     box = tk.Frame(parent, bg=parent.cget("bg"))
-    tk.Label(box, text=" %d " % rank, bg=col, fg="#061220",
+    tk.Label(box, text=" %d " % rank, bg=col, fg=T.on_primary_fg(),
              font=T.M(12 if big else 9, True)).pack(side="left")
     label = str(stage)[2:].strip() if len(str(stage)) > 2 and str(stage)[1] == " " else str(stage)
     tk.Label(box, text="  " + label, bg=parent.cget("bg"), fg=col,
@@ -74,11 +74,12 @@ def render(parent, idea, compact=False, wrap=480):
                                                                             pady=(2, 6))
 
     for w in res["warnings"]:
-        box = tk.Frame(parent, bg="#3A2A10")
+        warn_bg = T.tint(T.WARN, 0.14, T.CARD)
+        box = tk.Frame(parent, bg=warn_bg)
         box.pack(fill="x", pady=(0, 4))
-        tk.Label(box, text="⚠", bg="#3A2A10", fg=T.WARN, font=T.F(9)).pack(
+        tk.Label(box, text="⚠", bg=warn_bg, fg=T.WARN, font=T.F(9)).pack(
             side="left", padx=(8, 4), anchor="n", pady=5)
-        tk.Label(box, text=w, bg="#3A2A10", fg=T.WARN, font=T.F(8), anchor="w",
+        tk.Label(box, text=w, bg=warn_bg, fg=T.WARN, font=T.F(8), anchor="w",
                  justify="left", wraplength=wrap - 40).pack(side="left", fill="x",
                                                             expand=True, pady=5,
                                                             padx=(0, 8))

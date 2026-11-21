@@ -1,0 +1,386 @@
+{
+  "Semantic Understanding of Scenes through the ADE20K Dataset": {
+    "title": "Semantic Understanding of Scenes through the ADE20K Dataset",
+    "url": "https://arxiv.org/abs/1608.05442"
+  },
+  "Retiring Adult: New Datasets for Fair Machine Learning": {
+    "title": "Retiring Adult: New Datasets for Fair Machine Learning",
+    "url": "https://arxiv.org/abs/2108.04884"
+  },
+  "AgentBench: Evaluating LLMs as Agents": {
+    "title": "AgentBench: Evaluating LLMs as Agents",
+    "url": "https://arxiv.org/abs/2308.03688"
+  },
+  "Agriculture-Vision: A Large Aerial Image Database for Agricultural Pattern Analysis": {
+    "title": "Agriculture-Vision: A Large Aerial Image Database for Agricultural Pattern Analysis",
+    "url": "https://arxiv.org/abs/2001.01306"
+  },
+  "AI2-THOR: An Interactive 3D Environment for Visual AI": {
+    "title": "AI2-THOR: An Interactive 3D Environment for Visual AI",
+    "url": "https://arxiv.org/abs/1712.05474"
+  },
+  "Length-Controlled AlpacaEval: A Simple Way to Debias Automatic Evaluators": {
+    "title": "Length-Controlled AlpacaEval: A Simple Way to Debias Automatic Evaluators",
+    "url": "https://arxiv.org/abs/2404.04475"
+  },
+  "Ups and Downs: Modeling the Visual Evolution of Fashion Trends with One-Class Collaborative Filtering": {
+    "title": "Ups and Downs: Modeling the Visual Evolution of Fashion Trends with One-Class Collaborative Filtering",
+    "url": "https://arxiv.org/abs/1602.01585"
+  },
+  "Deep Knowledge Tracing": {
+    "title": "Deep Knowledge Tracing",
+    "url": "https://arxiv.org/abs/1506.05908"
+  },
+  "Model-Based Reinforcement Learning for Atari": {
+    "title": "Model-Based Reinforcement Learning for Atari",
+    "url": "https://arxiv.org/abs/1903.00374"
+  },
+  "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models": {
+    "title": "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+    "url": "https://arxiv.org/abs/2104.08663"
+  },
+  "Beyond the Imitation Game: Quantifying and extrapolating the capabilities of language models": {
+    "title": "Beyond the Imitation Game: Quantifying and extrapolating the capabilities of language models",
+    "url": "https://arxiv.org/abs/2206.04615"
+  },
+  "BigEarthNet: A Large-Scale Benchmark Archive For Remote Sensing Image Understanding": {
+    "title": "BigEarthNet: A Large-Scale Benchmark Archive For Remote Sensing Image Understanding",
+    "url": "https://arxiv.org/abs/1902.06148"
+  },
+  "C-Eval: A Multi-Level Multi-Discipline Chinese Evaluation Suite for Foundation Models": {
+    "title": "C-Eval: A Multi-Level Multi-Discipline Chinese Evaluation Suite for Foundation Models",
+    "url": "https://arxiv.org/abs/2305.08322"
+  },
+  "CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks": {
+    "title": "CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks",
+    "url": "https://arxiv.org/abs/2112.03227"
+  },
+  "Deep Learning Face Attributes in the Wild": {
+    "title": "Deep Learning Face Attributes in the Wild",
+    "url": "https://arxiv.org/abs/1411.7766"
+  },
+  "CheXpert: A Large Chest Radiograph Dataset with Uncertainty Labels and Expert Comparison": {
+    "title": "CheXpert: A Large Chest Radiograph Dataset with Uncertainty Labels and Expert Comparison",
+    "url": "https://arxiv.org/abs/1901.07031"
+  },
+  "EndoNet: A Deep Architecture for Recognition Tasks on Laparoscopic Videos": {
+    "title": "EndoNet: A Deep Architecture for Recognition Tasks on Laparoscopic Videos",
+    "url": "https://arxiv.org/abs/1602.03012"
+  },
+  "The Cityscapes Dataset for Semantic Urban Scene Understanding": {
+    "title": "The Cityscapes Dataset for Semantic Urban Scene Understanding",
+    "url": "https://arxiv.org/abs/1604.01685"
+  },
+  "CMMLU: Measuring massive multitask language understanding in Chinese": {
+    "title": "CMMLU: Measuring massive multitask language understanding in Chinese",
+    "url": "https://arxiv.org/abs/2306.09212"
+  },
+  "Abstractive Text Summarization using Sequence-to-sequence RNNs and Beyond": {
+    "title": "Abstractive Text Summarization Using Sequence-to-Sequence RNNs and Beyond",
+    "url": "https://arxiv.org/abs/1602.06023"
+  },
+  "Microsoft COCO: Common Objects in Context": {
+    "title": "Microsoft COCO: Common Objects in Context",
+    "url": "https://arxiv.org/abs/1405.0312"
+  },
+  "CodeXGLUE: A Machine Learning Benchmark Dataset for Code Understanding and Generation": {
+    "title": "CodeXGLUE: A Machine Learning Benchmark Dataset for Code Understanding and Generation",
+    "url": "https://arxiv.org/abs/2102.04664"
+  },
+  "Common Voice: A Massively-Multilingual Speech Corpus": {
+    "title": "Common Voice: A Massively-Multilingual Speech Corpus",
+    "url": "https://arxiv.org/abs/1912.06670"
+  },
+  "CUAD: An Expert-Annotated NLP Dataset for Legal Contract Review": {
+    "title": "CUAD: An Expert-Annotated NLP Dataset for Legal Contract Review",
+    "url": "https://arxiv.org/abs/2103.06268"
+  },
+  "Devign: Effective Vulnerability Identification by Learning Comprehensive Program Semantics via Graph Neural Networks": {
+    "title": "Devign: Effective Vulnerability Identification by Learning Comprehensive Program Semantics via Graph Neural Networks",
+    "url": "https://arxiv.org/abs/1909.03496"
+  },
+  "Object Detection in Optical Remote Sensing Images: A Survey and a New Benchmark": {
+    "title": "Object Detection in Optical Remote Sensing Images: A Survey and A New Benchmark",
+    "url": "https://arxiv.org/abs/1909.00133"
+  },
+  "DocVQA: A Dataset for VQA on Document Images": {
+    "title": "DocVQA: A Dataset for VQA on Document Images",
+    "url": "https://arxiv.org/abs/2007.00398"
+  },
+  "DOTA: A Large-scale Dataset for Object Detection in Aerial Images": {
+    "title": "DOTA: A Large-scale Dataset for Object Detection in Aerial Images",
+    "url": "https://arxiv.org/abs/1711.10398"
+  },
+  "DSEC: A Stereo Event Camera Dataset for Driving Scenarios": {
+    "title": "DSEC: A Stereo Event Camera Dataset for Driving Scenarios",
+    "url": "https://arxiv.org/abs/2103.06011"
+  },
+  "EdNet: A Large-Scale Hierarchical Dataset in Education": {
+    "title": "EdNet: A Large-Scale Hierarchical Dataset in Education",
+    "url": "https://arxiv.org/abs/1912.03072"
+  },
+  "FaceForensics++: Learning to Detect Manipulated Facial Images": {
+    "title": "FaceForensics++: Learning to Detect Manipulated Facial Images",
+    "url": "https://arxiv.org/abs/1901.08971"
+  },
+  "A Style-Based Generator Architecture for Generative Adversarial Networks": {
+    "title": "A Style-Based Generator Architecture for Generative Adversarial Networks",
+    "url": "https://arxiv.org/abs/1812.04948"
+  },
+  "No Language Left Behind: Scaling Human-Centered Machine Translation": {
+    "title": "No Language Left Behind: Scaling Human-Centered Machine Translation",
+    "url": "https://arxiv.org/abs/2207.04672"
+  },
+  "GAIA: a benchmark for General AI Assistants": {
+    "title": "GAIA: a benchmark for General AI Assistants",
+    "url": "https://arxiv.org/abs/2311.12983"
+  },
+  "The gem5 Simulator: Version 20.0+": {
+    "title": "The gem5 Simulator: Version 20.0+",
+    "url": "https://arxiv.org/abs/2007.03152"
+  },
+  "GLUE: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding": {
+    "title": "GLUE: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding",
+    "url": "https://arxiv.org/abs/1804.07461"
+  },
+  "Training Verifiers to Solve Math Word Problems": {
+    "title": "Training Verifiers to Solve Math Word Problems",
+    "url": "https://arxiv.org/abs/2110.14168"
+  },
+  "Habitat: A Platform for Embodied AI Research": {
+    "title": "Habitat: A Platform for Embodied AI Research",
+    "url": "https://arxiv.org/abs/1904.01201"
+  },
+  "HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal": {
+    "title": "HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal",
+    "url": "https://arxiv.org/abs/2402.04249"
+  },
+  "Holistic Evaluation of Language Models": {
+    "title": "Holistic Evaluation of Language Models",
+    "url": "https://arxiv.org/abs/2211.09110"
+  },
+  "HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering": {
+    "title": "HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering",
+    "url": "https://arxiv.org/abs/1809.09600"
+  },
+  "Evaluating Large Language Models Trained on Code": {
+    "title": "Evaluating Large Language Models Trained on Code",
+    "url": "https://arxiv.org/abs/2107.03374"
+  },
+  "The iNaturalist Species Classification and Detection Dataset": {
+    "title": "The iNaturalist Species Classification and Detection Dataset",
+    "url": "https://arxiv.org/abs/1707.06642"
+  },
+  "The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions": {
+    "title": "The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions",
+    "url": "https://arxiv.org/abs/1803.10417"
+  },
+  "LAION-5B: An open large-scale dataset for training next generation image-text models": {
+    "title": "LAION-5B: An open large-scale dataset for training next generation image-text models",
+    "url": "https://arxiv.org/abs/2210.08402"
+  },
+  "The LDBC Social Network Benchmark": {
+    "title": "The LDBC Social Network Benchmark",
+    "url": "https://arxiv.org/abs/2001.02299"
+  },
+  "LexGLUE: A Benchmark Dataset for Legal Language Understanding in English": {
+    "title": "LexGLUE: A Benchmark Dataset for Legal Language Understanding in English",
+    "url": "https://arxiv.org/abs/2110.00976"
+  },
+  "LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning": {
+    "title": "LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning",
+    "url": "https://arxiv.org/abs/2306.03310"
+  },
+  "LLVIP: A Visible-infrared Paired Dataset for Low-light Vision": {
+    "title": "LLVIP: A Visible-infrared Paired Dataset for Low-light Vision",
+    "url": "https://arxiv.org/abs/2108.10831"
+  },
+  "LoveDA: A Remote Sensing Land-Cover Dataset for Domain Adaptive Semantic Segmentation": {
+    "title": "LoveDA: A Remote Sensing Land-Cover Dataset for Domain Adaptive Semantic Segmentation",
+    "url": "https://arxiv.org/abs/2110.08733"
+  },
+  "LVIS: A Dataset for Large Vocabulary Instance Segmentation": {
+    "title": "LVIS: A Dataset for Large Vocabulary Instance Segmentation",
+    "url": "https://arxiv.org/abs/1908.03195"
+  },
+  "ManiSkill2: A Unified Benchmark for Generalizable Manipulation Skills": {
+    "title": "ManiSkill2: A Unified Benchmark for Generalizable Manipulation Skills",
+    "url": "https://arxiv.org/abs/2302.04659"
+  },
+  "Measuring Mathematical Problem Solving With the MATH Dataset": {
+    "title": "Measuring Mathematical Problem Solving With the MATH Dataset",
+    "url": "https://arxiv.org/abs/2103.03874"
+  },
+  "Matterport3D: Learning from RGB-D Data in Indoor Environments": {
+    "title": "Matterport3D: Learning from RGB-D Data in Indoor Environments",
+    "url": "https://arxiv.org/abs/1709.06158"
+  },
+  "Program Synthesis with Large Language Models": {
+    "title": "Program Synthesis with Large Language Models",
+    "url": "https://arxiv.org/abs/2108.07732"
+  },
+  "Machine Learning of Accurate Energy-Conserving Molecular Force Fields": {
+    "title": "Machine Learning of Accurate Energy-Conserving Molecular Force Fields",
+    "url": "https://arxiv.org/abs/1611.04678"
+  },
+  "What Disease does this Patient Have? A Large-scale Open Domain Question Answering Dataset from Medical Exams": {
+    "title": "What Disease does this Patient Have? A Large-scale Open Domain Question Answering Dataset from Medical Exams",
+    "url": "https://arxiv.org/abs/2009.13081"
+  },
+  "Meta-World: A Benchmark and Evaluation for Multi-Task and Meta Reinforcement Learning": {
+    "title": "Meta-World: A Benchmark and Evaluation for Multi-Task and Meta Reinforcement Learning",
+    "url": "https://arxiv.org/abs/1910.10897"
+  },
+  "MineRL: A Large-Scale Dataset of Minecraft Demonstrations": {
+    "title": "MineRL: A Large-Scale Dataset of Minecraft Demonstrations",
+    "url": "https://arxiv.org/abs/1907.13440"
+  },
+  "Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields": {
+    "title": "Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields",
+    "url": "https://arxiv.org/abs/2111.12077"
+  },
+  "MLPerf Inference Benchmark": {
+    "title": "MLPerf Inference Benchmark",
+    "url": "https://arxiv.org/abs/1911.02549"
+  },
+  "MLPerf Tiny Benchmark": {
+    "title": "MLPerf Tiny Benchmark",
+    "url": "https://arxiv.org/abs/2106.07597"
+  },
+  "Measuring Massive Multitask Language Understanding": {
+    "title": "Measuring Massive Multitask Language Understanding",
+    "url": "https://arxiv.org/abs/2009.03300"
+  },
+  "MoleculeNet: A Benchmark for Molecular Machine Learning": {
+    "title": "MoleculeNet: A Benchmark for Molecular Machine Learning",
+    "url": "https://arxiv.org/abs/1703.00564"
+  },
+  "MQT Bench: Benchmarking Software and Design Automation Tools for Quantum Computing": {
+    "title": "MQT Bench: Benchmarking Software and Design Automation Tools for Quantum Computing",
+    "url": "https://arxiv.org/abs/2204.13719"
+  },
+  "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset": {
+    "title": "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset",
+    "url": "https://arxiv.org/abs/1611.09268"
+  },
+  "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena": {
+    "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+    "url": "https://arxiv.org/abs/2306.05685"
+  },
+  "NTU RGB+D: A Large Scale Dataset for 3D Human Activity Analysis": {
+    "title": "NTU RGB+D: A Large Scale Dataset for 3D Human Activity Analysis",
+    "url": "https://arxiv.org/abs/1604.02808"
+  },
+  "Dense Nested Attention Network for Infrared Small Target Detection": {
+    "title": "Dense Nested Attention Network for Infrared Small Target Detection",
+    "url": "https://arxiv.org/abs/2106.00487"
+  },
+  "nuScenes: A multimodal dataset for autonomous driving": {
+    "title": "nuScenes: A multimodal dataset for autonomous driving",
+    "url": "https://arxiv.org/abs/1903.11027"
+  },
+  "Open Graph Benchmark: Datasets for Machine Learning on Graphs": {
+    "title": "Open Graph Benchmark: Datasets for Machine Learning on Graphs",
+    "url": "https://arxiv.org/abs/2005.00687"
+  },
+  "Open Catalyst 2020 (OC20) Dataset and Community Challenges": {
+    "title": "The Open Catalyst 2020 (OC20) Dataset and Community Challenges",
+    "url": "https://arxiv.org/abs/2010.09990"
+  },
+  "The Open Images Dataset V4: Unified image classification, object detection, and visual relationship detection at scale": {
+    "title": "The Open Images Dataset V4: Unified image classification, object detection, and visual relationship detection at scale",
+    "url": "https://arxiv.org/abs/1811.00982"
+  },
+  "Open X-Embodiment: Robotic Learning Datasets and RT-X Models": {
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "url": "https://arxiv.org/abs/2310.08864"
+  },
+  "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments": {
+    "title": "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+    "url": "https://arxiv.org/abs/2404.07972"
+  },
+  "Open University Learning Analytics Dataset": {
+    "title": "ouladFormat R package: Preparing the Open University Learning Analytics Dataset for analysis",
+    "url": "https://arxiv.org/abs/2501.08366"
+  },
+  "Leveraging Procedural Generation to Benchmark Reinforcement Learning": {
+    "title": "Leveraging Procedural Generation to Benchmark Reinforcement Learning",
+    "url": "https://arxiv.org/abs/1912.01588"
+  },
+  "PubLayNet: largest dataset ever for document layout analysis": {
+    "title": "PubLayNet: largest dataset ever for document layout analysis",
+    "url": "https://arxiv.org/abs/1908.07836"
+  },
+  "PubMedQA: A Dataset for Biomedical Research Question Answering": {
+    "title": "PubMedQA: A Dataset for Biomedical Research Question Answering",
+    "url": "https://arxiv.org/abs/1909.06146"
+  },
+  "Vision-and-Language Navigation: Interpreting visually-grounded navigation instructions in real environments": {
+    "title": "Vision-and-Language Navigation: Interpreting visually-grounded navigation instructions in real environments",
+    "url": "https://arxiv.org/abs/1711.07280"
+  },
+  "ScanNet: Richly-annotated 3D Reconstructions of Indoor Scenes": {
+    "title": "ScanNet: Richly-annotated 3D Reconstructions of Indoor Scenes",
+    "url": "https://arxiv.org/abs/1702.04405"
+  },
+  "ShapeNet: An Information-Rich 3D Model Repository": {
+    "title": "ShapeNet: An Information-Rich 3D Model Repository",
+    "url": "https://arxiv.org/abs/1512.03012"
+  },
+  "SoccerNet: A Scalable Dataset for Action Spotting in Soccer Videos": {
+    "title": "SoccerNet: A Scalable Dataset for Action Spotting in Soccer Videos",
+    "url": "https://arxiv.org/abs/1804.04527"
+  },
+  "Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition": {
+    "title": "Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition",
+    "url": "https://arxiv.org/abs/1804.03209"
+  },
+  "SQuAD: 100,000+ Questions for Machine Comprehension of Text": {
+    "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+    "url": "https://arxiv.org/abs/1606.05250"
+  },
+  "SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems": {
+    "title": "SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems",
+    "url": "https://arxiv.org/abs/1905.00537"
+  },
+  "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?": {
+    "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+    "url": "https://arxiv.org/abs/2310.06770"
+  },
+  "The Stack: 3 TB of permissively licensed source code": {
+    "title": "The Stack: 3 TB of permissively licensed source code",
+    "url": "https://arxiv.org/abs/2211.15533"
+  },
+  "Universal Dependencies": {
+    "title": "Apurinã Universal Dependencies Treebank",
+    "url": "https://arxiv.org/abs/2106.03391"
+  },
+  "Detection and Tracking Meet Drones Challenge": {
+    "title": "Detection and Tracking Meet Drones Challenge",
+    "url": "https://arxiv.org/abs/2001.06303"
+  },
+  "VoxCeleb: a large-scale speaker identification dataset": {
+    "title": "VoxCeleb: a large-scale speaker identification dataset",
+    "url": "https://arxiv.org/abs/1706.08612"
+  },
+  "Scalability in Perception for Autonomous Driving: Waymo Open Dataset": {
+    "title": "Scalability in Perception for Autonomous Driving: Waymo Open Dataset",
+    "url": "https://arxiv.org/abs/1912.04838"
+  },
+  "WebArena: A Realistic Web Environment for Building Autonomous Agents": {
+    "title": "WebArena: A Realistic Web Environment for Building Autonomous Agents",
+    "url": "https://arxiv.org/abs/2307.13854"
+  },
+  "xBD: A Dataset for Assessing Building Damage from Satellite Imagery": {
+    "title": "xBD: A Dataset for Assessing Building Damage from Satellite Imagery",
+    "url": "https://arxiv.org/abs/1911.09296"
+  },
+  "XNLI: Evaluating Cross-lingual Sentence Representations": {
+    "title": "XNLI: Evaluating Cross-lingual Sentence Representations",
+    "url": "https://arxiv.org/abs/1809.05053"
+  },
+  "Don't Give Me the Details, Just the Summary! Topic-Aware Convolutional Neural Networks for Extreme Summarization": {
+    "title": "Don't Give Me the Details, Just the Summary! Topic-Aware Convolutional Neural Networks for Extreme Summarization",
+    "url": "https://arxiv.org/abs/1808.08745"
+  }
+}

@@ -22,7 +22,7 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
 import app_theme as T           # noqa: E402
-from ui_parts import WrapRow   # 会自动折行的按钮排
+import ui_kit as UK             # noqa: E402
 import profile_memory as PM     # noqa: E402
 import ui_parts as U            # noqa: E402
 
@@ -76,20 +76,61 @@ class ProfilePage(tk.Frame):
 
     # ------------------------------------------------------------ 骨架
     def _build(self):
-        # 标题归外壳的抬头，这里只留说明与动作
         head = tk.Frame(self, bg=T.BG)
-        head.pack(fill="x", padx=T.PAD, pady=(4, 6))
-        # 说明收进 ? 里：页面上真正要看的是「它学到了什么」，不是功能简介
-        self._hint = U.Hint(head, PROFILE_HELP, summary="这一页怎么运作", bg=T.BG)
-        self._hint.pack(side="left", fill="x", expand=True)
-        T.Btn(head, "刷新", lambda: self.reload(force=True)).pack(side="right")
-        # 第 8 版：「清空全部记忆」原来紧挨着刷新，是这一页最显眼的按钮之一，
-        # 但它一年也用不到一次，而且点错等于把积累全丢了。挪进 ? 说明里，
-        # 那里本来就要讲「数据存在哪」；真要清空的人会去读那段话。
+        head.pack(fill="x", padx=T.PAD, pady=(T.sp(8), T.sp(12)))
+        title_row = tk.Frame(head, bg=T.BG)
+        title_row.pack(fill="x")
+        title_row.grid_columnconfigure(0, weight=1)
+        title = tk.Label(title_row, text="个人画像", bg=T.BG, fg=T.TXT,
+                         font=T.T_PAGE_TITLE(), anchor="w", justify="left", width=1)
+        title.grid(row=0, column=0, sticky="ew")
+        T.Btn(title_row, "刷新", lambda: self.reload(force=True)).grid(
+            row=0, column=1, padx=(T.sp(12), 0))
+        title.bind("<Configure>", lambda e: title.config(wraplength=max(1, e.width)))
+        self._copy(head, "身份、状态与记忆只保存在本机；导出时去除可识别信息。",
+                   bg=T.BG, pady=(T.sp(4), 0))
+        self._hint = U.Hint(head, PROFILE_HELP, summary="了解记忆与隐私", bg=T.BG)
+        self._hint.pack(fill="x")
+        T.fill_wrap(self._hint._detail, pad=0)
         self._reset_host = head
 
         self.area = T.ScrollArea(self, bg=T.BG)
         self.area.pack(fill="both", expand=True)
+
+    def _copy(self, parent, text, fg=None, font=None, bg=None, pady=(0, 0), padx=0):
+        """正文按实际可用宽度折行，不让长内容撑大表单。"""
+        label = tk.Label(parent, text=text, bg=bg or T.CARD, fg=fg or T.TXT3,
+                         font=font or T.T_CAPTION(), anchor="w", justify="left",
+                         width=1, wraplength=T.wrap(600))
+        label.pack(fill="x", padx=padx, pady=pady)
+        T.fill_wrap(label, pad=2 * padx)
+        return label
+
+    def _section_card(self, host, title, eyebrow, num, lead=""):
+        card = T.Card(host, pad=T.sp(16), border=T.LINE)
+        card.pack(fill="x", padx=T.PAD, pady=(0, T.sp(12)))
+        UK.eyebrow(card.body, eyebrow, num, color=T.ACCENT).pack(fill="x")
+        self._copy(card.body, title, fg=T.TXT, font=T.T_SECTION(),
+                   pady=(T.sp(4), T.sp(4)))
+        if lead:
+            self._copy(card.body, lead, pady=(0, T.sp(8)))
+        return card
+
+    def _form_cell(self, grid, row, column, label, uniform):
+        grid.grid_columnconfigure(column, weight=1, uniform=uniform)
+        cell = tk.Frame(grid, bg=T.CARD)
+        cell.grid(row=row, column=column, sticky="nsew",
+                  padx=(0, T.sp(12)) if column == 0 else (T.sp(12), 0),
+                  pady=(0, T.sp(12)))
+        self._copy(cell, label, fg=T.TXT2, font=T.T_LABEL(),
+                   pady=(0, T.sp(4)))
+        return cell
+
+    def _save_actions(self, parent, label, command, hint):
+        actions = U.WrapRow(parent, bg=T.CARD)
+        actions.pack(fill="x", pady=(T.sp(4), 0))
+        actions.add(T.Btn(actions, label, command, "primary"))
+        self._copy(parent, hint, pady=(T.sp(6), 0))
 
     # ------------------------------------------------------------ 渲染
     def reload(self, force=False):
@@ -124,74 +165,56 @@ class ProfilePage(tk.Frame):
         self._render_footer(host, prof)
         self.area.refresh(defer=True)
 
-    # -------------------------------------------------- 顶部四格概要
+    # -------------------------------------------------- 顶部紧凑概要
     def _render_summary(self, host, prof):
         st = prof.get("state") or {}
         anchors = prof.get("anchors") or []
-        prefs = prof.get("preferences") or {}
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-
-        identities = [k for k in IDENTITY_FIELDS if (prof.get("identity") or {}).get(k[0])]
-        fill = len(identities) / float(len(IDENTITY_FIELDS))
-        cw, dw = PM.urgency_weights(st.get("urgency", 30.0))
-        u = float(st.get("urgency", 0))
-        rows = [
-            ("身份完整度", "%d / %d" % (len(identities), len(IDENTITY_FIELDS)),
-             "填得越全，建议越贴身"),
-            ("记忆锚点", "%d 条" % len(anchors), "系统记住的事件数"),
-            ("紧急度", "%.0f" % u, "心情：%s" % st.get("mood", "平静")),
-            ("注意力倾斜", "×%.1f" % cw,
-             "危机 ×%.1f · 日常 ×%.1f" % (cw, dw)),
-        ]
-        for label, value, hint in rows:
-            line = tk.Frame(card.body, bg=T.CARD)
-            line.pack(fill="x", pady=(0, 2))
-            tk.Label(line, text=label, bg=T.CARD, fg=T.TXT3, font=T.T_BODY_SM(),
-                     anchor="w", width=12).pack(side="left")
-            tk.Label(line, text=value, bg=T.CARD, fg=T.TXT,
-                     font=T.T_BODY_SM()).pack(side="left")
-            tk.Label(line, text="  " + hint, bg=T.CARD, fg=T.TXT4,
-                     font=T.T_CAPTION(), anchor="w").pack(side="left")
-
-        # 0 条的时候必须解释清楚「为什么是 0」，否则用户会以为功能坏了。
-        # 这是实际发生过的事：用户问「数字生命是否已加载完毕」，
-        # 而当时画像里一条记录都没有，界面上却没有任何提示。
+        ident = prof.get("identity") or {}
+        count = sum(bool(ident.get(key)) for key, _, _ in IDENTITY_FIELDS)
+        card = T.Card(host, pad=T.sp(12), border=T.LINE)
+        card.pack(fill="x", padx=T.PAD, pady=(0, T.sp(12)))
+        stats = tk.Frame(card.body, bg=T.CARD)
+        stats.pack(fill="x")
+        items = (
+            ("身份已填", "%d / %d 项" % (count, len(IDENTITY_FIELDS))),
+            ("记忆锚点", "%d 条" % len(anchors)),
+            ("当前紧急度", "%.0f / 100" % float(st.get("urgency", 0))),
+            ("当前心情", st.get("mood") or "平静"),
+        )
+        for column, (label, value) in enumerate(items):
+            stats.grid_columnconfigure(column, weight=1, uniform="summary")
+            cell = tk.Frame(stats, bg=T.CARD)
+            cell.grid(row=0, column=column, sticky="nsew",
+                      padx=(0, T.sp(8)) if column < 3 else 0)
+            self._copy(cell, label)
+            self._copy(cell, value, fg=T.ACCENT, font=T.T_BODY_SM(), pady=(T.sp(2), 0))
+        identity = " · ".join(str(ident[k]) for k in ("stage", "school", "lab") if ident.get(k))
+        self._copy(card.body, identity or "身份尚未填写；可以从学位阶段与研究目标开始。",
+                   fg=T.TXT2, pady=(T.sp(8), 0))
+        if ident.get("goal"):
+            self._copy(card.body, "研究目标：" + str(ident["goal"]), pady=(T.sp(4), 0))
         if not anchors:
-            tk.Label(card.body,
-                     text="还没有任何记录。做这四件事就会开始积累："
-                          "新建选题 · 收藏或下载论文 · 查导师 · 把候选存进创新点库。",
-                     bg=T.CARD, fg=T.WARN, font=T.T_BODY_SM(), anchor="w",
-                     justify="left", wraplength=T.wrap(620)).pack(fill="x", pady=(8, 0))
+            self._copy(card.body,
+                       "暂无锚点是正常的。新建选题、收藏或下载论文、查导师、"
+                       "把候选存进创新点库会积累记忆；单纯浏览不会。",
+                       pady=(T.sp(6), 0))
 
     # -------------------------------------------------- 身份
     def _render_identity(self, host, prof):
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        hd = tk.Frame(card.body, bg=T.CARD)
-        hd.pack(fill="x")
-        tk.Label(hd, text="我是谁", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION()).pack(side="left")
-        tk.Label(hd, text="  决定候选方向与推荐语气的起点", bg=T.CARD,
-                 fg=T.TXT4, font=T.T_CAPTION()).pack(side="left", pady=(4, 0))
-
+        card = self._section_card(host, "我是谁", "身份信息", "01",
+                                  "决定候选方向与推荐语气的起点；各项均可留空。")
         ident = prof.get("identity") or {}
         grid = tk.Frame(card.body, bg=T.CARD)
-        grid.pack(fill="x", pady=(10, 4))
-        grid.grid_columnconfigure(1, weight=1)
-        grid.grid_columnconfigure(3, weight=1)
+        grid.pack(fill="x", pady=(T.sp(4), 0))
         self._ident_entries = {}
         for i, (key, label, hint) in enumerate(IDENTITY_FIELDS):
             r, c = divmod(i, 2)
-            tk.Label(grid, text=label, bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                     anchor="e", width=10).grid(row=r, column=c * 2, sticky="e",
-                                                padx=(0, 6), pady=4)
-            e = tk.Entry(grid, bg=T.CARD_HI, fg=T.TXT, insertbackground=T.ACCENT,
-                         relief="flat", font=T.T_BODY_SM(),
+            cell = self._form_cell(grid, r, c, label, "identity")
+            e = tk.Entry(cell, bg=T.CARD_HI, fg=T.TXT, insertbackground=T.ACCENT,
+                         relief="flat", font=T.T_BODY_SM(), width=1,
                          highlightthickness=1, highlightbackground=T.LINE,
                          highlightcolor=T.ACCENT)
-            e.grid(row=r, column=c * 2 + 1, sticky="ew", padx=(0, 16), pady=4,
-                   ipady=4)
+            e.pack(fill="x", ipady=T.sp(6))
             val = str(ident.get(key, "") or "")
             if val:
                 e.insert(0, val)
@@ -205,11 +228,8 @@ class ProfilePage(tk.Frame):
                 e.bind("<FocusOut>", lambda ev: self._ph_restore(ev))
             self._ident_entries[key] = e
 
-        act = tk.Frame(card.body, bg=T.CARD)
-        act.pack(fill="x", pady=(6, 0))
-        T.Btn(act, "保存身份", self._save_identity, "primary").pack(side="left")
-        tk.Label(act, text="  留空表示不填；只存本机 researcher_profile.json",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION()).pack(side="left", pady=(4, 0))
+        self._save_actions(card.body, "保存身份", self._save_identity,
+                           "留空表示不填；只存本机 researcher_profile.json。")
 
     def _ph_clear(self, ev):
         e = ev.widget
@@ -246,48 +266,40 @@ class ProfilePage(tk.Frame):
         以前「算力资源」是一个输入框，用户写「4090」和写「没算力」对系统没区别。
         """
         con = prof.get("constraints") or {}
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        hd = tk.Frame(card.body, bg=T.CARD)
-        hd.pack(fill="x")
-        tk.Label(hd, text="我的硬条件", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION()).pack(side="left")
-        tk.Label(hd, text="  决定哪些题你做不动，与心情无关", bg=T.CARD,
-                 fg=T.TXT4, font=T.T_CAPTION()).pack(side="left", pady=(4, 0))
-
+        card = self._section_card(host, "我的硬条件", "研究约束", "02",
+                                  "用于判断候选是否可行，与心情无关。")
         grid = tk.Frame(card.body, bg=T.CARD)
-        grid.pack(fill="x", pady=(10, 2))
+        grid.pack(fill="x", pady=(T.sp(4), 0))
         self._cons_vars = {}
+        self._cons_combos = {}
 
-        def _opt(row, label, key, options, width=12):
-            tk.Label(grid, text=label, bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                     anchor="e", width=10).grid(row=row, column=0, sticky="e",
-                                                padx=(0, 6), pady=4)
+        def _opt(row, column, label, key, options):
+            cell = self._form_cell(grid, row, column, label, "constraints")
             var = tk.StringVar(value=con.get(key) or options[0])
-            om = tk.OptionMenu(grid, var, *options)
-            om.config(bg=T.CARD_HI, fg=T.TXT, activebackground=T.ACCENT_D,
-                      activeforeground=T.ACCENT, relief="flat", bd=0,
-                      highlightthickness=0, font=T.T_BODY_SM(), width=width,
-                      anchor="w")
-            om["menu"].config(bg=T.CARD, fg=T.TXT, activebackground=T.ACCENT_D,
-                              activeforeground=T.ACCENT, bd=0, font=T.T_BODY_SM())
-            om.grid(row=row, column=1, sticky="w", padx=(0, 18), pady=4)
+            # 2026-11-20：这里原来是 tk.OptionMenu。Windows 上每个 OptionMenu
+            # 占一个原生 HMENU，destroy 后不立刻归还；本页一口气建十来个，
+            # 于是「把所有页点一遍再回画像页」时 Tk 抛
+            # `No more menus can be allocated.`，整页打不开。
+            # 换成 ui_kit.Combo（Button + Toplevel，不占原生菜单）。
+            combo = UK.Combo(cell, var.get(), options,
+                             on_change=lambda v: var.set(v),
+                             font=T.T_BODY_SM(), bg=T.CARD_HI)
+            combo.pack(fill="x")
             self._cons_vars[key] = var
+            self._cons_combos[key] = combo
             return var
 
-        _opt(0, "算力", "compute", ["未填"] + list(PM.COMPUTE_LEVELS))
-        _opt(0, "周期", "months", ["未填"] + list(PM.TIME_LEVELS), width=10)
-        _opt(1, "偏好", "style", ["未填", "偏工程", "偏理论", "都行"], width=10)
-        tk.Label(grid, text="禁忌方向", bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                 anchor="e", width=10).grid(row=1, column=0, sticky="e",
-                                            padx=(0, 6), pady=4)
+        _opt(0, 0, "算力", "compute", ["未填"] + list(PM.COMPUTE_LEVELS))
+        _opt(0, 1, "周期", "months", ["未填"] + list(PM.TIME_LEVELS))
+        _opt(1, 0, "偏好", "style", ["未填", "偏工程", "偏理论", "都行"])
+        cell = self._form_cell(grid, 1, 1, "禁忌方向", "constraints")
         self._avoid_var = tk.StringVar(value="、".join(con.get("avoid") or []))
-        ae = tk.Entry(grid, textvariable=self._avoid_var, bg=T.CARD_HI, fg=T.TXT,
+        ae = tk.Entry(cell, textvariable=self._avoid_var, bg=T.CARD_HI, fg=T.TXT,
                       insertbackground=T.ACCENT, relief="flat", font=T.T_BODY_SM(),
-                      highlightthickness=1, highlightbackground=T.LINE,
+                      width=1, highlightthickness=1, highlightbackground=T.LINE,
                       highlightcolor=T.ACCENT)
-        ae.grid(row=1, column=1, columnspan=3, sticky="ew", padx=(0, 0), pady=4, ipady=4)
-        grid.grid_columnconfigure(3, weight=1)
+        ae.pack(fill="x", ipady=T.sp(6))
+        self._copy(cell, "多个方向用顿号或逗号分隔。", pady=(T.sp(4), 0))
 
         # 条件填了才显示一行解释，让人知道系统拿它做什么判断
         hint = []
@@ -296,18 +308,12 @@ class ProfilePage(tk.Frame):
         if con.get("months") in PM.TIME_LEVELS:
             hint.append(PM.TIME_LEVELS[con["months"]][1])
         if con.get("avoid"):
-            hint.append("命中「%s」的候选会被标出来" % "、".join(con["avoid"][:3]))
+            hint.append("命中「%s」的候选会被标出来" % "、".join(con["avoid"]))
         if not hint:
             hint.append("填了以后，选题工坊会把做不动的候选沉到底部并写明原因")
-        tk.Label(card.body, text="· " + "；".join(hint), bg=T.CARD, fg=T.TXT4,
-                 font=T.T_CAPTION(), anchor="w", justify="left",
-                 wraplength=T.wrap(760)).pack(fill="x", pady=(4, 0))
-
-        act = tk.Frame(card.body, bg=T.CARD)
-        act.pack(fill="x", pady=(8, 0))
-        T.Btn(act, "保存条件", self._save_constraints, "primary").pack(side="left")
-        tk.Label(act, text="  只存本机，不上传；留「未填」表示不参与判断",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION()).pack(side="left", pady=(4, 0))
+        self._copy(card.body, "；".join(hint), pady=(T.sp(4), T.sp(8)))
+        self._save_actions(card.body, "保存条件", self._save_constraints,
+                           "只存本机，不上传；留「未填」表示不参与判断。")
 
     def _save_constraints(self):
         data = {}
@@ -328,21 +334,16 @@ class ProfilePage(tk.Frame):
     # -------------------------------------------------- 状态
     def _render_state(self, host, prof):
         st = prof.get("state") or {}
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        hd = tk.Frame(card.body, bg=T.CARD)
-        hd.pack(fill="x")
-        tk.Label(hd, text="我现在什么状态", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION()).pack(side="left")
-        tk.Label(hd, text="  这就是「注意力倾斜」的旋钮：紧急度高 → 危机类记忆排前面",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION()).pack(side="left", pady=(4, 0))
-
+        card = self._section_card(host, "我现在什么状态", "状态旋钮", "03",
+                                  "紧急度与兴趣只调整注意力和候选顺序，不覆盖硬条件。")
         row = tk.Frame(card.body, bg=T.CARD)
-        row.pack(fill="x", pady=(10, 0))
+        row.pack(fill="x", pady=(T.sp(4), 0))
+        row.grid_columnconfigure(0, weight=1, uniform="state")
+        row.grid_columnconfigure(1, weight=1, uniform="state")
 
         # 紧急度
         ucol = tk.Frame(row, bg=T.CARD)
-        ucol.pack(side="left", fill="x", expand=True)
+        ucol.grid(row=0, column=0, sticky="nsew", padx=(0, T.sp(12)))
         self._u_lab = tk.Label(ucol, text="紧急度  %.0f" % st.get("urgency", 0), bg=T.CARD,
                                fg=T.TXT2, font=T.T_BODY_SM(), anchor="w")
         self._u_lab.pack(fill="x")
@@ -353,12 +354,11 @@ class ProfilePage(tk.Frame):
                       sliderlength=18, width=8,
                       activebackground=T.ACCENT, command=self._on_urgency)
         sc.pack(fill="x")
-        tk.Label(ucol, text="0 = 很闲 · 60 左右开始变化 · 80+ 视为危机",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(), anchor="w").pack(fill="x")
+        self._copy(ucol, "0 = 很闲 · 60 左右开始变化 · 80+ 视为危机")
 
         # 兴趣
         icol = tk.Frame(row, bg=T.CARD)
-        icol.pack(side="left", fill="x", expand=True, padx=(24, 0))
+        icol.grid(row=0, column=1, sticky="nsew", padx=(T.sp(12), 0))
         self._i_lab = tk.Label(icol, text="兴趣  %.0f" % st.get("interest", 0), bg=T.CARD,
                                fg=T.TXT2, font=T.T_BODY_SM(), anchor="w")
         self._i_lab.pack(fill="x")
@@ -367,38 +367,33 @@ class ProfilePage(tk.Frame):
                  bg=T.CARD, fg=T.TXT3, troughcolor=T.CARD_HI, bd=0,
                  highlightthickness=0, showvalue=0, sliderrelief="flat",
                  sliderlength=18, width=8,
-                 activebackground=T.PURPLE, command=self._on_interest).pack(fill="x")
-        tk.Label(icol, text="高 = 更愿意把「有意思但难」的候选排前面",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(), anchor="w").pack(fill="x")
+                 activebackground=T.ACCENT, command=self._on_interest).pack(fill="x")
+        self._copy(icol, "高 = 更愿意把「有意思但难」的候选排前面")
 
-        # 心情
-        tk.Label(card.body, text="心情", bg=T.CARD, fg=T.TXT3,
-                 font=T.T_CAPTION()).pack(anchor="w", pady=(12, 4))
-        # 心情按钮有 6 个，大字号下一行放不下 → 折行容器
+        # 心情与操作可随可用宽度折行。
+        self._copy(card.body, "心情", font=T.T_LABEL(), pady=(T.sp(12), T.sp(4)))
         mrow = U.WrapRow(card.body, bg=T.CARD)
         mrow.pack(fill="x")
         for m in PM.MOODS:
-            on = (st.get("mood") == m)
-            col = STATUS_COLORS.get(m, T.ACCENT)
-            b = T.Btn(mrow, m, lambda mm=m: self._set_mood(mm),
-                      "primary" if on else "ghost")
-            if on:
-                b.config(bg=col, fg=T.on_primary_fg())
-            mrow.add(b)
+            mrow.add(UK.Chip(mrow, m, active=(st.get("mood") == m),
+                             command=lambda mm=m: self._set_mood(mm)))
+        self._save_actions(card.body, "保存状态", self._commit_state,
+                           "滑杆调整后保存；选择心情或套用截止日也会保存当前状态。")
 
         # 截止日 → 自动算紧急度
+        self._copy(card.body, "按截止日自动计算", font=T.T_LABEL(),
+                   pady=(T.sp(12), T.sp(4)))
         drow = U.WrapRow(card.body, bg=T.CARD)
-        drow.pack(fill="x", pady=(12, 0))
-        drow.add(tk.Label(drow, text="按截止日自动算", bg=T.CARD, fg=T.TXT3,
-                          font=T.T_CAPTION()))
+        drow.pack(fill="x")
         self._ddl = tk.Entry(drow, bg=T.CARD_HI, fg=T.TXT,
                              insertbackground=T.ACCENT, relief="flat",
-                             font=T.T_BODY_SM(), width=14)
+                             font=T.T_BODY_SM(), width=14, highlightthickness=1,
+                             highlightbackground=T.LINE, highlightcolor=T.ACCENT)
         drow.add(self._ddl)
         self._ddl.insert(0, "2026-12-31")
         drow.add(T.Btn(drow, "套用", self._apply_ddl))
-        drow.add(tk.Label(drow, text="格式 YYYY-MM-DD；离得越近，紧急度越高",
-                          bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION()))
+        self._copy(card.body, "格式 YYYY-MM-DD；离得越近，紧急度越高。",
+                   pady=(T.sp(6), 0))
 
     def _on_urgency(self, v):
         try:
@@ -439,14 +434,8 @@ class ProfilePage(tk.Frame):
         st = prof.get("state") or {}
         u = float(st.get("urgency", 30.0))
         crisis_w, daily_w = _weights_full(u)
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        tk.Label(card.body, text="注意力倾斜曲线", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION(), anchor="w").pack(fill="x")
-        tk.Label(card.body,
-                 text="不给记忆打分排队后物理删除，只调整「先想起谁」——这是这套记忆的核心。",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(), anchor="w").pack(
-            fill="x", pady=(2, 10))
+        card = self._section_card(host, "注意力倾斜曲线", "记忆权重", "04",
+                                  "只调整「先想起谁」，不据此删除记忆；倍率来自现有权重算法。")
 
         two = tk.Frame(card.body, bg=T.CARD)
         two.pack(fill="x")
@@ -454,13 +443,11 @@ class ProfilePage(tk.Frame):
         two.grid_columnconfigure(1, weight=1, uniform="t")
 
         left = tk.Frame(two, bg=T.CARD)
-        left.grid(row=0, column=0, sticky="nsew")
-        tl = tk.Frame(left, bg=T.CARD)
-        tl.pack(fill="x")
-        tk.Label(tl, text="危机类记忆 ×%.2f" % crisis_w, bg=T.CARD, fg=T.ERR,
-                 font=T.T_METRIC(), anchor="w").pack(fill="x")
-        tk.Label(tl, text="日常类记忆 ×%.2f" % daily_w, bg=T.CARD, fg=T.TXT3,
-                 font=T.T_BODY(), anchor="w").pack(fill="x")
+        left.grid(row=0, column=0, sticky="nsew", padx=(0, T.sp(12)))
+        self._copy(left, "危机类记忆 ×%.2f" % crisis_w,
+                   fg=T.ACCENT, font=T.T_BODY())
+        self._copy(left, "日常类记忆 ×%.2f" % daily_w, font=T.T_BODY(),
+                   pady=(T.sp(4), 0))
         # 权重曲线：只在几个关键紧急度点上取值，写成一行
         # （2026-11-15 用户要求「可视化表去除」，原来的 2×26 色块矩阵
         #  换成 6 个采样点，读起来更快，也不占一屏）
@@ -469,23 +456,19 @@ class ProfilePage(tk.Frame):
             "u=%d → 危机×%.2f / 日常×%.2f" % (x, PM.urgency_weights(x)[0],
                                         PM.urgency_weights(x)[1])
             for x in samples)
-        tk.Label(left, text="紧急度对应的记忆权重：" + pts, bg=T.CARD, fg=T.TXT2,
-                 font=T.T_CAPTION(), anchor="w", justify="left",
-                 wraplength=T.wrap(430)).pack(fill="x", pady=(6, 2))
+        self._copy(left, "紧急度对应的记忆权重：" + pts, fg=T.TXT2,
+                   pady=(T.sp(6), T.sp(2)))
 
         right = tk.Frame(two, bg=T.CARD)
-        right.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
-        tk.Label(right, text="这条曲线在说什么", bg=T.CARD, fg=T.TXT3,
-                 font=T.T_CAPTION(), anchor="w").pack(fill="x")
+        right.grid(row=0, column=1, sticky="nsew", padx=(T.sp(12), 0))
+        self._copy(right, "这条曲线在说什么", font=T.T_LABEL())
         for txt in (
             "紧急度 60 以下：平静模式，两类记忆同权参与。",
             "60 → 80：线性拉升，危机类逐步靠前，不会在某个整数上突然翻脸。",
             "80 以上：危机 ×3.0、日常 ×0.1 —— 相当于「只有 deadline 存在」。",
             "所有条目仍全部交给模型，只是顺序变了，一条都没删。",
         ):
-            tk.Label(right, text="· " + txt, bg=T.CARD, fg=T.TXT2,
-                     font=T.T_CAPTION(), anchor="w", justify="left",
-                     wraplength=T.wrap(210)).pack(fill="x", pady=2)
+            self._copy(right, txt, fg=T.TXT2, pady=(T.sp(4), 0))
 
     # -------------------------------------------------- 画像对选题的实际影响
     def _render_effect(self, host, prof):
@@ -496,15 +479,9 @@ class ProfilePage(tk.Frame):
         interest = int(st.get("interest", 50) or 50)
         mood = st.get("mood", "") or ""
 
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        tk.Label(card.body, text="这个画像怎么影响选题", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION(), anchor="w").pack(fill="x")
-        tk.Label(card.body,
-                 text="选题工坊生成候选时会按你现在的状态重排：只改顺序，不删候选，"
-                      "每一条被挪动的都会写明理由。",
-                 bg=T.CARD, fg=T.TXT2, font=T.T_CAPTION(), anchor="w",
-                 wraplength=T.wrap(720), justify="left").pack(fill="x", pady=(4, 10))
+        card = self._section_card(host, "这个画像怎么影响选题", "排序示例", "05",
+                                  "选题工坊按当前状态重排：只改顺序，不删候选，"
+                                  "被挪动的候选会注明理由。以下是固定方向的试算，不是对你的评分。")
 
         # 用当前画像试算一次，直接展示前 4 名
         demo_dir = "红外小目标检测"
@@ -516,58 +493,49 @@ class ProfilePage(tk.Frame):
         except Exception:
             cs = []
         if not cs:
-            tk.Label(card.body, text="暂时算不出示例。", bg=T.CARD, fg=T.TXT3,
-                     font=T.T_CAPTION(), anchor="w").pack(fill="x")
+            self._copy(card.body, "暂时算不出示例。")
         else:
-            tk.Label(card.body, text="以「%s」为例，你现在会先看到：" % demo_dir,
-                     bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(),
-                     anchor="w").pack(fill="x", pady=(0, 4))
+            self._copy(card.body, "以「%s」为例，你现在会先看到：" % demo_dir,
+                       pady=(0, T.sp(4)))
             for i, c in enumerate(cs[:4]):
                 zebra = T.CARD_HI if i % 2 else T.CARD
                 row = tk.Frame(card.body, bg=zebra)
-                row.pack(fill="x", pady=1)
-                tk.Label(row, text=str(i + 1).zfill(2), bg=row.cget("bg"), fg=T.TXT4,
-                         font=T.M(8)).pack(side="left", padx=(6, 8), pady=4)
-                tk.Label(row, text=c.get("angle", ""), bg=row.cget("bg"),
-                         fg=T.TXT if i == 0 else T.TXT2, font=T.T_BODY_SM(),
-                         anchor="w", width=16).pack(side="left")
-                tk.Label(row, text=c.get("score", ""), bg=row.cget("bg"), fg=T.OK,
-                         font=T.M(8), width=4).pack(side="right", padx=6)
-                tk.Label(row, text=c.get("tilt_reason") or "—", bg=row.cget("bg"),
-                         fg=T.TXT3 if c.get("tilt_reason") else T.TXT4,
-                         font=T.T_CAPTION(), anchor="w", justify="left",
-                         wraplength=T.wrap(360)).pack(side="left", fill="x", expand=True)
+                row.pack(fill="x", pady=T.sp(2))
+                tk.Label(row, text=str(i + 1).zfill(2), bg=zebra, fg=T.TXT4,
+                         font=T.M(8)).pack(side="left", anchor="n",
+                                           padx=(T.sp(6), T.sp(8)), pady=T.sp(6))
+                body = tk.Frame(row, bg=zebra)
+                body.pack(side="left", fill="x", expand=True,
+                          padx=(0, T.sp(8)), pady=T.sp(6))
+                self._copy(body, c.get("angle", ""), bg=zebra,
+                           fg=T.TXT if i == 0 else T.TXT2, font=T.T_BODY_SM())
+                self._copy(body, "候选得分：%s" % c.get("score", "—"), bg=zebra)
+                self._copy(body, c.get("tilt_reason") or "暂无状态重排理由", bg=zebra,
+                           pady=(T.sp(2), 0))
 
-        act = tk.Frame(card.body, bg=T.CARD)
-        act.pack(fill="x", pady=(10, 0))
-        T.Btn(act, "去选题工坊试一次",
-              lambda: self.app.goto("topic")).pack(side="left")
+        act = U.WrapRow(card.body, bg=T.CARD)
+        act.pack(fill="x", pady=(T.sp(10), 0))
+        act.add(T.Btn(act, "去选题工坊试一次", lambda: self.app.goto("topic")))
 
     # -------------------------------------------------- 记忆锚点
     def _render_anchors(self, host, prof):
         anchors = prof.get("anchors") or []
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        hd = tk.Frame(card.body, bg=T.CARD)
-        hd.pack(fill="x")
-        tk.Label(hd, text="记忆锚点（%d 条）" % len(anchors), bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION()).pack(side="left")
-        T.Btn(hd, "手动记一条", self._add_anchor).pack(side="right")
+        card = self._section_card(host, "记忆锚点（%d 条）" % len(anchors),
+                                  "事件记忆", "06", "保留事件全文与记录时的心情；可手动补充或删除。")
+        actions = U.WrapRow(card.body, bg=T.CARD)
+        actions.pack(fill="x")
+        actions.add(T.Btn(actions, "手动记一条", self._add_anchor))
 
         if not anchors:
             empty = tk.Frame(card.body, bg=T.CARD_HI)
             empty.pack(fill="x", pady=(10, 0))
-            tk.Label(empty, text="还没有任何记忆", bg=T.CARD_HI, fg=T.TXT2,
-                     font=T.T_BODY_SM(), anchor="w").pack(fill="x", padx=12,
-                                                          pady=(10, 2))
-            tk.Label(empty,
-                     text="在选题工坊、文献空白、最新研究页操作时，系统会把关键动作"
-                          "写成一条带情绪的锚点。存的时候如果正处在高紧急度，"
-                          "这条记忆会被标成「闪光灯记忆」，以后优先想起。",
-                     bg=T.CARD_HI, fg=T.TXT3, font=T.T_CAPTION(), anchor="w",
-                     justify="left", wraplength=T.wrap(760)).pack(fill="x",
-                                                                  padx=12,
-                                                                  pady=(0, 10))
+            self._copy(empty, "还没有任何记忆", bg=T.CARD_HI, fg=T.TXT2,
+                       font=T.T_BODY_SM(), padx=T.sp(12), pady=(T.sp(10), T.sp(2)))
+            self._copy(empty,
+                       "在选题工坊、文献空白、最新研究页操作时，系统会把关键动作"
+                       "写成一条带情绪的锚点。存的时候如果正处在高紧急度，"
+                       "这条记忆会被标成「闪光灯记忆」，以后优先想起。",
+                       bg=T.CARD_HI, padx=T.sp(12), pady=(0, T.sp(10)))
             return
 
         box = tk.Frame(card.body, bg=T.CARD)
@@ -575,37 +543,33 @@ class ProfilePage(tk.Frame):
         for a in anchors[-12:][::-1]:
             self._anchor_row(box, a, compact=True)
         if len(anchors) > 12:
-            tk.Label(card.body, text="只显示最近 12 条，共 %d 条" % len(anchors),
-                     bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(),
-                     anchor="w").pack(fill="x", pady=(4, 0))
+            self._copy(card.body, "只显示最近 12 条，共 %d 条" % len(anchors),
+                       pady=(T.sp(4), 0))
 
     def _anchor_row(self, parent, a, compact=False):
         f = tk.Frame(parent, bg=T.CARD)
-        f.pack(fill="x", pady=1)
+        f.pack(fill="x", pady=(T.sp(4), T.sp(8)))
         kind = a.get("kind") or "note"
-        col = {"crisis": T.ERR, "daily": T.TXT4}.get(kind, T.ACCENT)
-        tk.Label(f, text={"crisis": "危机", "daily": "日常"}.get(kind, "记录"),
-                 bg=col, fg="#061220" if kind == "crisis" else T.TXT2,
-                 font=T.T_CAPTION(), padx=5).pack(side="left", padx=(0, 8))
-        T.Btn(f, "删除", lambda x=a.get("id"): self._del_anchor(x),
-              "ghost").pack(side="right")
+        col = {"crisis": T.ERR, "daily": T.TXT3}.get(kind, T.ACCENT)
+        meta = U.WrapRow(f, bg=T.CARD)
+        meta.pack(fill="x")
+        meta.add(tk.Label(meta, text={"crisis": "危机", "daily": "日常"}.get(kind, "记录"),
+                          bg=T.CARD_HI, fg=col, font=T.T_CAPTION(),
+                          padx=T.sp(6), pady=T.sp(2)))
         ts = a.get("at") or 0
         try:
             when = datetime.datetime.fromtimestamp(float(ts)).strftime("%m-%d %H:%M")
         except Exception:
             when = "—"
-        tk.Label(f, text=when, bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(),
-                 width=12, anchor="e").pack(side="right", padx=(0, 8))
-        txt = str(a.get("text") or "")
-        if compact and len(txt) > 60:
-            txt = txt[:58] + "…"
-        tk.Label(f, text=txt, bg=T.CARD, fg=T.TXT2, font=T.T_CAPTION(),
-                 anchor="w", justify="left").pack(side="left", fill="x",
-                                                 expand=True)
+        meta.add(tk.Label(meta, text=when, bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION()))
         mood = a.get("mood")
         if mood:
-            tk.Label(f, text=mood, bg=T.CARD, fg=STATUS_COLORS.get(mood, T.TXT3),
-                     font=T.T_CAPTION(), padx=6).pack(side="right")
+            meta.add(tk.Label(meta, text=mood, bg=T.CARD,
+                              fg=STATUS_COLORS.get(mood, T.TXT3), font=T.T_CAPTION()))
+        meta.add(T.Btn(meta, "删除", lambda x=a.get("id"): self._del_anchor(x), "ghost"))
+        self._copy(f, str(a.get("text") or ""), fg=T.TXT2, font=T.T_BODY_SM(),
+                   pady=(T.sp(4), T.sp(8)))
+        UK.divider(f)
 
     def _add_anchor(self):
         from app_theme import ask_text
@@ -633,18 +597,11 @@ class ProfilePage(tk.Frame):
         prefs = prof.get("preferences") or {}
         cats = prefs.get("categories") or {}
         fields = prefs.get("fields") or {}
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 12))
-        tk.Label(card.body, text="偏好统计", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION(), anchor="w").pack(fill="x")
-        tk.Label(card.body,
-                 text="你每次选择 / 收藏的动作都会累加；≥3 次才真正参与排序，避免点错一次就被带偏。",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(),
-                 anchor="w").pack(fill="x", pady=(2, 8))
+        card = self._section_card(host, "偏好统计", "选择记录", "07",
+                                  "选择与收藏会累加；至少 3 次才参与排序，避免一次误点带偏。")
         if not cats and not fields:
-            tk.Label(card.body, text="还没有偏好数据 —— 多用几次选题工坊就会长出来。",
-                     bg=T.CARD, fg=T.TXT4, font=T.T_BODY_SM(),
-                     anchor="w").pack(fill="x", pady=(6, 0))
+            self._copy(card.body, "还没有偏好数据；使用选题工坊后会逐步积累。",
+                       pady=(T.sp(6), 0))
             return
         # 偏好 Top6：文字列表而不是条形图
         # （2026-11-15 用户要求「可视化表去除」）
@@ -654,32 +611,25 @@ class ProfilePage(tk.Frame):
                 return
             box = tk.Frame(card.body, bg=T.CARD)
             box.pack(fill="x", pady=(4, 0))
-            tk.Label(box, text=title, bg=T.CARD, fg=T.TXT3,
-                     font=T.T_CAPTION(), anchor="w", width=10).pack(side="left")
-            tk.Label(box, text=" · ".join("%s %d" % (k, v) for k, v in top),
-                     bg=T.CARD, fg=T.TXT2, font=T.T_BODY_SM(), anchor="w",
-                     justify="left", wraplength=T.wrap(760)).pack(
-                side="left", fill="x", expand=True)
+            self._copy(box, title, font=T.T_LABEL())
+            self._copy(box, " · ".join("%s %d" % (k, v) for k, v in top),
+                       fg=T.TXT2, font=T.T_BODY_SM(), pady=(T.sp(4), T.sp(6)))
 
         _top_line("常看的领域", cats)
         _top_line("常看的方向", fields)
 
     # -------------------------------------------------- 底部操作
     def _render_footer(self, host, prof):
-        card = T.Card(host, pad=14)
-        card.pack(fill="x", padx=T.PAD, pady=(0, 18))
-        tk.Label(card.body, text="数据位置与管理", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION(), anchor="w").pack(fill="x")
+        card = self._section_card(host, "数据位置与管理", "本地隐私", "08")
+        card.pack_configure(pady=(0, T.sp(18)))
         path = str(PM.PROFILE_FILE) if hasattr(PM, "PROFILE_FILE") else "researcher_profile.json"
-        tk.Label(card.body, text=path, bg=T.CARD, fg=T.TXT3, font=T.M(12),
-                 anchor="w").pack(fill="x", pady=(2, 8))
+        self._copy(card.body, path, font=T.M(12), pady=(T.sp(2), T.sp(8)))
         act = U.WrapRow(card.body, bg=T.CARD)
         act.pack(fill="x")
         act.add(T.Btn(act, "打开所在文件夹", self._open_dir))
         act.add(T.Btn(act, "导出脱敏画像", self._export, "ghost"))
-        tk.Label(card.body, text="导出会去掉学校、导师等可识别字段，便于拿去给别人看",
-                 bg=T.CARD, fg=T.TXT4, font=T.T_CAPTION(), anchor="w",
-                 justify="left").pack(fill="x", pady=(6, 0))
+        self._copy(card.body, "导出会去掉学校、导师等可识别字段，便于分享；原画像仍保留在本机。",
+                   pady=(T.sp(6), 0))
 
     def _open_dir(self):
         try:

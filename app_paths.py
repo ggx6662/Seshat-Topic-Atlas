@@ -71,7 +71,8 @@ def ensure_data():
     if not FROZEN:
         return []
     made = []
-    for name in ("config.json", "widget_settings.json", "research_memory.json",
+    for name in ("config.json", "config.example.json", "widget_settings.json",
+                 "research_memory.json",
                  "researcher_profile.json", "assistant_memory.json"):
         dst = DATA / name
         src = RES / name

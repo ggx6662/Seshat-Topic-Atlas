@@ -2,7 +2,11 @@
 import json
 from pathlib import Path
 
-D = Path(r"G:\kb-vector\models\bge-small-zh-v1.5")
+try:  # 目录从 kb_vector 统一取
+    import kb_vector as _KV
+    D = _KV.BASE / "models" / "bge-small-zh-v1.5"
+except Exception:
+    D = Path(r"G:\kb-vector\models\bge-small-zh-v1.5")
 
 MODULES = [
     {

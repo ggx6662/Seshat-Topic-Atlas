@@ -1,0 +1,91 @@
+let TERM_COUNTS = null;
+let MAX_ASSOCIATION = 1;
+
+function buildTermCounts() {
+  TERM_COUNTS = new Map();
+  for (const entry of state.index?.directions || []) {
+    const terms = new Set([...(entry.keywords || []), ...(entry.terms || [])].map((t) => String(t).toLowerCase()).filter(Boolean));
+    for (const term of terms) TERM_COUNTS.set(term, (TERM_COUNTS.get(term) || 0) + 1);
+  }
+  MAX_ASSOCIATION = 1;
+  for (const entry of state.index?.directions || []) {
+    const score = associationOf(entry, false);
+    if (score > MAX_ASSOCIATION) MAX_ASSOCIATION = score;
+  }
+}
+
+function associationOf(entry) {
+  if (!TERM_COUNTS) buildTermCounts();
+  const terms = new Set([...(entry.keywords || []), ...(entry.terms || [])].map((t) => String(t).toLowerCase()).filter(Boolean));
+  let score = 0;
+  for (const term of terms) score += Math.max(0, (TERM_COUNTS.get(term) || 1) - 1);
+  return score;
+}
+
+function associationLabel(score) {
+  const ratio = score / Math.max(1, MAX_ASSOCIATION);
+  if (ratio >= 0.55) return { label: "强关联", cls: "strong" };
+  if (ratio >= 0.22) return { label: "中关联", cls: "mid" };
+  return { label: "弱关联", cls: "weak" };
+}
+
+function browsePanelHtml() {
+  const categories = state.index?.categories || [];
+  const q = state.browseQuery.trim().toLowerCase();
+  const matches = (entry) => {
+    if (q && !`${entry.name} ${entry.category} ${(entry.keywords || []).join(" ")} ${(entry.terms || []).join(" ")}`.toLowerCase().includes(q)) return false;
+    return !entry.aliasOf;
+  };
+  const allRows = state.index.directions.filter(matches);
+  const catCount = new Map();
+  for (const entry of allRows) catCount.set(entry.category, (catCount.get(entry.category) || 0) + 1);
+  const rows = state.browseCat ? allRows.filter((entry) => entry.category === state.browseCat) : [];
+  rows.sort((a, b) => associationOf(b) - associationOf(a) || b.papers - a.papers || a.name.localeCompare(b.name));
+  const activeCat = state.browseCat || "";
+  return `
+    <div class="browse-panel">
+      <div class="browse-controls">
+        <div class="suggest-wrap">
+          <input id="browseQuery" class="input" type="text" value="${escapeHtml(state.browseQuery)}" placeholder="筛选方向、关键词或术语" autocomplete="off" aria-label="筛选方向">
+        </div>
+        <button type="button" class="btn" data-action="browse-clear">清空</button>
+      </div>
+      <div class="browse-layout">
+        <div class="browse-cats-list" role="list" aria-label="研究方向大类">
+          <button type="button" class="browse-cat ${!activeCat ? "active" : ""}" data-action="browse-cat" data-cat="">
+            <span>全部大类</span><b>${fmtInt(allRows.length)}</b>
+          </button>
+          ${categories.map((cat) => {
+            const count = catCount.get(cat.name) || 0;
+            return `<button type="button" class="browse-cat ${activeCat === cat.name ? "active" : ""}" data-action="browse-cat" data-cat="${escapeHtml(cat.name)}" ${count ? "" : "disabled"}>
+              <span>${escapeHtml(cat.name)}</span><b>${fmtInt(count)}</b>
+            </button>`;
+          }).join("")}
+        </div>
+        <div class="browse-sub">
+          ${activeCat ? `
+            <div class="browse-sub-head">
+              <div><b>${escapeHtml(activeCat)}</b><small>${fmtInt(rows.length)} 个方向 · 按关键词关联强度排序</small></div>
+              <span class="badge">大类 → 小类</span>
+            </div>
+            <div class="browse-items">
+              ${rows.length ? rows.map((entry) => {
+                const score = associationOf(entry);
+                const level = associationLabel(score);
+                return `<button type="button" class="browse-item browse-entry" data-action="browse-direction" data-name="${escapeHtml(entry.name)}">
+                  <span class="browse-entry-main"><b>${escapeHtml(entry.name)}</b><small>${escapeHtml((entry.keywords || []).slice(0, 3).join(" · ") || "关键词待补充")}</small></span>
+                  <span class="browse-assoc ${level.cls}"><i style="width:${Math.max(8, Math.round((score / Math.max(1, MAX_ASSOCIATION)) * 100))}%"></i><em>${level.label}</em></span>
+                  <span class="browse-entry-arrow">${icon("arrow")}</span>
+                </button>`;
+              }).join("") : `<p class="tags-empty">该大类下没有匹配方向。</p>`}
+            </div>` : `
+            <div class="browse-empty">
+              <div class="empty-icon">${icon("route")}</div>
+              <b>先选择一个研究大类</b>
+              <p>左侧列出 25 个大类。点击后查看该大类下的小方向，并按知识库关键词的关联强度排序。</p>
+              ${q ? `<div class="browse-items" style="margin-top:var(--sp-3)">${allRows.slice(0, 12).map((entry) => `<button type="button" class="browse-item" data-action="browse-direction" data-name="${escapeHtml(entry.name)}">${escapeHtml(entry.name)} <small>${escapeHtml(entry.category)}</small></button>`).join("")}</div>` : ""}
+            </div>`}
+        </div>
+      </div>
+    </div>`;
+}

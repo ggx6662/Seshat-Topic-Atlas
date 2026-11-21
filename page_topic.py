@@ -16,6 +16,7 @@ import tkinter as tk
 import webbrowser
 
 import app_theme as T
+import ui_kit as UK            # noqa: E402
 import ui_parts as U             # noqa: E402
 from ui_parts import WrapRow   # 会自动折行的按钮排
 import app_diagnose_view as diag_view
@@ -57,6 +58,48 @@ def _cfm(lb):
 
 
 
+def _draw_direction_graph(cv, w, h):
+    """英雄卡里的方向示意图：虚线轨迹 + 节点 + 中心「题」。
+
+    网页版这里是一张手绘风的方向网络；桌面上用 Canvas 画同样的语言，
+    比嵌位图更稳（缩放、深色模式、DPI 都不会糊）。
+    """
+    cv.delete("all")
+    if w < 120 or h < 60:
+        return
+    line = T.tint(T.ACCENT, 0.38, T.CARD)
+    soft = T.tint(T.ACCENT, 0.22, T.CARD)
+    x0, x1 = T.sp(14), w - T.sp(14)
+    y = h * 0.58
+    pts = (x0, y + h * 0.06, x0 + (x1 - x0) * 0.22, y - h * 0.24,
+           x0 + (x1 - x0) * 0.48, y + h * 0.10,
+           x0 + (x1 - x0) * 0.74, y - h * 0.20, x1, y - h * 0.02)
+    cv.create_line(pts, smooth=True, splinesteps=24, dash=(3, 5),
+                   fill=soft, width=1)
+    pts2 = (x0, y - h * 0.12, x0 + (x1 - x0) * 0.20, y + h * 0.18,
+            x0 + (x1 - x0) * 0.50, y - h * 0.16,
+            x0 + (x1 - x0) * 0.78, y + h * 0.16, x1, y - h * 0.06)
+    cv.create_line(pts2, smooth=True, splinesteps=24, fill=line, width=1)
+    for _fx, _fy, _r in ((0.16, 0.22, 3), (0.37, 0.72, 3),
+                         (0.62, 0.30, 3), (0.84, 0.74, 3)):
+        _x, _y = x0 + (x1 - x0) * _fx, h * _fy
+        cv.create_oval(_x - _r, _y - _r, _x + _r, _y + _r,
+                       fill=T.CARD, outline=T.ACCENT, width=1)
+    cx, cy, r = w / 2.0, y - h * 0.05, T.sp(17)
+    cv.create_oval(cx - r, cy - r, cx + r, cy + r,
+                   fill=T.ACCENT, outline="")
+    cv.create_text(cx, cy, text="题", fill=T.on_primary_fg(),
+                   font=(T.SERIF, -max(14, int(round(16 * T.font_scale()))), "bold"))
+    for _tx, _ty, _label in ((x0 - T.sp(2), y + h * 0.22, "应用场景"),
+                             (x1 - T.sp(58), y - h * 0.34, "公开基准")):
+        _tw = max(T.sp(52), T.sp(10) * len(_label))
+        cv.create_rectangle(_tx, _ty - T.sp(9), _tx + _tw, _ty + T.sp(9),
+                            fill=T.tint(T.ACCENT, 0.08, T.CARD),
+                            outline=T.tint(T.ACCENT, 0.22, T.CARD))
+        cv.create_text(_tx + _tw / 2.0, _ty, text=_label, fill=T.TXT3,
+                       font=(T.BASE, -13))
+
+
 class TopicPage(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg=T.BG)
@@ -71,33 +114,29 @@ class TopicPage(tk.Frame):
 
     # ------------------------------------------------------------ 布局
     def _build(self):
-        # 页面标题交给外壳的抬头（GitHub 式 repo 头），这里只放本页专属的说明与动作，
-        # 免得同一个名字在一屏里出现两次。
-        top = tk.Frame(self, bg=T.BG)
-        top.pack(fill="x", padx=T.PAD, pady=(6, 8))
-        tk.Label(top, text=PAGE_HINT, bg=T.BG, fg=T.TXT4,
-                 font=T.F(9), anchor="w").pack(side="left")
-        T.Btn(top, "方法论帮助", self.show_help).pack(side="right")
-
-        # 输入行（第 8 版简化）
-        # 原来这里是「研究方向」+「策略」下拉 +「生成候选」，下面还有折叠的
-        # 「跨领域组合」（B/C 两个框 + 组合类型）。用户得先理解「策略」这三个
-        # 字背后是四种候选生成思路，才能按第一步。现在首屏只有一个输入框，
-        # 策略与组合类型都推到第一次生成出结果之后的「换个角度」一行里。
-        bar = tk.Frame(self, bg=T.BG)
-        bar.pack(fill="x", padx=T.PAD, pady=(2, 6))
-        self.entry = tk.Entry(bar, bg=T.CARD, fg=T.TXT, insertbackground=T.ACCENT,
-                              relief="flat", highlightbackground=T.LINE,
-                              highlightthickness=1, font=T.T_BODY())
-        self.entry.pack(side="left", fill="x", expand=True, ipady=6)
-        self.entry.bind("<Return>", lambda e: self.generate())
-        try:
-            import app_suggest
-            app_suggest.attach(self.entry)
-        except Exception as exc:
-            print("联想词挂载失败:", exc)
-        self.go_btn = T.Btn(bar, "生成候选", self.generate, "primary")
-        self.go_btn.pack(side="left", padx=(8, 0))
+        # 结果态顶栏（网页版 .recognize-bar）：方向识别摘要 + 调整方向。
+        # 空态整块隐藏，输入框在英雄卡里；生成之后英雄卡让位给三栏工作台，
+        # 这条栏负责告诉用户「系统把你的输入理解成了什么」。
+        self._result_bar = T.Card(self, bg=T.CARD, border=T.LINE_SOFT,
+                                  radius=T.RADIUS, pad=T.sp(12))
+        rb = self._result_bar.body
+        row = tk.Frame(rb, bg=T.CARD)
+        row.pack(fill="x")
+        # 按钮先占住右端：方向名动辄二三十个字，若标题先 pack，
+        # 它会一路顶到按钮底下，截图里三个按钮只剩半个「素」字。
+        right = tk.Frame(row, bg=T.CARD)
+        right.pack(side="right")
+        T.Btn(right, "素材库", lambda: self.app.goto("materials"), "ghost").pack(
+            side="right", padx=(T.sp(6), 0))
+        T.Btn(right, "调整方向", self.reset_direction, "ghost").pack(side="right")
+        T.Btn(right, "方法论帮助", self.show_help, "ghost").pack(
+            side="right", padx=(0, T.sp(6)))
+        self.result_title = tk.Label(row, text="", bg=T.CARD, fg=T.TXT,
+                                     font=T.T_SECTION(), anchor="w", justify="left")
+        self.result_title.pack(side="left", fill="x", expand=True)
+        self.result_meta = tk.Label(rb, text="", bg=T.CARD, fg=T.TXT3,
+                                    font=T.T_CAPTION(), anchor="w", justify="left")
+        self.result_meta.pack(fill="x", pady=(T.sp(2), 0))
 
         # 「换个角度」一行：首屏不建控件，第一次生成后才铺。
         self.mode = tk.StringVar(value=kb.DIRECTION_MODES[0])
@@ -123,7 +162,8 @@ class TopicPage(tk.Frame):
             if self._tweak_ready:
                 return
             self._tweak_ready = True
-            self.tweak.pack(fill="x", padx=T.PAD, pady=(0, 4), before=self.profile_lbl)
+            # 这里只建控件：此刻 _under_wrap 还没 pack，
+            # 真正的安放在 _set_cards_visible(True) 里统一做。
             tk.Label(self.tweak, text="换个角度", bg=T.BG, fg=T.TXT3,
                      font=T.T_CAPTION()).pack(side="left", padx=(0, 8))
             om = tk.OptionMenu(self.tweak, self.mode, *kb.DIRECTION_MODES)
@@ -165,7 +205,8 @@ class TopicPage(tk.Frame):
         # 生成候选后合计占 90px，而它们讲的是「系统怎么理解你刚才那句话」——
         # 看过一次就够了。现在默认只留一行摘要，其余折进「理解详情」。
         self._under_wrap = tk.Frame(self, bg=T.BG)
-        self._under_wrap.pack(fill="x", padx=T.PAD + 8, pady=(0, 2))
+        # 不在这里 pack：这行讲的是「系统怎么理解你的输入」，
+        # 空态还没有输入可解释，先让英雄卡占满视线；有结果时再插到顶栏下面。
         _ur = tk.Frame(self._under_wrap, bg=T.BG)
         _ur.pack(fill="x")
         self.profile_lbl = tk.Label(_ur, text="输入方向后回车，或从下方示例开始。",
@@ -183,9 +224,8 @@ class TopicPage(tk.Frame):
         self.nov_lbl = tk.Label(self._under, text="", bg=T.BG, fg=T.TXT3,
                                 font=T.T_BODY_SM(), anchor="w", justify="left")
 
-        # 示例方向条：只在空态出现（跟着引导卡一起显示/收起）。
-        # 原来它常驻在输入框下面，生成 18 条候选之后还占着 40px，
-        # 而这时候用户早就不需要「试试这几个」了。
+        # 兼容旧锚点：部分显隐逻辑会遍历 examples，真正的示例标签
+        # 已经搬进英雄卡的右栏（网页版就是这样放的）。
         self.examples = tk.Frame(self, bg=T.BG)
 
         # 三栏（第 10 版）
@@ -210,8 +250,19 @@ class TopicPage(tk.Frame):
         left.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
         self._cards = []
         self._cards.append(left)
-        _card_head(left.body, "候选选题", "分数是本地预筛，不是结论")
-        self.cand_scroll = T.ScrollArea(left.body, bg=T.CARD, height=300)
+        UK.eyebrow(left.body, "CANDIDATE SET", bg=T.CARD).pack(fill="x")
+        _lh = tk.Frame(left.body, bg=T.CARD)
+        _lh.pack(fill="x", pady=(T.sp(4), T.sp(2)))
+        tk.Label(_lh, text="候选选题", bg=T.CARD, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(side="left")
+        self.cand_count = tk.Label(_lh, text="", bg=T.CARD, fg=T.TXT4,
+                                   font=T.T_CAPTION(), anchor="e")
+        self.cand_count.pack(side="right")
+        _sub = tk.Label(left.body, text="分数是本地预筛，不是结论", bg=T.CARD,
+                        fg=T.TXT4, font=T.T_CAPTION(), anchor="w")
+        _sub.pack(fill="x", pady=(0, T.sp(6)))
+        T.fill_wrap(_sub, pad=6)
+        self.cand_scroll = T.ScrollArea(left.body, bg=T.CARD, height=120)
         self.cand_scroll.pack(fill="both", expand=True)
 
         # ---- 中：详情 + 体检
@@ -219,17 +270,24 @@ class TopicPage(tk.Frame):
         mid.grid(row=0, column=1, sticky="nsew", padx=(0, 10))
         self._cards.append(mid)
         self._mid_wrap = 430
+        _mh = tk.Frame(mid.body, bg=T.CARD)
+        _mh.pack(fill="x")
+        UK.eyebrow(_mh, "RESEARCH BRIEF", bg=T.CARD).pack(
+            side="left", fill="x", expand=True)
+        self.detail_idx = tk.Label(_mh, text="", bg=T.CARD, fg=T.TXT4,
+                                   font=T.T_CAPTION(), anchor="e")
+        self.detail_idx.pack(side="right")
         self.detail_head = tk.Label(mid.body, text="未选择候选", bg=T.CARD, fg=T.TXT,
-                                    font=T.T_BODY(), anchor="w", justify="left",
+                                    font=T.T_SECTION(), anchor="w", justify="left",
                                     wraplength=self._mid_wrap)
-        self.detail_head.pack(fill="x")
+        self.detail_head.pack(fill="x", pady=(T.sp(2), 0))
         self.detail_meta = tk.Label(mid.body, text="在左侧点选一个候选，这里显示它的验证问题与体检结果。",
                                     bg=T.CARD, fg=T.TXT3, font=T.T_CAPTION(), anchor="w",
                                     justify="left", wraplength=self._mid_wrap)
         self.detail_meta.pack(fill="x", pady=(2, 6))
         # 中间栏宽度随窗口变化，包一层按实际宽度重设 wraplength
         mid.body.bind("<Configure>", self._on_mid_resize)
-        self.detail_scroll = T.ScrollArea(mid.body, bg=T.CARD, height=340)
+        self.detail_scroll = T.ScrollArea(mid.body, bg=T.CARD, height=120)
         self.detail_scroll.pack(fill="both", expand=True)
         self.detail_box = tk.Frame(self.detail_scroll.inner, bg=T.CARD)
         self.detail_box.pack(fill="both", expand=True)
@@ -250,62 +308,462 @@ class TopicPage(tk.Frame):
         act.add(self.btn_save)
         self.btn_prompt = T.Btn(act, "交接提示词", self.make_prompt, "ok")
         act.add(self.btn_prompt)
-        self.btn_more = T.Btn(act, "更多 ▾", self._more_menu, "ghost")
+        self.btn_more = T.Btn(act, "更多", self._more_menu, "ghost")
         act.add(self.btn_more)
+        # 125% DPI + 大字号下三个按钮合计会顶到 387px，中栏只有 338px，
+        # 第三个被折到第二行、占掉详情区一半高度。只收窄这三个的左右内边距
+        # （12→4），合计约 327px，一屏内排得下，文案不动。
+        for _b in (self.btn_save, self.btn_prompt, self.btn_more):
+            _b.config(padx=T.sp(4))
         # 大模型挑刺：没配置时也留着，点了引导去设置页，藏起来反而让人以为没这功能
         self.btn_ai = T.Btn(act, "AI 挑刺", self.ai_critique)
+        # 存入结果就地留一行：toast 两秒就消失，用户根本没看见「存了没有、存了几条」，
+        # 连点两下也看不出区别。按钮文案同步改，状态才能一直挂在眼前。
+        self._save_note = tk.Label(mid.body, text="", bg=T.CARD, fg=T.TXT3,
+                                   font=T.T_CAPTION(), anchor="w", justify="left",
+                                   wraplength=self._mid_wrap)
 
         # ---- 右：资源
         right = T.Card(body, pad=12)
         right.grid(row=0, column=2, sticky="nsew")
         self._cards.append(right)
-        _card_head(right.body, "投稿与导师", "公开索引匹配，需到官网核验")
-        self.side_scroll = T.ScrollArea(right.body, bg=T.CARD, height=300)
+        UK.eyebrow(right.body, "SUPPORTING INDEX", bg=T.CARD).pack(fill="x")
+        tk.Label(right.body, text="投稿与导师", bg=T.CARD, fg=T.TXT,
+                 font=T.T_SECTION(), anchor="w").pack(fill="x",
+                                                      pady=(T.sp(4), 0))
+        _rnote = tk.Label(right.body, text="公开索引匹配，官网核验", bg=T.CARD,
+                          fg=T.TXT4, font=T.T_CAPTION(), anchor="w")
+        _rnote.pack(fill="x", pady=(0, T.sp(6)))
+        T.fill_wrap(_rnote, pad=6)
+        self.side_scroll = T.ScrollArea(right.body, bg=T.CARD, height=120)
         self.side_scroll.pack(fill="both", expand=True)
 
         self._hint(self.cand_scroll.inner, "还没有候选。\n在上方输入研究方向后点「生成候选」。")
         self._hint(self.side_scroll.inner, "选择候选后显示会议 / 期刊与导师。")
 
-        # 空态引导卡（第 10 版）：三栏在没生成之前是三大块空板，
-        # 一屏里 80% 是空的 —— 比「简陋」更糟，它让人以为页面没加载完。
-        # 现在没候选时三栏整体收起，只留一块引导卡；生成候选后再铺开。
+        # 空态英雄区（对齐网页版 workshop-intro）：
+        # 左边讲「这是一个什么入口」，右边就是输入面板本身。
+        # 原来是一整块白卡 + 两列文字，窗口一宽右半屏全空；
+        # 现在左栏有衬线大标题、方向图与规模数字，右栏是真正能操作的表单。
         self._welcome = tk.Frame(self, bg=T.BG)
-        self._welcome_card = T.Card(self._welcome, pad=18, fill_y=False)
-        self._welcome_card.pack(fill="x")
+        self._welcome_card = T.Card(self._welcome, pad=T.sp(22), fill_y=True)
+        self._welcome_card.pack(fill="both", expand=True)
         wb = self._welcome_card.body
-        tk.Label(wb, text="从一个研究方向开始", bg=T.CARD, fg=T.TXT,
-                 font=T.T_SECTION(), anchor="w").pack(fill="x")
-        # 注意：这里**不能**用 T.wrap(760) —— 它随字号放大，1.5 倍时算成
-        # 1425px，比窗口还宽，整页请求宽度被这块文字顶出可视区。
-        # 这里要的是「最多折到 640px 宽」，字号变大时行数变多就够了。
-        tk.Label(wb,
-                 text="输入一个大方向（比如「红外小目标检测」），系统会拆成若干条可验证的候选，"
-                      "每条都带「为什么值得做 / 最小验证 / 验证问题」，再配上候选对应的会议与导师。",
-                 bg=T.CARD, fg=T.TXT2, font=T.T_BODY_SM(), anchor="w", justify="left",
-                 wraplength=T.sp(640)).pack(fill="x", pady=(6, 12))
-        # 想不出方向时用这几个
-        _ex_hd = tk.Label(wb, text="想不出方向？点一个试试", bg=T.CARD, fg=T.TXT3,
-                          font=T.T_CAPTION(), anchor="w")
-        _ex_hd.pack(fill="x", pady=(0, 4))
-        self._ex_row = U.WrapRow(wb, bg=T.CARD)
-        self._ex_row.pack(fill="x")
-        for txt in ("单目深度估计", "红外小目标检测", "大语言模型高效推理",
-                    "联邦学习隐私保护", "蛋白质结构预测"):
-            self._ex_row.add(
-                T.Btn(self._ex_row, txt, lambda t=txt: self.use_example(t), "ghost"))
 
-        steps = tk.Frame(wb, bg=T.CARD)
-        steps.pack(fill="x", pady=(12, 0))
-        for i, (k, v) in enumerate((
-                ("1", "输入方向"), ("2", "挑一条候选"), ("3", "存进创新点库"), ("4", "找会议与导师"))):
-            if i:
-                tk.Label(steps, text="→", bg=T.CARD, fg=T.TXT4,
-                         font=T.T_BODY_SM()).pack(side="left", padx=8)
-            tk.Label(steps, text=k, bg=T.tint(T.ACCENT, 0.20, T.CARD), fg=T.ACCENT,
-                     font=T.M(8, True), width=2).pack(side="left")
-            tk.Label(steps, text=v, bg=T.CARD, fg=T.TXT2,
-                     font=T.T_BODY_SM()).pack(side="left", padx=(4, 0))
+        # ---- 右：输入面板（定宽；先打包，保证左栏拿到剩余宽度）
+        # 网页版英雄卡是「一张大圆角卡，内部一条竖线分左右」，
+        # 右栏本身不再叠一层圆角。
+        rc = tk.Frame(wb, bg=T.CARD_HI, highlightbackground=T.LINE_SOFT,
+                      highlightthickness=1, width=T.sp(460))
+        rc.pack(side="right", fill="y")
+        rc.pack_propagate(False)
+        rp = tk.Frame(rc, bg=T.CARD_HI)
+        rp.pack(fill="both", expand=True, padx=T.sp(16), pady=T.sp(14))
+        self._hero_wb = wb
+        self._hero_right = rc
+        self._hero_side = "full"    # "full"=常规左右分栏；"slim"=窄右栏
+        self._hero_job = None
+
+        # ---- 左：标题 + 方向图 + 规模
+        left = tk.Frame(wb, bg=T.CARD)
+        left.pack(side="left", fill="both", expand=True, padx=(0, T.sp(26)))
+        self._hero_left_col = left
+        lhead = tk.Frame(left, bg=T.CARD)
+        lhead.pack(fill="x")
+        UK.eyebrow(lhead, "DIRECTION INTAKE", bg=T.CARD).pack(
+            side="left", fill="x", expand=True)
+        T.Btn(lhead, "方法论", self.show_help, "ghost").pack(side="right")
+
+        _hero_title = tk.Label(
+            left, text="从一个研究方向，\n走到可核查的问题。",
+            bg=T.CARD, fg=T.TXT, font=T.T_HERO(), anchor="w", justify="left")
+        _hero_title.pack(fill="x", pady=(T.sp(6), T.sp(6)))
+        _hero_lead = tk.Label(
+            left,
+            text="输入方向，或按应用场景与任务标签组合；确认后生成候选，"
+                 "并附上可核查的选题理由、最小验证与投稿导师。",
+            bg=T.CARD, fg=T.TXT2, font=T.T_BODY_SM(), anchor="w", justify="left")
+        _hero_lead.pack(fill="x")
+        T.fill_wrap(_hero_lead, pad=6)
+        self._hero_lead = _hero_lead
+
+        self._hero_graph = tk.Canvas(left, bg=T.CARD, height=T.sp(96),
+                                     highlightthickness=0, bd=0)
+        self._hero_graph.pack(fill="x", pady=(T.sp(6), T.sp(8)))
+        self._hero_graph.bind(
+            "<Configure>",
+            lambda e: _draw_direction_graph(self._hero_graph, e.width, e.height))
+
+        stats = tk.Frame(left, bg=T.CARD)
+        # 先占底部再挂其余内容：pack 按顺序分配，晚装的控件在空间不足时
+        # 会被裁掉下半截。1240×800 + 大字号下四个数字卡就曾被卡在卡片底边。
+        stats.pack(fill="x", side="bottom", before=self._hero_graph)
+        self._hero_stats = []
+        self._stat_tiles = []
+        self._stat_labs = []
+        for _i, _lab in enumerate(("研究方向", "素材条目", "本地文献", "应用领域")):
+            stats.grid_columnconfigure(_i, weight=1, uniform="hs")
+            _tile = tk.Frame(stats, bg=T.CARD, highlightbackground=T.LINE_SOFT,
+                             highlightthickness=1)
+            _tile.grid(row=0, column=_i, sticky="nsew",
+                       padx=(0 if _i == 0 else T.sp(6), 0))
+            _val = tk.Label(_tile, text="—", bg=T.CARD, fg=T.TXT,
+                            font=(T.MONO, -20, "bold"), anchor="w")
+            _val.pack(fill="x", padx=T.sp(4), pady=(T.sp(6), 0))
+            _cap = tk.Label(_tile, text=_lab, bg=T.CARD, fg=T.TXT4,
+                            font=T.T_CAPTION(), anchor="w")
+            _cap.pack(fill="x", padx=T.sp(4), pady=(0, T.sp(6)))
+            self._hero_stats.append(_val)
+            self._stat_tiles.append(_tile)
+            self._stat_labs.append(_cap)
+        self._stat_box = stats
+        self._stat_cell_need = 0
+        # 2026-11-19：四格横排在窄窗口下装不下。1080×680 时这一栏只有
+        # 382px，而每格请求 98px（「研究方向」在 T_CAPTION 下要 86px +
+        # 左右 padx），4×98 + 3×7 = 413 —— 差 31px，四个中文标签全被切掉
+        # 半个字（扫描器报「需要86 只有74」）。这里按实际可用宽度在
+        # 「1 行 4 列」和「2 行 2 列」之间切，不靠写死断点。
+        stats.bind("<Configure>",
+                   lambda e, s=stats: self._layout_stats(e.width), add="+")
+
+        self._hero_strip = tk.Frame(rp, bg=T.CARD,
+                                   highlightbackground=T.LINE_SOFT,
+                                   highlightthickness=1)
+        strip = self._hero_strip
+        strip.pack(fill="x")
+        for _k, _v in (("搜索方向", "名称或术语"),
+                       ("标签组合", "场景 × 任务"),
+                       ("全部方向", "方向库")):
+            _cell = tk.Frame(strip, bg=T.CARD)
+            _cell.pack(side="left", fill="both", expand=True,
+                       padx=T.sp(10), pady=T.sp(7))
+            tk.Label(_cell, text=_k, bg=T.CARD, fg=T.TXT,
+                     font=T.T_LABEL(), anchor="w").pack(fill="x")
+            tk.Label(_cell, text=_v, bg=T.CARD, fg=T.TXT4,
+                     font=T.T_CAPTION(), anchor="w").pack(fill="x")
+
+        qrow = tk.Frame(rp, bg=T.CARD_HI)
+        qrow.pack(fill="x", pady=(T.sp(11), T.sp(5)))
+        self._hero_qrow = qrow
+        tk.Label(qrow, text="研究方向", bg=T.CARD_HI, fg=T.TXT,
+                 font=T.T_LABEL(), anchor="w").pack(side="left")
+        tk.Label(qrow, text="RESEARCH DIRECTION", bg=T.CARD_HI, fg=T.TXT4,
+                 font=T.T_EYEBROW(), anchor="e").pack(side="right")
+
+        in_box = tk.Frame(rp, bg=T.CARD, highlightbackground=T.LINE,
+                          highlightthickness=1)
+        in_box.pack(fill="x")
+        self.entry = tk.Entry(in_box, bg=T.CARD, fg=T.TXT,
+                              insertbackground=T.ACCENT, relief="flat",
+                              highlightthickness=0, bd=0, font=T.T_BODY(),
+                              width=1)
+        self.entry.pack(side="left", fill="x", expand=True,
+                        ipady=T.sp(9), padx=(T.sp(11), 0))
+        self.entry.bind("<Return>", lambda e: self.generate())
+        try:
+            import app_suggest
+            app_suggest.attach(self.entry)
+        except Exception as exc:
+            print("联想词挂载失败:", exc)
+        self.go_btn = T.Btn(in_box, "生成候选", self.generate, "primary")
+        self.go_btn.pack(side="left", padx=T.sp(4), pady=T.sp(4))
+
+        tk.Label(rp, text="示例", bg=T.CARD_HI, fg=T.TXT4,
+                 font=T.T_CAPTION(), anchor="w").pack(
+            fill="x", pady=(T.sp(8), T.sp(3)))
+        _ex = U.WrapRow(rp, gap=T.sp(5), rowgap=T.sp(4), bg=T.CARD_HI)
+        _ex.pack(fill="x")
+        self._hero_ex = _ex
+        for _txt in ("单目深度估计", "红外小目标检测", "大语言模型高效推理",
+                     "联邦学习隐私保护"):
+            _ex.add(UK.Chip(_ex, _txt, bg=T.CARD_HI,
+                            command=lambda t=_txt: self.use_example(t)))
+
+        self._hero_catblock = tk.Frame(rp, bg=T.CARD_HI)
+        self._hero_catblock.pack(fill="x")
+        T.hsep(self._hero_catblock, T.LINE_SOFT, (T.sp(9), T.sp(6)))
+        crow = tk.Frame(self._hero_catblock, bg=T.CARD_HI)
+        crow.pack(fill="x")
+        _cat_hint = tk.Label(crow, text="不确定方向", bg=T.CARD_HI, fg=T.TXT3,
+                             font=T.T_CAPTION(), anchor="w")
+        _cat_hint.pack(side="left")
+        _cat_btn = T.Btn(crow, "浏览全部大类 →", lambda: self.app.goto("map"),
+                         "ghost")
+        _cat_btn.pack(side="right")
+        self._cat_hint, self._cat_btn = _cat_hint, _cat_btn
+        self._cat_holder = tk.Frame(self._hero_catblock, bg=T.CARD_HI)
+        self._cat_holder.pack(fill="x", pady=(T.sp(4), 0))
+        self._cat_loading = tk.Label(self._cat_holder, text="正在统计方向库…",
+                                     bg=T.CARD_HI, fg=T.TXT4,
+                                     font=T.T_CAPTION(), anchor="w")
+        self._cat_loading.pack(fill="x")
+
+        # 流程说明只保留卡下方那四张 01–04；右栏里再排一遍会在窄宽度下被截尾。
+
+        # ---- 英雄卡下方：四步说明（网页版的 01–04 卡片）
+        self._welcome_steps = tk.Frame(self._welcome, bg=T.BG)
+        self._welcome_steps.pack(fill="x", pady=(T.sp(10), 0))
+        for _i, (_t, _d) in enumerate((
+                ("识别方向", "方向名、术语或关键词"),
+                ("确认场景", "叠加应用与任务标签"),
+                ("生成候选", "数量随关联强度变化"),
+                ("结构体检", "交代清楚才值得动手"))):
+            self._welcome_steps.grid_columnconfigure(_i, weight=1, uniform="ws")
+            _sc = tk.Frame(self._welcome_steps, bg=T.CARD,
+                           highlightbackground=T.LINE_SOFT, highlightthickness=1)
+            _sc.grid(row=0, column=_i, sticky="nsew",
+                     padx=(0 if _i == 0 else T.sp(8), 0))
+            _sb = tk.Frame(_sc, bg=T.CARD)
+            _sb.pack(fill="x", padx=T.sp(12), pady=T.sp(9))
+            tk.Label(_sb, text="%02d" % (_i + 1), bg=T.CARD, fg=T.TXT4,
+                     font=T.M(8), anchor="w").pack(fill="x")
+            _st = tk.Label(_sb, text=_t, bg=T.CARD, fg=T.TXT,
+                           font=T.T_LABEL(), anchor="w", justify="left")
+            _st.pack(fill="x", pady=(T.sp(2), 0))
+            T.fill_wrap(_st, pad=10)
+            _sd = tk.Label(_sb, text=_d, bg=T.CARD, fg=T.TXT4,
+                           font=T.T_CAPTION(), anchor="w", justify="left")
+            _sd.pack(fill="x")
+            T.fill_wrap(_sd, pad=10)
+
+        wb.bind("<Configure>", self._schedule_hero_layout)
+        # 窗口高度变化时 wb 的宽度可能不变，只绑 wb 会让「矮窗收装饰」不生效；
+        # 反过来刚 map 时高度还没定稿，也可能误收。两边都监听。
+        self._welcome.bind("<Configure>", self._schedule_hero_layout)
+        self._load_hero_data()
         self._set_cards_visible(False)
+        self.after(200, self._hero_layout)
+
+    def _schedule_hero_layout(self, e=None):
+        try:
+            if self._hero_job:
+                self.after_cancel(self._hero_job)
+            self._hero_job = self.after(120, self._hero_layout)
+        except Exception:
+            pass
+
+    def _hero_layout(self, e=None):
+        """英雄卡随窗口宽度/高度换挡。
+
+        1440 宽时是网页版的左右分栏（左文案 + 方向图，右输入面板）；
+        1240×800 这类小窗里，定宽右栏会把左栏挤到只剩两百多像素，
+        标题和四步说明都被截字。这里按卡宽取右栏比例，并在矮窗里
+        收起「三格提示条 / 方向大类 / 方向图」这三块装饰性内容，
+        保证输入框、示例与规模数字始终完整。
+        """
+        self._hero_job = None
+        try:
+            w = self._hero_wb.winfo_width()
+            h = self._welcome.winfo_height()
+        except Exception:
+            return
+        if w <= 1:
+            return
+        # 2026-11-19：判据从「卡宽 < 760」改成「左栏还剩多少」。
+        # 原来 1080×680 下 w=762 刚好在阈值上沿，没进 compact，右栏照样
+        # 拿走 350px，左栏只剩 382px —— 而底部四格规模数字要 420px，
+        # 四个中文标签全被切掉半个字。只比总宽差 2px 就换挡太脆，
+        # 直接按「右栏拿走后还剩多少」判断，留 20px 余量。
+        GAP = T.sp(26)              # 左栏右边的间距
+        right = max(T.sp(300), min(T.sp(460), int(w * 0.46)))
+        compact = (w - right - GAP < T.sp(440)) or h < T.sp(430)
+        try:
+            if compact:
+                # 2026-11-19：1080×680 下右栏占 350px、左栏只剩 382px，
+                # 而底部四格规模数字要 420px，四个中文标签全被切掉半个字。
+                # 不能改成上下排（窗口只有 521px 高，右栏占去整行后左栏
+                # 被压到 0 高），只能把右栏压窄 —— 但 pack 里 side="right"
+                # 的非 expand 子项拿的是自己的请求宽度，单独改 width 会在
+                # 下一次排布弹回去，所以要连 expand 一起给：右栏 expand，
+                # 左栏也 expand，pack 才会按两者比例分配。
+                if self._hero_side:
+                    self._hero_right.pack_configure(side="right", fill="y",
+                                                    expand=1)
+                    self._hero_left_col.pack_configure(expand=1)
+                    self._hero_side = "slim"
+                want = max(T.sp(268), w - GAP - T.sp(440))
+                if abs(want - self._hero_right.winfo_width()) > 6:
+                    self._hero_right.configure(width=want)
+                self._hero_right.pack_propagate(False)
+                # 2026-11-19：右栏压到 308px 后，「不确定方向」和
+                # 「浏览全部大类 →」横排放不下（需要 164+193），按钮文字
+                # 被切。窄栏里改成上下两行，各自占满一行。
+                try:
+                    self._cat_btn.pack_configure(side="top", fill="x",
+                                                 pady=(T.sp(4), 0))
+                    self._cat_hint.pack_configure(side="top", fill="x")
+                except Exception:
+                    pass
+            else:
+                if self._hero_side != "full":
+                    self._hero_right.pack_configure(side="right", fill="y",
+                                                    expand=0)
+                    self._hero_left_col.pack_configure(expand=1)
+                    self._hero_side = "full"
+                if abs(right - self._hero_right.winfo_width()) > 6:
+                    self._hero_right.configure(width=right)
+                try:
+                    self._cat_hint.pack_configure(side="left", fill="none")
+                    self._cat_btn.pack_configure(side="right", fill="none",
+                                                 pady=0)
+                except Exception:
+                    pass
+            if compact:
+                if self._hero_strip.winfo_manager():
+                    self._hero_strip.pack_forget()
+                if self._welcome_steps.winfo_manager():
+                    self._welcome_steps.pack_forget()
+                if not self._hero_catblock.winfo_manager():
+                    self._hero_catblock.pack(fill="x", after=self._hero_ex)
+                if not self._hero_graph.winfo_manager():
+                    self._hero_graph.pack(fill="x", pady=(T.sp(6), T.sp(8)),
+                                          after=self._hero_lead)
+            else:
+                if not self._hero_strip.winfo_manager():
+                    self._hero_strip.pack(fill="x", before=self._hero_qrow)
+                if not self._hero_catblock.winfo_manager():
+                    self._hero_catblock.pack(fill="x", after=self._hero_ex)
+                if not self._hero_graph.winfo_manager():
+                    self._hero_graph.pack(fill="x", pady=(T.sp(6), T.sp(8)),
+                                          after=self._hero_lead)
+                if not self._welcome_steps.winfo_manager():
+                    self._welcome_steps.pack(fill="x", pady=(T.sp(10), 0))
+            # 宽度换了以后示例 chip 的折行要重算（place 不参与请求宽度，
+            # 容器的 Configure 可能早于 rp 真正变宽）
+            try:
+                self._hero_ex._flush(force=True)
+            except Exception:
+                pass
+        except Exception as exc:
+            print("英雄区自适应失败:", exc)
+
+    def _layout_stats(self, width=None):
+        """规模数字：够宽就一排四格，不够就折成两排两格。
+
+        2026-11-19：四格各要 98px（「研究方向」在 T_CAPTION 下 86px + padx），
+        加三处 7px 间距共 413px。1080×680 时这一栏只有 382px，
+        四个中文标签全被切掉半个字（扫描器「需要86 只有74」×4）。
+        这里按真实可用宽度决定排法：每格至少 78px 才敢横排。
+        """
+        try:
+            w = int(width or self._stat_box.winfo_width())
+            if w <= 1:
+                return
+            # 判据用「单格需求」，不用容器的 reqwidth：容器一旦切成两列，
+            # reqwidth 就跟着变小，再也判不回四列（曾把窗口拉宽也不复原）。
+            if not self._stat_cell_need:
+                self._stat_cell_need = max(
+                    t.winfo_reqwidth() for t in self._stat_tiles) or 98
+            need4 = self._stat_cell_need * 4 + 3 * T.sp(6)
+            cols = 4 if w >= need4 - 2 else 2
+            if getattr(self, "_stat_cols", None) == cols:
+                return
+            self._stat_cols = cols
+            for i, tile in enumerate(self._stat_tiles):
+                r, c = (0, i) if cols == 4 else (i // 2, i % 2)
+                tile.grid_configure(row=r, column=c,
+                                    padx=(0 if c == 0 else T.sp(6),
+                                          T.sp(6) if cols == 2 and c == 0 else 0),
+                                    pady=(0 if r == 0 else T.sp(6), 0))
+        except Exception:
+            pass
+
+    def _load_hero_data(self):
+        """英雄卡的规模数字与方向大类：后台数，回主线程填。
+
+        方向库要合并三个 JSON，素材库还要读 552 条目录；放在首帧里
+        会让空态白屏半秒，而它们只是「这个入口有多少东西」的背景信息。
+        """
+        def work():
+            lib = {}
+            try:
+                lib = kb.load_direction_library() or {}
+            except Exception:
+                lib = {}
+            total = sum(len(v.get("subs") or []) for v in lib.values())
+            cats = sorted(((k, len(v.get("subs") or [])) for k, v in lib.items()),
+                          key=lambda x: -x[1])[:4]
+            mats = 0
+            try:
+                from page_materials import load_materials
+                mats = len((load_materials() or {}).get("datasets") or [])
+            except Exception:
+                pass
+            pdfs = 0
+            try:
+                inv = kb._inventory()
+                files = inv.get("files", []) if isinstance(inv, dict) else (inv or [])
+                for f in files:
+                    if isinstance(f, (tuple, list)) and len(f) >= 3:
+                        p = str(f[2])
+                    elif isinstance(f, dict):
+                        p = str(f.get("path", ""))
+                    else:
+                        continue
+                    if p.lower().endswith(".pdf"):
+                        pdfs += 1
+            except Exception:
+                pass
+
+            def apply():
+                try:
+                    if total:
+                        self._hero_stats[0].config(text="{:,}".format(total))
+                    if mats:
+                        self._hero_stats[1].config(text="{:,}".format(mats))
+                    if pdfs:
+                        self._hero_stats[2].config(text="{:,}".format(pdfs))
+                    if lib:
+                        self._hero_stats[3].config(text="{:,}".format(len(lib)))
+                    if not cats:
+                        return
+                    for w in self._cat_holder.winfo_children():
+                        w.destroy()
+                    row = U.WrapRow(self._cat_holder, gap=T.sp(5),
+                                    rowgap=T.sp(4), bg=T.CARD_HI)
+                    row.pack(fill="x")
+                    for name, n in cats:
+                        row.add(UK.Chip(
+                            row, name, count=str(n), bg=T.CARD_HI,
+                            command=lambda t=name: self._fill_direction(t)))
+                except Exception:
+                    pass
+            self.app.post(apply)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _fill_direction(self, name):
+        """点大类只把名字填进输入框，不直接开跑 —— 大类太粗，先让人补一个具体方向。"""
+        try:
+            self.entry.delete(0, "end")
+            self.entry.insert(0, name)
+            self.entry.focus_set()
+        except Exception:
+            pass
+
+    def reset_direction(self):
+        """从结果回到空态：清掉候选，把输入框和英雄卡还回来。"""
+        self.cands = []
+        self.sel = None
+        self.ctx = {}
+        try:
+            self.profile_lbl.config(text="输入方向后回车，或从下方示例开始。",
+                                    fg=T.TXT3)
+            if self.tweak.winfo_manager():
+                self.tweak.pack_forget()
+            if self.fuse_bar.winfo_manager():
+                self.fuse_bar.pack_forget()
+            self._fuse_open = False
+            if self._expanded:
+                self._expanded = False
+                self._under.pack_forget()
+        except Exception:
+            pass
+        self._set_cards_visible(False)
+        try:
+            self.entry.focus_set()
+            self.entry.select_range(0, "end")
+        except Exception:
+            pass
 
     def _sync_under(self):
         """决定「理解详情」按钮出不出现、展开区要不要收起。
@@ -373,16 +831,19 @@ class TopicPage(tk.Frame):
            必须先 pack body，再 grid 卡片。
         """
         try:
-            # 示例方向条只在空态露面（它现在是引导卡里的一行）
-            try:
-                if on:
-                    self.examples.pack_forget()
-                elif not self.examples.winfo_ismapped():
-                    self.examples.pack(fill="x", padx=T.PAD, pady=(0, 2))
-            except Exception:
-                pass
             if on:
                 self._welcome.pack_forget()
+                # 顶栏讲「系统怎么理解这句输入」，它和三栏是一组，空态不露面。
+                if not self._result_bar.winfo_manager():
+                    self._result_bar.pack(fill="x", padx=T.PAD, pady=(T.sp(6), T.sp(6)))
+                if not self._under_wrap.winfo_manager():
+                    self._under_wrap.pack(fill="x", padx=T.PAD + 8, pady=(0, T.sp(2)),
+                                          after=self._result_bar)
+                # 「换个角度」一行要在结果态、且排在三栏之前
+                if (getattr(self, "_tweak_ready", False)
+                        and not self.tweak.winfo_manager()):
+                    self.tweak.pack(fill="x", padx=T.PAD, pady=(0, 4),
+                                    before=self._under_wrap)
                 # 顺序很重要：父容器先回来，子控件才有地方显示
                 if not self._body.winfo_ismapped():
                     self._body.pack(fill="both", expand=True, padx=T.PAD,
@@ -394,12 +855,15 @@ class TopicPage(tk.Frame):
                 for c in self._cards:
                     c.grid_remove()
                 self._body.grid_rowconfigure(0, weight=0)
-                # 空态时整个三栏容器收起（不是让它空着撑满一屏），
-                # 否则引导卡被推到页面最底部，上面是一大片黑。
+                # 空态时整个三栏容器收起（不是让它空着撑满一屏）
                 self._body.pack_forget()
+                if self._result_bar.winfo_manager():
+                    self._result_bar.pack_forget()
+                if self._under_wrap.winfo_manager():
+                    self._under_wrap.pack_forget()
                 if not self._welcome.winfo_ismapped():
-                    self._welcome.pack(fill="x", padx=T.PAD, pady=(8, 0),
-                                       after=self._under_wrap)
+                    self._welcome.pack(fill="both", expand=True, padx=T.PAD,
+                                       pady=(T.sp(6), T.sp(14)))
             # 让布局当下结算一次，否则紧随其后的测量拿到的是旧几何
             self._body.update_idletasks()
         except Exception as exc:
@@ -449,6 +913,10 @@ class TopicPage(tk.Frame):
         self._mid_wrap = w
         self.detail_head.config(wraplength=w)
         self.detail_meta.config(wraplength=w)
+        try:
+            self._save_note.config(wraplength=w)
+        except Exception:
+            pass
         self._wrap_bullets(self.detail_box, w)
 
     def use_example(self, t):
@@ -604,12 +1072,22 @@ class TopicPage(tk.Frame):
                         profile_key=profile_key, profile=profile, note=note,
                         b=eb_c[0], c=eb_c[1])
         self.cands = cands or []
+        # 结果顶栏：把「输入 → 理解结果」摆在一行，用户随时能确认系统没跑偏
+        try:
+            self.result_title.config(text=direction)
+            if cat and field:
+                self.result_meta.config(
+                    text="→ 大类 %s · 领域 %s · 置信度 %d%%" % (cat, field, conf))
+            else:
+                self.result_meta.config(text="→ 未稳定识别学科目录，候选按全库兜底")
+        except Exception:
+            pass
         self._set_cards_visible(bool(self.cands))
         fused = [c for c in self.cands if c.get("combo")]
         if cat and field:
-            txt = "%s   →   大类 %s  ·  领域 %s  ·  置信度 %d%%" % (direction, cat, field, conf)
+            extra = []
             if profile.get("label"):
-                txt += "  ·  画像 " + profile["label"]
+                extra.append("画像 " + profile["label"])
             if fused:
                 cmb = fused[0]["combo"]
                 parts = [cmb.get("a")]
@@ -617,11 +1095,12 @@ class TopicPage(tk.Frame):
                     parts.append("方法 " + cmb["b"])
                 if cmb.get("c"):
                     parts.append("邻域 " + cmb["c"])
-                txt += "  ·  交叉：" + " × ".join(parts)
-            self.profile_lbl.config(text=txt, fg=T.TXT2)
+                extra.append("交叉：" + " × ".join(parts))
+            extra.append("本地预筛 %d 条候选" % len(self.cands))
+            self.profile_lbl.config(text=" · ".join(extra), fg=T.TXT3)
         else:
             self.profile_lbl.config(
-                text="%s   →   未稳定识别学科目录；仍会生成通用候选，建议到「方向图谱」手动校正。" % direction,
+                text="未稳定识别学科目录；仍会生成通用候选，建议到「方向图谱」手动校正。",
                 fg=T.WARN)
         # 画像条曾经把「大类/领域/交叉/硬条件」全拼成一行，窗口一窄尾巴就被
         # 裁掉（截图里「6 条要挑做法（已沉到…」直接断在可视区外）。
@@ -679,6 +1158,10 @@ class TopicPage(tk.Frame):
 
     def _render_cands(self):
         self.cand_scroll.clear()
+        try:
+            self.cand_count.config(text=("%d 条" % len(self.cands)) if self.cands else "")
+        except Exception:
+            pass
         if not self.cands:
             self._hint(self.cand_scroll.inner, "没有生成候选。换一个更常见的领域描述试试。")
             self._show_actions(False)
@@ -725,7 +1208,7 @@ class TopicPage(tk.Frame):
         # 标题宽度跟随容器，字号放大后固定 300 会把文字挤成一团。
         # 扣掉卡片左右 padx(8+8) 与圆角留白，避免末字贴边。
         try:
-            avail = max(150, self.cand_scroll.canvas.winfo_width() - 46)
+            avail = max(150, self.cand_scroll.canvas.winfo_width() - 34)
         except Exception:
             avail = 280
         lb = tk.Label(f, text=title, bg=bg, fg=T.TXT if active else T.TXT2, font=T.F(9),
@@ -737,8 +1220,12 @@ class TopicPage(tk.Frame):
             c.get("relevance", "—"), c.get("novelty", "—"), c.get("feasibility", "—"))
         tilt_txt = ""
         if c.get("tilt_reason"):
-            tilt_txt = "%s %s" % ("↑" if c.get("tilt", 0) > 0 else "↓", c["tilt_reason"])
-        meta = (scores + "   " + tilt_txt).strip()
+            # 用「↑」代替「排序：」前缀：窄栏里逗号会被挤到下一行开头
+            # （「排序：你时间还宽松↵，这条…」），换成中点分隔后可以在
+            # 空格处断行，前导标点就不会单独占一行。
+            reason = str(c["tilt_reason"]).replace("，", " · ").replace(",", " · ")
+            tilt_txt = "\n↑ " + reason
+        meta = (scores + tilt_txt).strip()
         tk.Label(f, text=meta, bg=bg, fg=T.TXT3, font=T.T_CAPTION(),
                  anchor="w", wraplength=avail, justify="left").pack(
             fill="x", padx=8, pady=(0, 6))
@@ -900,7 +1387,11 @@ class TopicPage(tk.Frame):
         「先选一个候选」，纯属噪音。
         """
         if on and not self._act.winfo_ismapped():
-            self._act.pack(fill="x", pady=(8, 0))
+            # 先占底部、再让滚动区吃剩余高度：pack 按顺序分配请求尺寸，
+            # 滚动区若先拿到 120px 下限，动作条在矮窗里就会被挤到卡片外裁掉
+            # （1240×800 + 大字号实测只剩半行按钮）。
+            self._act.pack(side="bottom", fill="x", pady=(8, 0),
+                           before=self.detail_scroll)
         elif not on and self._act.winfo_ismapped():
             self._act.pack_forget()
 
@@ -908,6 +1399,14 @@ class TopicPage(tk.Frame):
         self.sel = i
         self.sel_idx = i
         self._show_actions(True)
+        # 换一条就把上一条的存入回执收掉，否则会误以为是这一条刚存的
+        try:
+            self.btn_save.config(text="存为创新点")
+            self._save_note.config(text="")
+            if self._save_note.winfo_manager():
+                self._save_note.pack_forget()
+        except Exception:
+            pass
         self._render_cands()
         c = self.cands[i]
         if recheck:
@@ -916,8 +1415,11 @@ class TopicPage(tk.Frame):
         # 详情面板的抬头改成「第几条 / 共几条」，让人知道自己看到哪儿了 ——
         # 原来只有一个孤立标题，切候选时没有位置感。
         c2 = c.get("title", "") or "（无标题）"
-        self.detail_head.config(text="%02d / %02d　%s"
-                                % (i + 1, len(self.cands), c2))
+        try:
+            self.detail_idx.config(text="%02d / %02d" % (i + 1, len(self.cands)))
+        except Exception:
+            pass
+        self.detail_head.config(text=c2)
         # 画像把它往前挪过就在标题下面说清楚，否则用户看不出为什么它排第一
         if c.get("kind"):
             # 第一行放「怎么拼的」，第二行才是策略/角度 —— 交叉候选的信息量
@@ -997,6 +1499,8 @@ class TopicPage(tk.Frame):
             self.ctx["review"] = res
         except Exception as exc:
             self._bullet(self.detail_box, "体检失败：" + str(exc), T.ERR)
+        # 底部留白：滚动区最后一行贴着动作条时会被裁成半行
+        tk.Frame(self.detail_box, bg=bg, height=T.gap(14)).pack(fill="x")
 
         self._render_side()
 
@@ -1179,29 +1683,41 @@ class TopicPage(tk.Frame):
         for v in venues:
             row = tk.Frame(self.side_scroll.inner, bg=T.CARD_HI, cursor="hand2")
             row.pack(fill="x", pady=1)
-            tk.Label(row, text=v.get("name", ""), bg=T.CARD_HI, fg=T.TXT, font=T.F(9, True),
-                     anchor="w").pack(side="left", padx=8, pady=4)
-            if v.get("reasons"):
-                tk.Label(row, text=" ".join(v["reasons"])[:16], bg=T.CARD_HI, fg=T.TXT4,
-                         font=T.F(8)).pack(side="left")
+            head = tk.Frame(row, bg=T.CARD_HI)
+            head.pack(fill="x", padx=8, pady=(4, 0))
+            tk.Label(head, text=v.get("name", ""), bg=T.CARD_HI, fg=T.TXT,
+                     font=T.F(9, True), anchor="w").pack(side="left")
             if v.get("url"):
-                tk.Label(row, text="↗", bg=T.CARD_HI, fg=T.ACCENT, font=T.F(9)).pack(side="right", padx=8)
+                tk.Label(head, text="↗", bg=T.CARD_HI, fg=T.ACCENT,
+                         font=T.F(9)).pack(side="right")
                 row.bind("<Button-1>", lambda e, u=v["url"]: self.app.open_url(u))
+            if v.get("reasons"):
+                _vr = tk.Label(row, text=" · ".join(v["reasons"])[:30],
+                               bg=T.CARD_HI, fg=T.TXT4, font=T.F(8),
+                               anchor="w", justify="left")
+                _vr.pack(fill="x", padx=8, pady=(0, 4))
+                T.fill_wrap(_vr, pad=8)
 
         T.hsep(self.side_scroll.inner, T.LINE, (4, 6))
         tk.Label(self.side_scroll.inner, text="相关导师", bg=bg, fg=T.PURPLE,
                  font=T.F(9, True), anchor="w").pack(fill="x", pady=(2, 2))
-        tk.Label(self.side_scroll.inner, text="按公开出版索引匹配，不代表在职或招生名额",
-                 bg=bg, fg=T.TXT4, font=T.F(8), anchor="w", wraplength=T.wrap(260),
-                 justify="left").pack(fill="x", pady=(0, 4))
+        _an = tk.Label(self.side_scroll.inner,
+                       text="按公开出版索引匹配，不代表在职或招生名额",
+                       bg=bg, fg=T.TXT4, font=T.F(8), anchor="w", justify="left")
+        _an.pack(fill="x", pady=(0, 4))
+        T.fill_wrap(_an, pad=6)
         if not advisors:
             self._hint(self.side_scroll.inner, "暂无匹配导师，可到「导师与院校」按方向检索。")
         for a in advisors:
             adv = a.get("advisor", {})
             row = tk.Frame(self.side_scroll.inner, bg=T.CARD_HI, cursor="hand2")
             row.pack(fill="x", pady=1)
-            tk.Label(row, text=adv.get("name", ""), bg=T.CARD_HI, fg=T.TXT, font=T.F(9),
-                     anchor="w").pack(fill="x", padx=8, pady=(4, 0))
+            _al = tk.Frame(row, bg=T.CARD_HI)
+            _al.pack(fill="x", padx=8, pady=(4, 0))
+            tk.Label(_al, text=adv.get("name", ""), bg=T.CARD_HI, fg=T.TXT,
+                     font=T.F(9), anchor="w").pack(side="left")
+            tk.Label(_al, text="匹配 %s" % a.get("score", ""), bg=T.CARD_HI,
+                     fg=T.OK, font=T.M(8)).pack(side="right")
             inst = adv.get("institution", "")
             zh = ""
             try:
@@ -1215,8 +1731,9 @@ class TopicPage(tk.Frame):
             tk.Label(row, text=(zh + "  " + inst) if zh else inst, bg=T.CARD_HI, fg=T.TXT4,
                      font=T.F(8), anchor="w", wraplength=T.wrap(250),
                      justify="left").pack(fill="x", padx=8, pady=(0, 4))
-            tk.Label(row, text="匹配 %s" % a.get("score", ""), bg=T.CARD_HI, fg=T.OK,
-                     font=T.M(8)).pack(anchor="e", padx=8, pady=(0, 4))
+
+
+        tk.Frame(self.side_scroll.inner, bg=bg, height=T.sp(6)).pack(fill="x")
 
     # ------------------------------------------------------------ 动作
     def save_idea(self):
@@ -1227,6 +1744,14 @@ class TopicPage(tk.Frame):
         ev = self.ctx.get("review") or {}
         mem = kb.load_research_memory()
         ideas = mem.setdefault("ideas", [])
+        title = (c.get("title") or "").strip()
+        # 去重：同一个命题连点两下就存两条，台账里会出现两条一模一样的记录，
+        # 后面统计、排序全跟着失真。按标题判等（存进来的候选标题不会变）。
+        for it in ideas:
+            if (it.get("title") or "").strip() == title:
+                self._saved_feedback(False, len(ideas), it.get("time", ""))
+                self.app.toast("这条已经在创新点库里了，没有重复保存", T.OK)
+                return
         idea_type = c.get("type") or kb.infer_innovation_type(c.get("title", ""), c.get("reason", ""))
         ideas.append({
             "time": kb.datetime.datetime.now().strftime("%Y-%m-%dT%H:%M"),
@@ -1257,8 +1782,35 @@ class TopicPage(tk.Frame):
                          or c.get("direction") or "", source="选题工坊")
         except Exception:
             pass
-        self.app.toast("已存入创新点库：" + c.get("title", "")[:20])
+        self._saved_feedback(True, len(ideas))
+        self.app.toast("已存入创新点库：" + c.get("title", "")[:20], T.OK)
         self.app.mark_dirty("ideas")
+
+    def _saved_feedback(self, saved, total, when=""):
+        """把「存了没有、存了几条」留在按钮旁边。
+
+        之前只有 toast，两秒后什么都不剩：用户连点两下，看到两次同款提示，
+        也不知道台账里是不是多了一条。现在按钮文案 + 一行回执常驻，直到换候选。
+        """
+        try:
+            now = kb.datetime.datetime.now().strftime("%H:%M")
+            if saved:
+                self.btn_save.config(text="已存入 ✓")
+                text = "已存入创新点库 · %s · 共 %d 条（在「创新点库」里可查看）" % (now, total)
+                color = T.OK
+            else:
+                self.btn_save.config(text="已在库中 ✓")
+                when_txt = (" · 原记录 %s" % when) if when else ""
+                text = "这条已经在库里了%s · 共 %d 条，本次没有重复保存" % (when_txt, total)
+                color = T.TXT2
+            self._save_note.config(text=text, fg=color)
+            if not self._save_note.winfo_manager():
+                # 回执贴在按钮下方、同样从底部占位，避免把动作条顶出卡片
+                _anchor = self._act if self._act.winfo_manager() else self.detail_scroll
+                self._save_note.pack(side="bottom", fill="x", pady=(4, 0),
+                                     before=_anchor)
+        except Exception:
+            pass
 
     def make_prompt(self):
         if self.sel is None:

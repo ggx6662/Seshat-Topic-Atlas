@@ -51,10 +51,19 @@ def _load():
 
 
 def _cat_of(path):
-    """从路径推断分类（相对知识库根目录的第一级目录）。"""
+    """从路径推断分类（相对知识库根目录的第一级目录）。
+
+    键可能是 `{kb}/新论文/xxx.pdf` 这种相对形式（换电脑也能用），
+    所以先把键还原成当前机器上的绝对路径再算。
+    """
+    try:
+        import kb_paths
+        p = kb_paths.to_abs(path)
+    except Exception:
+        p = path
     try:
         import kb_widget as kb
-        rel = os.path.relpath(path, str(kb.kb_root()))
+        rel = os.path.relpath(p, str(kb.kb_root()))
         return rel.split(os.sep)[0] if os.sep in rel else "根目录"
     except Exception:
         return ""
@@ -81,12 +90,18 @@ def search(query, limit=200):
     papers = _load()
     ql = q.lower()
     out = []
+    try:
+        import kb_paths
+    except Exception:
+        kb_paths = None
     for path, meta in papers.items():
-        name = os.path.basename(path)
+        # 键可能是 `{kb}/...` 相对形式（换电脑也能用），显示与推断都走绝对路径
+        apath = kb_paths.to_abs(path) if kb_paths is not None else path
+        name = os.path.basename(apath)
         title = os.path.splitext(name)[0].replace("_", " ")
         if ql in name.lower():
-            out.append({"path": path, "name": name, "title": title,
-                        "cat": _cat_of(path), "level": 3, "where": "文件名",
+            out.append({"path": apath, "name": name, "title": title,
+                        "cat": _cat_of(apath), "level": 3, "where": "文件名",
                         "snippet": "", "chars": meta.get("chars", 0)})
             continue
         text = meta.get("text") or ""
@@ -97,8 +112,8 @@ def search(query, limit=200):
         if pos < 0:
             continue
         in_abstract = pos < 1500
-        out.append({"path": path, "name": name, "title": title,
-                    "cat": _cat_of(path), "level": 2 if in_abstract else 1,
+        out.append({"path": apath, "name": name, "title": title,
+                    "cat": _cat_of(apath), "level": 2 if in_abstract else 1,
                     "where": "摘要" if in_abstract else "正文",
                     "snippet": _snippet(text, q), "chars": meta.get("chars", 0)})
     out.sort(key=lambda r: (-r["level"], r["title"]))

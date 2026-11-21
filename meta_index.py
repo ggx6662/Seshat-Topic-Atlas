@@ -88,13 +88,24 @@ def all_meta():
 
 
 def get(path):
-    """按路径取元数据。路径大小写不敏感兜底（Windows）。"""
+    """按路径取元数据。
+
+    认两种键：老文件里的绝对路径，以及 `{kb}/...` 相对键（换电脑/换盘后仍然对得上）。
+    路径大小写不敏感兜底（Windows）。
+    """
     d = _load()
     if not d:
         return None
-    v = d.get(path)
-    if v is not None:
-        return v
+    if path in d:
+        return d[path]
+    try:
+        import kb_paths
+    except Exception:
+        kb_paths = None
+    if kb_paths is not None:
+        v, _k = kb_paths.lookup(d, path)
+        if v is not None:
+            return v
     # Windows 路径大小写差异兜底
     low = path.lower()
     for k, vv in d.items():

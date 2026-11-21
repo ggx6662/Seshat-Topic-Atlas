@@ -20,6 +20,7 @@ import meta_index
 import search_log
 import semantic_search
 import ui_parts as U
+import ui_kit as UK
 
 PAGE_HINT = "本地 PDF 全文台账 · 按方向抓 arXiv · 语义检索"
 
@@ -81,6 +82,25 @@ def _cols():
         (txt, int(round(w * fs))) for txt, w in COLS[1:])
 
 
+
+
+class _Tile(tk.Frame):
+    """紧凑指标块：一行大号数字 + 说明，不套 Card（网格里会互相撑高）。"""
+
+    def __init__(self, parent, value, label, bg):
+        super().__init__(parent, bg=bg)
+        self._v = tk.Label(self, text=str(value), bg=bg, fg=T.TXT,
+                           font=T.T_METRIC(), anchor="w")
+        self._v.pack(fill="x")
+        self._l = tk.Label(self, text=str(label), bg=bg, fg=T.TXT4,
+                           font=T.T_CAPTION(), anchor="w")
+        self._l.pack(fill="x", pady=(T.sp(1), 0))
+
+    def set(self, value, label=None):
+        self._v.config(text=str(value))
+        if label is not None:
+            self._l.config(text=str(label))
+
 class LibraryPage(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg=T.BG)
@@ -105,55 +125,58 @@ class LibraryPage(tk.Frame):
 
     # ------------------------------------------------------------ 布局
     def _build(self):
-        """2026-11-15 第 9 版：把「能选的」全收进一条工具条，整屏让给论文列表。
+        head = tk.Frame(self, bg=T.BG)
+        head.pack(fill="x", padx=T.PAD, pady=(4, 0))
+        acts = tk.Frame(head, bg=T.BG)
+        acts.pack(side="right")
+        T.Btn(acts, "打开知识库目录", lambda: self._open(kb.kb_root())).pack(
+            side="left", padx=(6, 0))
+        T.Btn(acts, "抓取预演", self.do_preview).pack(side="left", padx=(6, 0))
+        self.scan_btn = T.Btn(acts, "抓取新论文", self.do_scan, "primary")
+        self.scan_btn.pack(side="left", padx=(6, 0))
+        tk.Label(head, text="论文库", bg=T.BG, fg=T.TXT,
+                 font=T.T_PAGE_TITLE(), anchor="w").pack(side="left")
 
-        改前这一页从上到下挤了：说明行 + 操作按钮 + 五个指标 + 左侧 11 项分类树
-        + 搜索框 + 检索规则 + 计数行 + 两行概况 + 表头 = 10 层。
-        1320×880 的窗口里正文只剩 7 行，用户的原话是「信息太多，不能展示得更好」。
-        改后：①说明收进 ? ；②指标并进同一行的省略版；
-        ③分类树改成「分类条」——点开才铺开，平时只占一行；
-        ④两行概况并成一行，筛了分类或搜了词就自动收起（那时它讲的是全库，帮不上忙）。
-        """
-        # ---- 第 1 行：省略版概况（一行小字）+「? 怎么用这一页」+ 三个按钮
-        # 第 19 版：用户实际用「超特大」字号时，「知识库 PDF 345 篇」独占一行、
-        # 下面再一行「? 怎么用这一页」，光这两行就吃掉 100px。现在把 ? 和三个
-        # 按钮并进同一排折行容器（字号放大时排会自动折成两行），概况保持独占一行。
-        self._stat_lbl = tk.Label(self, text="", bg=T.BG, fg=T.TXT3,
-                                  font=T.T_BODY_SM(), anchor="w", justify="left")
-        self._stat_lbl.pack(fill="x", padx=T.PAD, pady=(4, 2))
-        row = U.WrapRow(self, bg=T.BG)
-        row.pack(fill="x", padx=T.PAD, pady=(0, 4))
-        self._hint = U.Hint(row, LIB_HELP, summary="怎么用这一页", bg=T.BG)
-        row.add(self._hint)
-        # 入库节奏：平时不占行，点这个按钮才摊出来
-        self._pace_open = False
-        self._pace_text = ""
-        self._pace_btn = T.Btn(row, "节奏", self._toggle_pace, "ghost")
-        row.add(self._pace_btn)
-        self.scan_btn = T.Btn(row, "抓取新论文", self.do_scan, "primary")
-        row.add(self.scan_btn)
-        self.preview_btn = T.Btn(row, "抓取预演", self.do_preview)
-        row.add(self.preview_btn)
-        row.add(T.Btn(row, "打开知识库目录",
-                      lambda: self._open(kb.kb_root())))
+        _cap = tk.Label(self, text="本地 PDF 知识库：点行打开原文，右键看作者与摘要；"
+                                   "抓取时才联网。",
+                        bg=T.BG, fg=T.TXT3, font=T.T_BODY_SM(), anchor="w",
+                        justify="left")
+        _cap.pack(fill="x", padx=T.PAD, pady=(2, 0))
+        T.fill_wrap(_cap, pad=4)
 
-        # 保留 self._m 接口（页内多处 .set() 用它），值汇成一行小字
+        # ---- 指标条（网页版统计块）
         self._fold = None
         self._m = {}
-        for key, label, unit in _MetricProxy.ORDER:
+        self._tiles = {}
+        stats = T.Card(self, fill_y=False, pad=T.sp(8))
+        stats.pack(fill="x", padx=T.PAD, pady=(6, 6))
+        trow = tk.Frame(stats.body, bg=T.CARD)
+        trow.pack(fill="x")
+        for i, (key, label, unit) in enumerate(_MetricProxy.ORDER):
+            trow.grid_columnconfigure(i, weight=1, uniform="stat")
             self._m[key] = _MetricProxy(self, key, label, unit)
+            tile = _Tile(trow, "—", label + unit, T.CARD)
+            tile.grid(row=0, column=i, sticky="nsew",
+                      padx=(0, T.sp(6)) if i < 4 else 0)
+            self._tiles[key] = tile
 
-        # ---- 第 2 行：搜索框 + 分类开关
-        srch = tk.Frame(self, bg=T.BG)
-        srch.pack(fill="x", padx=T.PAD, pady=(0, 4))
-        T.Btn(srch, "清除", self.clear_filter).pack(side="right", padx=(6, 0))
-        T.Btn(srch, "搜索", self.smart_search, "primary").pack(side="right", padx=(8, 0))
-        self.cat_btn = T.Btn(srch, "分类", self._toggle_cats)
-        self.cat_btn.pack(side="right", padx=(8, 0))
-        self.entry = tk.Entry(srch, bg=T.CARD, fg=T.TXT, insertbackground=T.ACCENT,
-                              relief="flat", highlightbackground=T.LINE,
-                              highlightthickness=1, font=T.T_BODY())
+        # ---- 筛选卡：搜索行 + 分类胶囊
+        fcard = T.Card(self, fill_y=False, pad=10)
+        fcard.pack(fill="x", padx=T.PAD, pady=(0, 6))
+        self._fcard = fcard
+        fbody = fcard.body
+        srch = tk.Frame(fbody, bg=T.CARD)
+        srch.pack(fill="x")
+        self._srch = srch
+        self.clear_btn = T.Btn(srch, "清除", self.clear_filter)
+        self.clear_btn.pack(side="right", padx=(6, 0))
+        T.Btn(srch, "搜索", self.smart_search, "primary").pack(
+            side="right", padx=(8, 0))
+        self.entry = tk.Entry(srch, bg=T.CARD_HI, fg=T.TXT,
+                              insertbackground=T.ACCENT, relief="flat",
+                              font=T.T_BODY())
         self.entry.pack(side="left", fill="x", expand=True, ipady=6)
+        T.fix_highlight(self.entry, T.card_edge(T.LINE, T.CARD))
         self._ph = "输入想找的内容，支持中文，如「红外小目标漏检」"
         self.entry.insert(0, self._ph)
         self.entry.config(fg=T.TXT4)
@@ -166,64 +189,57 @@ class LibraryPage(tk.Frame):
         except Exception as exc:
             print("联想词挂载失败:", exc)
 
-        # ---- 第 3 行（可折叠）：分类条。平时收起，点「分类」才铺开。
-        self.cat_wrap = tk.Frame(self, bg=T.BG)
-        # 折行容器：11 个分类胶囊横排在超大字下会拉成几百像素的宽条，
-        # 把整页顶出窗口（实测 1597px vs 可用 1155px）
-        self.cat_box = U.WrapRow(self, bg=T.BG)
-        self._cats_open = False
-
-        # ---- 第 4 行：表头「论文 | 分类 | 大小 | 修改时间」，左边同时显示计数
-        # 原来表头单独占一行（只有「论文」两个字，右边三列表头是空的），
-        # 改成一行两用：左边计数，右边三个列名 —— 省下一整行给正文。
-        head = tk.Frame(self, bg=T.BG)
-        head.pack(fill="x", padx=T.PAD, pady=(0, 2))
-        head.grid_columnconfigure(0, weight=1)
-        # 表头这一行是 grid。两个坑都踩过：
-        #   ① 不给 wraplength → 单行 Label 按整句自然宽度上报，超大字下到 1078px；
-        #   ② 在 <Configure> 里回写 wraplength → 请求宽度变、又触发 Configure，
-        #      两步一循环把窗口撑到 1766px（页面只有 1078）。
-        # 正解是给第 0 列一个固定 statwidth：grid 按列宽给 Label 分配宽度，
-        # 文本再按**可统计宽度**自己折行，形成自洽解，不会震荡。
-        # 第 19 版：160 而不是 360 —— 360 时第 0 列把「分类 / 大小 / 修改」
-        # 挤出可视区，表头和下面几列对不上。160 刚好放「共 345 篇 · 节奏见左」。
-        _statw = T.sp(160)
-        head.grid_columnconfigure(0, weight=1, minsize=_statw)
-        self.count_lbl = tk.Label(head, text="", bg=T.BG, fg=T.TXT3,
-                                  font=T.T_BODY_SM(), anchor="w", justify="left",
-                                  wraplength=_statw - 24)
-        self.count_lbl.grid(row=0, column=0, sticky="ew", padx=(10, 0))
-        for col, (txt, w) in enumerate(_cols()[1:], start=1):
-            head.grid_columnconfigure(col, minsize=w, weight=0)
-            tk.Label(head, text=txt, bg=T.BG, fg=T.TXT4, font=T.T_CAPTION(),
-                     anchor="w").grid(row=0, column=col, sticky="w")
-        # 入库节奏（默认不显示，点「节奏」才铺开）
-        self._pace_lbl = tk.Label(self, text="", bg=T.BG, fg=T.TXT3,
+        self.cat_box = U.WrapRow(fbody, gap=6, rowgap=6, bg=T.CARD)
+        self.cat_box.pack(fill="x", pady=(8, 0))
+        self._cats_open = True
+        self._pace_lbl = tk.Label(fbody, text="", bg=T.CARD, fg=T.TXT3,
                                   font=T.T_BODY_SM(), anchor="w", justify="left")
-        # arXiv 检索的即时反馈（「全库语义检索中…」「每个词都必须出现」这类）
-        # 走 self._say() → 窗口底部状态栏。原来它贴在表头右侧，
-        # 占着「修改时间」右边那块空白，却只是一句话在描述一次操作 ——
-        # 状态栏本来就是干这个的。
-        # 兼容旧引用：vis 现在不单独占位，内容并进了上面那行
+        T.fill_wrap(self._pace_lbl, pad=8)
+        self._pace_open = False
+        self._pace_text = ""
+
+        # ---- 结论行
+        meta = tk.Frame(self, bg=T.BG)
+        meta.pack(fill="x", padx=T.PAD, pady=(0, 4))
+        self._pace_btn = UK.Chip(meta, "入库节奏", command=self._toggle_pace,
+                                 bg=T.BG, height=T.sp(26),
+                                 font=T.T_CAPTION())
+        self._pace_btn.pack(side="right", pady=(2, 2))
+        self.count_lbl = tk.Label(meta, text="", bg=T.BG, fg=T.TXT3,
+                                  font=T.T_CAPTION(), anchor="w", justify="left")
+        self.count_lbl.pack(side="left", fill="x", expand=True)
+
+        def _wrap(_e=None):
+            w = self.count_lbl.winfo_width()
+            if w > 80:
+                self.count_lbl.configure(wraplength=w - 4)
+        self.count_lbl.bind("<Configure>", _wrap)
+
         self.vis = tk.Frame(self, bg=T.BG)
 
-        # ---- 表格
-        right = tk.Frame(self, bg=T.BG)
-        right.pack(fill="both", expand=True, padx=T.PAD, pady=(2, 14))
-
-        self.scroll = T.ScrollArea(right)
-        self.scroll.pack(fill="both", expand=True)
-
-    # ------------------------------------------------------------ 分类条
-    def _toggle_cats(self):
-        self._cats_open = not getattr(self, "_cats_open", False)
-        if self._cats_open:
-            self.cat_box.pack(fill="x", padx=T.PAD, pady=(0, 4),
-                              after=self.entry.master)
-            self.cat_btn.set_text("收起分类")
-        else:
-            self.cat_box.pack_forget()
-            self.cat_btn.set_text("分类")
+        # ---- 列表
+        lcard = T.Card(self, pad=0)
+        lcard.pack(fill="both", expand=True, padx=T.PAD, pady=(0, 14))
+        self._lcard = lcard
+        hrow = tk.Frame(lcard.body, bg=T.CARD)
+        hrow.pack(fill="x", padx=0, pady=(2, 0))
+        hrow.grid_columnconfigure(0, weight=1)
+        for i, (_, w) in enumerate(_cols()[1:], start=1):
+            hrow.grid_columnconfigure(i, minsize=w, weight=0)
+        tk.Label(hrow, text="论文", bg=T.CARD, fg=T.TXT4,
+                 font=T.T_CAPTION(), anchor="w").grid(
+                     row=0, column=0, sticky="ew", padx=(10, 6))
+        for i, (txt, _w) in enumerate(_cols()[1:], start=1):
+            tk.Label(hrow, text=txt, bg=T.CARD, fg=T.TXT4,
+                     font=T.T_CAPTION(),
+                     anchor=("e" if i in (1, 3) else "w")).grid(
+                         row=0, column=i,
+                         sticky=("e" if i in (1, 3) else "w"),
+                         padx=(0, 18 if i == 1 else (10 if i == 3 else 0)))
+        tk.Frame(lcard.body, bg=T.LINE_SOFT, height=1).pack(
+            fill="x", pady=(4, 0))
+        self.scroll = T.ScrollArea(lcard.body, bg=T.CARD)
+        self.scroll.pack(fill="both", expand=True, padx=0, pady=0)
 
     # ------------------------------------------------------------ 占位符
     def _ph_in(self, _e=None):
@@ -371,44 +387,31 @@ class LibraryPage(tk.Frame):
             if getattr(self, "_pace_open", False):
                 self._pace_lbl.pack_forget()
                 self._pace_open = False
-                self._pace_btn.set_text("节奏")
+                self._pace_btn.set_text("入库节奏")
                 return
             self._pace_lbl.config(text=getattr(self, "_vis_text", "") or "暂无入库记录")
-            self._pace_lbl.pack(fill="x", padx=T.PAD, pady=(0, 4),
-                                after=self.entry.master)
-            self._pace_open = True
-            self._pace_btn.set_text("收起")
-        except Exception:
-            pass
-
-    def _toggle_pace(self):
-        """把「入库节奏」摊到分类条上面 —— 平时不占行，点开才看。"""
-        try:
-            if getattr(self, "_pace_open", False):
-                self._pace_lbl.pack_forget()
-                self._pace_open = False
-                self._pace_btn.set_text("节奏")
-                return
-            self._pace_lbl.config(text=getattr(self, "_vis_text", "") or "暂无入库记录")
-            self._pace_lbl.pack(fill="x", padx=T.PAD, pady=(0, 4),
-                                after=self.entry.master)
+            self._pace_lbl.pack(fill="x", pady=(8, 0),
+                                after=self.cat_box)
             self._pace_open = True
             self._pace_btn.set_text("收起")
         except Exception:
             pass
 
     def _refresh_stats(self):
-        """把指标汇成一行：`篇 345 篇 · 本周 1 篇 · arXiv 4 条 · 索引 0 篇`。
-
-        值还没回来的项不显示，避免出现 `— 篇`。
-        大字号下只留篇数与索引（本周与 arXiv 在分类条右侧也有）。
-        """
-        only = ("pdf", "index") if T.font_scale() > 1.2 else None
-        try:
-            # 一个值都还没回来时不要显示空字符串这种空壳
-            self._stat_lbl.config(text=self._stat_text(only) or "正在读取本地索引…")
-        except Exception:
-            pass
+        """把指标铺到统计块上；还没回来的项保留「—」。"""
+        for key, short, unit in _MetricProxy.ORDER:
+            p = self._m.get(key)
+            v = getattr(p, "_val", None) if p else None
+            tile = (self._tiles or {}).get(key)
+            if tile is None:
+                continue
+            try:
+                if v is None:
+                    tile.set("—", short + unit)
+                else:
+                    tile.set(str(v), short + unit)
+            except Exception:
+                pass
 
     def _stat_text(self, only=None):
         """把概况拼成一句，不落盘（供 _refresh_stats 与测试复用）。"""
@@ -431,30 +434,23 @@ class LibraryPage(tk.Frame):
         其余时间都在抢正文宽度。改成横向胶囊后，正文多出近 200px
         （1320 窗口下标题能多显示 20 多个字符）。
         """
-        for w in self.cat_box.winfo_children():
-            w.destroy()
+        old = getattr(self, "cat_box", None)
+        if old is not None:
+            old.destroy()
+        self.cat_box = U.WrapRow(self._fcard.body, gap=6, rowgap=6, bg=T.CARD)
+        self.cat_box.pack(fill="x", pady=(8, 0), after=self._srch)
         items = [("全部", len(self.rows))] + [(c["name"], c["count"]) for c in self.cats]
         for name, n in items:
-            active = self.filter_cat == name
-            txt = "%s %d" % (name, n)
-            # 选中：品牌色淡底 + 亮字；未选：卡片底 + 弱字
-            bg = T.tint(T.ACCENT, 0.22, T.BG) if active else T.CARD
-            fg = T.ACCENT if active else T.TXT2
-            lb = tk.Label(self.cat_box, text=txt, bg=bg, fg=fg,
-                          font=T.T_BODY_SM(), padx=10, pady=3, cursor="hand2")
-            lb.bind("<Button-1>", lambda e, nm=name: self._pick_cat(nm))
-            lb.bind("<Enter>", lambda e, w=lb, a=active:
-                    w.config(bg=T.tint(T.ACCENT, 0.30, T.BG) if a else T.CARD_HI))
-            lb.bind("<Leave>", lambda e, w=lb, b=bg: w.config(bg=b))
-            self.cat_box.add(lb)
+            self.cat_box.add(UK.Chip(
+                self.cat_box, name, count=n,
+                active=(self.filter_cat == name),
+                command=lambda nm=name: self._pick_cat(nm),
+                bg=T.CARD, height=T.sp(26), font=T.T_CAPTION()))
 
     def _pick_cat(self, name):
         self.filter_cat = name
         self._render_cats()
         self.apply_filter()
-        # 选完就收起来：下一步要看的是论文，不是让分类条一直占着版面
-        if getattr(self, "_cats_open", False):
-            self._toggle_cats()
 
     def apply_filter(self):
         txt = "" if self.entry.get() == self._ph else self.entry.get().strip().lower()
@@ -757,12 +753,6 @@ class LibraryPage(tk.Frame):
 
     def _render_list(self, rows, mode="filter", query=""):
         self.scroll.clear()
-        # 回到本地列表时把图表条放回来（检索全库时被收起了）
-        try:
-            if not self.vis.winfo_manager():
-                self.vis.pack(fill="x", pady=(0, 6), before=self.scroll)
-        except Exception:
-            pass
         self._filtered = rows
         self._shown = 0
         self._mode = mode
@@ -787,12 +777,13 @@ class LibraryPage(tk.Frame):
         self.count_lbl.config(text="  ·  ".join(bits),
                               wraplength=max(80, T.sp(160) - 24))
         if not rows:
-            msg = ("没有匹配的论文。\n换个说法试试（支持中文，比如「红外小目标漏检」）。"
-                   if mode == "search" else
-                   "没有匹配的论文。\n可点「清除」重置筛选，或点右上「抓取新论文」。")
-            tk.Label(self.scroll.inner, text=msg, bg=T.BG, fg=T.TXT4,
-                     font=T.F(10), justify="left", anchor="w").pack(
-                         pady=44, padx=10, fill="x")
+            body = ("换个说法试试，支持中文，例如「红外小目标漏检」。"
+                    if mode == "search" else
+                    "点搜索右侧「清除」回到全部，或抓取新论文。")
+            UK.EmptyPanel(self.scroll.inner, "没有匹配的论文", body,
+                          icon="search", bg=T.CARD,
+                          height=164).pack(fill="x", pady=(6, 0))
+            self.scroll._on_inner()
             self.scroll.refresh(defer=True)
             return
         self._more_btn = None
@@ -817,7 +808,7 @@ class LibraryPage(tk.Frame):
         self._lazy = None
         self.scroll._lazy = None
         self._lazy = U.LazyList(self.scroll, 0, self._build_row,
-                                row_h=self._row_h(), bg=T.BG)
+                                row_h=self._row_h(), bg=T.CARD)
         for w in (self.scroll.canvas, self.scroll.inner):
             w.bind("<Configure>", lambda e: self._lazy.fill(), add="+")
         self.scroll.canvas.bind("<MouseWheel>",
@@ -851,7 +842,7 @@ class LibraryPage(tk.Frame):
         作者/摘要移到右键菜单的「查看详情」和打开 PDF 之后去看，
         扫标题本来就是这一页最常做的动作。
         """
-        bg = T.BG if idx % 2 == 0 else T.CARD_HI
+        bg = T.CARD
         if _outside or host is None:
             f = tk.Frame(self.scroll.inner, bg=bg, cursor="hand2")
             f.pack(fill="x", pady=0)
@@ -881,9 +872,11 @@ class LibraryPage(tk.Frame):
         tail = "  ".join(b for b in ((r.get("venue") or ""),
                                      str(r.get("year") or ""),
                                      "综述" if r.get("is_survey") else "") if b)
+        tail_lb = None
         if tail:
-            tk.Label(inner, text="  " + tail, bg=bg, fg=T.TXT3,
-                     font=T.T_CAPTION(), anchor="e").grid(row=0, column=1, sticky="e")
+            tail_lb = tk.Label(inner, text="  " + tail, bg=bg, fg=T.TXT3,
+                               font=T.T_CAPTION(), anchor="e")
+            tail_lb.grid(row=0, column=1, sticky="e")
         # 按像素截断：建控件这一刻 winfo_width() 还是 1，先排一次 after 等布局完成；
         # 之后 Label 变宽变窄都重截（窗口缩放时靠它）。
         lb.after(0, lambda w=lb, t=title: self._fit_text(w, t))
@@ -893,12 +886,13 @@ class LibraryPage(tk.Frame):
             # 分类来自文件夹名，长短差很多（「新论文」4 字、「未分类(根目录)」7 字）。
             # 固定宽 + 弱色，超长按像素截断 —— 之前宽度不够会压到大小列上。
             cat_lb = tk.Label(f, text=r["cat"], bg=bg, fg=T.TXT3, font=T.T_CAPTION(),
-                              anchor="w")
-            cat_lb.grid(row=0, column=1, sticky="ew", padx=(0, 10))
+                              anchor="e")
+            cat_lb.grid(row=0, column=1, sticky="e", padx=(0, 18))
             cat_lb.bind("<Configure>",
                         lambda e, w=cat_lb, t=r["cat"]: self._fit_text(w, t))
-        tk.Label(f, text="%.1f MB" % (r["size"] / 1048576), bg=bg, fg=T.TXT3,
-                 font=T.M(8), anchor="w", width=7).grid(row=0, column=2, sticky="w")
+        size_lb = tk.Label(f, text="%.1f MB" % (r["size"] / 1048576),
+                           bg=bg, fg=T.TXT3, font=T.M(8), anchor="w", width=7)
+        size_lb.grid(row=0, column=2, sticky="w")
         # 只显示「月-日 时:分」：这一列现在 118px，带年份会少最后一位。
         # 年份在右键「查看详情」和打开 PDF 时都能看到，不值得为它占 4 个字符。
         mt = (datetime.datetime.fromtimestamp(r["mtime"]).strftime("%m-%d %H:%M")
@@ -908,11 +902,32 @@ class LibraryPage(tk.Frame):
         mt_lb.grid(row=0, column=3, sticky="e", padx=(0, 10))
         if r["mtime"]:
             self.app._tip(mt_lb, datetime.datetime.fromtimestamp(r["mtime"]).strftime("%Y-%m-%d %H:%M"))
-        for w in (f, inner, lb):
+        line = tk.Frame(f, bg=T.LINE_SOFT, height=1)
+        line.place(relx=0, rely=1.0, relwidth=1, anchor="sw")
+        parts = [f, inner, lb, size_lb, mt_lb, line]
+        if r.get("cat"):
+            parts.append(cat_lb)
+        if tail_lb is not None:
+            parts.append(tail_lb)
+        for w in parts:
             w.bind("<Button-1>", lambda e, p=r["path"]: self._open_file(p))
             w.bind("<Button-3>", lambda e, p=r["path"]: self._row_menu(e, p))
-        f.bind("<Enter>", lambda e: f.config(bg=T.LINE_SOFT))
-        f.bind("<Leave>", lambda e: f.config(bg=bg))
+        hover = T.tint(T.ACCENT, 0.06, T.CARD)
+
+        def _paint(on):
+            col = hover if on else bg
+            for w in parts:
+                try:
+                    w.config(bg=col if w is not line else T.LINE_SOFT)
+                except Exception:
+                    pass
+            if on:
+                line.config(bg=T.tint(T.ACCENT, 0.35, bg))
+        for w in (f, inner, lb, size_lb, mt_lb, tail_lb):
+            if w is None:
+                continue
+            w.bind("<Enter>", lambda e: _paint(True), add="+")
+            w.bind("<Leave>", lambda e: _paint(False), add="+")
 
     def _bind_ellipsis(self, lb, full=None):
         """按可用像素宽度截断文字，而不是按字符数。
@@ -925,11 +940,23 @@ class LibraryPage(tk.Frame):
 
     @staticmethod
     def _fit_text(lb, text, slack=14):
-        """把 text 截到 lb 当前宽度放得下为止，末尾补省略号。"""
+        """把 text 截到 lb 当前宽度放得下为止，末尾补省略号。
+
+        2026-11-19：可用宽度要扣掉 Label 自己的 bd 与左右 padx。原来直接拿
+        `winfo_width()` 和 `font.measure()` 比，而 measure 只算字宽 ——
+        默认 bd=2 + padx=1 会再吃掉 6px，于是「需要 786、只有 782」这种
+        差几个像素的标题判断成「放得下」，尾巴就被切掉一两个字母。
+        """
         try:
             w = lb.winfo_width()
             if w <= 1:
                 return
+            try:
+                inset = (int(str(lb.cget("bd")) or 0)
+                         + int(str(lb.cget("padx")) or 0)) * 2
+            except Exception:
+                inset = 6
+            w = max(20, w - inset)
             font = lb.cget("font")
             if lb.tk.call("font", "measure", font, text) <= w:
                 if lb.cget("text") != text:

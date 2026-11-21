@@ -26,7 +26,7 @@ def main():
     pump(app, 1.0)
     app.goto("settings")
     pump(app, 1.2)
-    doc = tools_shot.find_window("知识库助手", True)
+    doc = tools_shot.find_window("塞莎特——题谱", True)
     if not doc:
         print("窗口没找到")
         return

@@ -149,12 +149,21 @@ def fetch_window(setname, d0, d1, log=None):
     return rows
 
 
+def _default_out():
+    """默认输出目录从 kb_vector.SRC 取（支持 KB_VECTOR_DIR / kb_vector_path）。"""
+    try:
+        import kb_vector
+        return str(kb_vector.SRC)
+    except Exception:
+        return r"G:\kb-vector\arxiv_cs"
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=3650, help="向前覆盖多少天")
     ap.add_argument("--step", type=int, default=7, help="每个窗口多少天")
     ap.add_argument("--set", default="cs", help="OAI 集名（cs/math/q-bio…，空串表示全部）")
-    ap.add_argument("--out", default=r"G:\kb-vector\arxiv_cs")
+    ap.add_argument("--out", default=_default_out())
     ap.add_argument("--until", default="", help="停止日期 YYYY-MM-DD，默认今天")
     args = ap.parse_args(argv)
 

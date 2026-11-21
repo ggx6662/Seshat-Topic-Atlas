@@ -86,7 +86,7 @@ time.sleep(0.6)
 for _ in range(10):
     root.update()
 
-hwnd, title, rect, _area = tools_shot.find_window("知识库助手", True)
+hwnd, title, rect, _area = tools_shot.find_window("塞莎特——题谱", True)
 print("窗口：", title)
 out = os.path.join(HERE, "screenshots", "16-settings-qr.png")
 tools_shot.grab(hwnd, rect, out)

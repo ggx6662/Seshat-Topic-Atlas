@@ -331,6 +331,33 @@ def _ensure():
         return _state
 
 
+def _search_paths():
+    """索引里存的路径统一换成 paper_meta.json 现在的键写法。
+
+    2026-11-21：`paper_meta.json` 的键从绝对路径改成了 `{kb}/新论文/x.pdf`
+    （换台电脑不失效），但 `semantic_index.npz` 是更早建的，里面还是绝对路径。
+    两套写法对不上时，`search()` 里「语义前 200 篇」这一段筛出来的候选
+    在 papers 字典里一个都找不到 → 整个检索**静默返回空**。
+    这里只在加载后归一化一次，不重建索引。
+    """
+    st = _ensure()
+    if st.get("_norm_ready"):
+        return st
+    raw = st.get("paths") or []
+    if not raw:
+        st["_norm_ready"] = True
+        return st
+    try:
+        import kb_paths
+        fixed = [kb_paths.to_key(p) for p in raw]
+    except Exception:
+        fixed = list(raw)
+    st["paths"] = fixed
+    st["pos"] = {p: i for i, p in enumerate(fixed)}
+    st["_norm_ready"] = True
+    return st
+
+
 def _query_vec(q):
     """把查询文本变成同一空间的向量（用已存 vocab/idf/components 手工变换）。"""
     st = _ensure()
@@ -453,6 +480,7 @@ def search(query, limit=30, use_semantic=True):
     if not (query or "").strip():
         return []
     st = _ensure()
+    st = _search_paths()
     papers = _load_papers()
     if not papers:
         return []
@@ -502,7 +530,19 @@ def search(query, limit=30, use_semantic=True):
         })
 
     results.sort(key=lambda r: r["score"], reverse=True)
-    return results[:limit] if limit else results
+    sorted_hits = results[:limit] if limit else results
+    # 对外给真实绝对路径：界面用它去对应磁盘上的文件；内部键是 `{kb}/…` 这种
+    # 与盘符无关的写法，直接拿去比对会一条都对不上（2026-11-21）。
+    try:
+        import kb_paths
+        for r in sorted_hits:
+            real = kb_paths.to_abs(r["path"])
+            if real != r["path"]:
+                r["key"] = r["path"]
+                r["path"] = real
+    except Exception:
+        pass
+    return sorted_hits
 
 
 def stats():

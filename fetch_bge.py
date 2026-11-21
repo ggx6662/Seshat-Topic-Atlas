@@ -32,7 +32,11 @@ SMALL = {
         "https://hf-mirror.com/BAAI/bge-small-zh-v1.5/resolve/main/tokenizer_config.json",
     "vocab.txt": "https://hf-mirror.com/BAAI/bge-small-zh-v1.5/resolve/main/vocab.txt",
 }
-DEST = Path(r"G:\kb-vector\models\bge-small-zh-v1.5")
+try:  # 目录从 kb_vector 统一取（支持 KB_VECTOR_DIR / config.json 的 kb_vector_path）
+    import kb_vector as _KV
+    DEST = _KV.BASE / "models" / "bge-small-zh-v1.5"
+except Exception:
+    DEST = Path(r"G:\kb-vector\models\bge-small-zh-v1.5")
 
 
 def probe(url):

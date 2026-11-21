@@ -1,0 +1,166 @@
+// ---------- 素材库 ----------
+function ensureMaterials() {
+  if (state.materials || state.materialsLoading) return;
+  state.materialsLoading = true;
+  state.materialsError = "";
+  loadMaterials()
+    .then((data) => { state.materials = data; })
+    .catch((err) => { state.materialsError = String(err?.message || err); })
+    .finally(() => {
+      state.materialsLoading = false;
+      if (state.route === "materials") render();
+    });
+}
+
+function materialDatasets() {
+  const rows = state.materials?.datasets || [];
+  const q = state.materialsQuery.trim().toLowerCase();
+  return rows.filter((ds) => {
+    if (state.materialsCat && !(ds.categories || []).includes(state.materialsCat)) return false;
+    if (!q) return true;
+    const hay = [
+      ds.name, ds.task, ds.note,
+      ...(ds.categories || []),
+      ...(ds.applications || []),
+      ...(ds.directions || []).map((d) => d.name),
+    ].filter(Boolean).join(" ").toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function materialsView() {
+  if (!state.materials && !state.materialsLoading && !state.materialsError) ensureMaterials();
+  if (state.materialsError) {
+    return `<div class="card"><div class="notice warn">${icon("alert")}<div>素材库读取失败：${escapeHtml(state.materialsError)}</div></div><div class="detail-actions"><button class="btn" data-action="retry-materials">重试</button></div></div>`;
+  }
+  if (!state.materials) {
+    return `${pageHead("素材库", "把方向、公开数据集、评测指标与基线放在同一张关系索引里。", "")}
+      <div class="card"><div class="skeleton" style="height:44px;margin-bottom:var(--sp-3)"></div><div class="skeleton" style="height:220px"></div></div>`;
+  }
+  const m = state.materials;
+  const datasets = materialDatasets();
+  const selected = datasets.find((ds) => ds.name === state.materialsSelected) || datasets[0] || null;
+  const shown = datasets.slice(0, state.materialsLimit);
+  const stats = m.stats || {};
+  return `
+    ${pageHead(
+      "素材库",
+      "方向、公开数据集与评测协议的关系索引。选题前先确认数据是否存在、指标是否可测、基线是否点名。",
+      `<a class="btn" href="#/workshop">${icon("spark")} 去选题工坊</a>`
+    )}
+    <section class="material-hero">
+      <div class="material-hero-copy">
+        <div class="query-kicker"><span>MATERIAL ATLAS</span><b>02</b></div>
+        <h2>先看素材，<br><em>再定问题。</em></h2>
+        <p>${fmtInt(stats.directions)} 个方向、${fmtInt(stats.datasets)} 个公开数据集、${fmtInt(stats.categories)} 个研究大类。这里展示的是项目整理的关系，不是最新 SOTA 榜单。</p>
+      </div>
+      <div class="material-stats">
+        <div><b>${fmtInt(stats.directions)}</b><span>研究方向</span></div>
+        <div><b>${fmtInt(stats.datasets)}</b><span>公开数据集</span></div>
+        <div><b>${fmtInt(stats.venues)}</b><span>期刊会议</span></div>
+        <div><b>${fmtInt(stats.papers)}</b><span>本地文献</span></div>
+        <div><b>${fmtInt(stats.scholars)}</b><span>学者索引</span></div>
+        <div><b>${fmtInt(stats.withHomepage)}</b><span>已核验主页</span></div>
+      </div>
+    </section>
+    <div class="material-relation" aria-label="素材关系">
+      <div class="material-node"><span>方向</span><b>${fmtInt(stats.directions)}</b><small>决定问题与场景</small></div>
+      <span class="material-arrow">${icon("arrow")}</span>
+      <div class="material-node"><span>数据集</span><b>${fmtInt(stats.datasets)}</b><small>决定数据与划分</small></div>
+      <span class="material-arrow">${icon("arrow")}</span>
+      <div class="material-node"><span>指标 / 基线</span><b>${fmtInt((m.directions || []).filter((d) => d.metrics?.length).length)}</b><small>决定如何比较</small></div>
+    </div>
+    <div class="card material-toolbar">
+      <div class="material-search">
+        <label class="query-label" for="materialQuery">检索数据集、方向或任务</label>
+        <div class="input-row">
+          <input id="materialQuery" class="input" type="text" value="${escapeHtml(state.materialsQuery)}" placeholder="例如：红外、医学影像、检测、KITTI" autocomplete="off">
+          <button type="button" class="btn" data-action="material-clear">清空</button>
+        </div>
+      </div>
+      <div class="material-cats" role="group" aria-label="按研究大类筛选">
+        <button type="button" class="chip ${!state.materialsCat ? "active" : ""}" data-action="material-cat" data-cat="">全部 ${fmtInt(stats.datasets)}</button>
+        ${(m.categories || []).map((cat) => `<button type="button" class="chip ${state.materialsCat === cat.name ? "active" : ""}" data-action="material-cat" data-cat="${escapeHtml(cat.name)}">${escapeHtml(cat.name)} ${cat.datasets.length}</button>`).join("")}
+      </div>
+      <div class="search-meta"><span>${fmtInt(datasets.length)} 个数据集${state.materialsCat ? ` · ${escapeHtml(state.materialsCat)}` : ""}</span><span>${datasets.length > shown.length ? `已显示 ${shown.length}` : "已全部显示"}</span></div>
+    </div>
+    <div class="material-grid">
+      <div class="material-list">
+        ${shown.length ? shown.map((ds) => materialCardHtml(ds, selected?.name === ds.name)).join("") : `<div class="card">${emptyBlock("search", "没有匹配的数据集", "换一个关键词或大类；也可以清空筛选查看全部。")}</div>`}
+        ${datasets.length > shown.length ? `<div class="load-more"><button type="button" class="btn" data-action="material-more">显示更多数据集</button></div>` : ""}
+      </div>
+      <aside class="material-detail" id="materialDetail">${materialDetailHtml(selected)}</aside>
+    </div>
+    <div class="notice quiet" style="margin-top:var(--sp-3)">
+      ${icon("info")}
+      <div><strong>怎么使用素材库：</strong>数据集关系来自方向基准条目的离线汇总。同一数据集在不同任务下可能使用不同划分与指标；链接与许可请以官方页面为准。素材库不声称覆盖全部公开数据，也不替代论文查新。</div>
+    </div>`;
+}
+
+function materialCardHtml(ds, active) {
+  return `
+    <button type="button" class="material-card ${active ? "active" : ""}" data-action="material-select" data-name="${escapeHtml(ds.name)}">
+      <span class="material-card-head">
+        <b>${escapeHtml(ds.name)}</b>
+        <em>${fmtInt(ds.directionCount)} 个方向</em>
+      </span>
+      <span class="material-task">${escapeHtml(ds.task || "任务未标注")}</span>
+      <span class="material-tags">${(ds.categories || []).slice(0, 2).map((c) => `<i>${escapeHtml(c)}</i>`).join("")}${(ds.applications || []).slice(0, 2).map((a) => `<i>${escapeHtml(a)}</i>`).join("")}</span>
+      <span class="material-foot">
+        <span>${escapeHtml((ds.metrics || []).slice(0, 3).join(" · ") || "指标待按任务确定")}</span>
+        <span>查看 ${icon("arrow")}</span>
+      </span>
+    </button>`;
+}
+
+function materialDetailHtml(ds) {
+  if (!ds) return `<div class="material-detail-empty">${icon("book")}<b>选择一个数据集</b><p>查看它关联的方向、常用指标、代表基线与官方入口。</p></div>`;
+  const directions = ds.directions || [];
+  return `
+    <div class="material-detail-head">
+      <div>
+        <div class="material-detail-kicker">DATASET RELATION</div>
+        <h3>${escapeHtml(ds.name)}</h3>
+        <p>${escapeHtml(ds.task || "任务未标注")}</p>
+      </div>
+      ${safeUrl(ds.url) ? `<a class="btn btn-soft" href="${escapeHtml(safeUrl(ds.url))}" target="_blank" rel="noopener noreferrer">${icon("external")} 数据集主页</a>` : `<span class="badge">暂无官方链接</span>`}
+    </div>
+    <p class="material-note">${escapeHtml(ds.note || "使用前核对官方划分与许可。")}${ds.usedIn ? ` · ${escapeHtml(ds.usedIn)}` : ""}</p>
+    <div class="material-facts">
+      <div><span>关联方向</span><b>${fmtInt(directions.length)}</b></div>
+      <div><span>常见指标</span><b>${fmtInt((ds.metrics || []).length)}</b></div>
+      <div><span>代表基线</span><b>${fmtInt((ds.baselines || []).length)}</b></div>
+    </div>
+    <div class="material-section">
+      <div class="section-label">${icon("filter")} 常用指标</div>
+      <div class="chip-row">${(ds.metrics || []).length ? ds.metrics.map((x) => `<span class="badge">${escapeHtml(x)}</span>`).join("") : `<span class="review-empty">该数据集暂未标注指标</span>`}</div>
+    </div>
+    <div class="material-section">
+      <div class="section-label">${icon("award")} 代表基线</div>
+      <div class="chip-row">${(ds.baselines || []).length ? ds.baselines.map((x) => `<span class="badge">${escapeHtml(x)}</span>`).join("") : `<span class="review-empty">该数据集暂未标注基线</span>`}</div>
+    </div>
+    <div class="material-section">
+      <div class="section-label">${icon("route")} 关联方向</div>
+      <div class="material-directions">
+        ${directions.slice(0, 12).map((dir) => `
+          <button type="button" class="material-direction" data-action="material-direction" data-name="${escapeHtml(dir.name)}">
+            <span><b>${escapeHtml(dir.name)}</b><small>${escapeHtml(dir.category || "")}</small></span>
+            ${icon("arrow")}
+          </button>`).join("") || `<span class="review-empty">暂无关联方向</span>`}
+      </div>
+      ${directions.length > 12 ? `<p class="small muted" style="margin-top:var(--sp-2)">还有 ${fmtInt(directions.length - 12)} 个方向使用该数据集；可在左侧检索方向名。</p>` : ""}
+    </div>`;
+}
+
+function renderMaterialsOnly() {
+  if (state.route !== "materials") return;
+  const query = $("#materialQuery");
+  const caret = document.activeElement === query ? query.selectionStart : null;
+  render();
+  if (caret != null) {
+    const next = $("#materialQuery");
+    next?.focus();
+    try { next.setSelectionRange(caret, caret); } catch {}
+  }
+}
+

@@ -21,7 +21,17 @@ import tkinter as tk
 import app_theme as T
 import autocomplete
 
-_OPEN = []  # 当前打开的只有一个，记录以便点别处时关掉
+_OPEN = []  # 当前打开的联想框（SuggestBox），用于统一收起
+_GLOBAL_BOUND = False
+
+
+def close_all():
+    """收起所有联想下拉。切页、点空白、窗口失焦时都要调用。"""
+    for box in list(_OPEN):
+        try:
+            box.close()
+        except Exception:
+            pass
 
 KIND_LABEL = {
     "combo": ("常用", T.ACCENT),
@@ -54,7 +64,45 @@ class SuggestBox(object):
         self._after = None
         self._active = -1
         self._suppress = False
+        self._watch = None
         self._bind()
+        _install_global(self.entry)
+
+    def _root(self):
+        return self.entry.winfo_toplevel()
+
+    def _alive(self):
+        try:
+            return self.entry.winfo_exists() and self.entry.winfo_ismapped()
+        except Exception:
+            return False
+
+    def _visible(self):
+        try:
+            return (self.pop is not None and self.pop.winfo_exists()
+                    and self.pop.winfo_ismapped())
+        except Exception:
+            return False
+
+    def _place(self, w, h):
+        """把下拉贴在输入框下方；贴不到（输入框已隐藏/页面已换）就收起。"""
+        if not self._alive():
+            self.close()
+            return
+        try:
+            root = self._root()
+            # Windows 最大化时 state 是 "zoomed"，不能当成不可用
+            if root.state() in ("iconic", "withdrawn"):
+                self.close()
+                return
+            self.entry.update_idletasks()
+            x = self.entry.winfo_rootx()
+            y = self.entry.winfo_rooty() + self.entry.winfo_height()
+            if y + h > self.entry.winfo_screenheight() - 40:
+                y = max(0, self.entry.winfo_rooty() - h)
+            self.pop.geometry("%dx%d+%d+%d" % (w, h, x, y))
+        except Exception:
+            self.close()
 
     # ------------------------------------------------------------ 事件绑定
     def _bind(self):
@@ -67,6 +115,8 @@ class SuggestBox(object):
         e.bind("<Escape>", self._on_escape, add="+")
         e.bind("<FocusOut>", self._on_focus_out, add="+")
         e.bind("<Button-1>", self._on_click, add="+")
+        e.bind("<Unmap>", lambda _e: self.close(), add="+")
+        e.bind("<Destroy>", lambda _e: self.close(), add="+")
 
     # ------------------------------------------------------------ 弹出/关闭
     def _popup(self):
@@ -76,7 +126,9 @@ class SuggestBox(object):
         self.pop.withdraw()
         self.pop.overrideredirect(True)
         try:
-            self.pop.attributes("-topmost", True)
+            # transient 已经保证浮层在主窗之上，且主窗最小化时一起收起；
+            # 不再用 -topmost，否则切到别的应用时它还会压在最前面。
+            self.pop.transient(self.entry.winfo_toplevel())
         except Exception:
             pass
         outer = tk.Frame(self.pop, bg=T.LINE, padx=1, pady=1)
@@ -84,7 +136,7 @@ class SuggestBox(object):
         self.listbox = tk.Listbox(
             outer, activestyle="none", relief="flat", borderwidth=0,
             bg=T.CARD, fg=T.TXT, selectbackground=T.ACCENT,
-            selectforeground="#04121A", font=T.F(9),
+            selectforeground=T.on_primary_fg(), font=T.F(9),
             highlightthickness=0, height=self.limit,
             exportselection=False, cursor="hand2")
         self.listbox.pack(fill="both", expand=True)
@@ -99,12 +151,66 @@ class SuggestBox(object):
             except Exception:
                 pass
             self._after = None
+        if self._watch:
+            try:
+                self.entry.after_cancel(self._watch)
+            except Exception:
+                pass
+            self._watch = None
         if self.pop is not None:
             try:
                 self.pop.withdraw()
             except Exception:
                 pass
         self._active = -1
+        if self in _OPEN:
+            _OPEN.remove(self)
+
+    def _start_watch(self):
+        """常驻巡检：页面切走、窗口最小化、输入框被销毁时，把浮层收掉。
+
+        联想层是 overrideredirect + topmost 的独立窗口，不会跟着页面一起
+        消失；以前只靠 Entry 的 FocusOut，点无焦点的画布/文字时焦点不转移，
+        浮层就一直盖在新页面上（截图里「卡住」的那块就是这个）。
+        """
+        if self._watch:
+            return
+        try:
+            self._watch = self.entry.after(500, self._tick)
+        except Exception:
+            self._watch = None
+
+    def _tick(self):
+        self._watch = None
+        if not self._visible():
+            return
+        if not self._alive():
+            self.close()
+            return
+        try:
+            root = self._root()
+            if root.state() in ("iconic", "withdrawn"):
+                self.close()
+                return
+            if not root.winfo_viewable():
+                self.close()
+                return
+        except Exception:
+            self.close()
+            return
+        # 页面切换后输入框可能被 pack_forget，几何坐标还在但父容器不可见
+        try:
+            parent = self.entry.master
+            while parent is not None and parent is not root:
+                if not parent.winfo_ismapped():
+                    self.close()
+                    return
+                parent = parent.master
+        except Exception:
+            pass
+        self._place(self.pop.winfo_width(), self.pop.winfo_height())
+        if self._visible():
+            self._start_watch()
 
     # ------------------------------------------------------------ 显示
     def _show(self, items):
@@ -120,23 +226,21 @@ class SuggestBox(object):
             text = "%-6s %s" % (label, it["text"])
             lb.insert("end", text)
             # 提示放第二段，用灰色 —— Listbox 不支持多色，只能靠分隔符区分
+        # 宽度跟着输入框走，但至少 320px：检索框窄的时候候选词会被截断
+        w = max(self.entry.winfo_width(), 320)
+        h = min(len(items), self.limit) * 24 + 4
+        self._place(w, h)
+        if not self._alive():
+            return
         try:
-            self.entry.update_idletasks()
-            # 宽度跟着输入框走，但至少 320px：检索框窄的时候候选词会被截断
-            w = max(self.entry.winfo_width(), 320)
-            h = min(len(items), self.limit) * 24 + 4
-            x = self.entry.winfo_rootx()
-            y = self.entry.winfo_rooty() + self.entry.winfo_height()
-            # 下方空间不够就翻到输入框上方，否则候选会掉出屏幕
-            if y + h > self.entry.winfo_screenheight() - 40:
-                y = max(0, self.entry.winfo_rooty() - h)
-            pop.geometry("%dx%d+%d+%d" % (w, h, x, y))
             pop.deiconify()
             pop.lift()
-            if pop not in _OPEN:
-                _OPEN.append(pop)
         except Exception:
             self.close()
+            return
+        if self not in _OPEN:
+            _OPEN.append(self)
+        self._start_watch()
 
     def _refresh(self):
         self._after = None
@@ -246,6 +350,62 @@ class SuggestBox(object):
                 self.on_commit(text)
             except Exception as exc:
                 print("SuggestBox.on_commit 失败:", exc)
+
+
+def _within(widget, container):
+    try:
+        w = widget
+        while w is not None:
+            if str(w) == str(container):
+                return True
+            w = getattr(w, "master", None)
+    except Exception:
+        pass
+    return False
+
+
+def _on_global_click(event):
+    for box in list(_OPEN):
+        if _within(event.widget, box.pop) or event.widget is box.entry:
+            continue
+        box.close()
+
+
+def _on_global_wheel(_event):
+    close_all()
+
+
+def _install_global(entry):
+    """每个进程只装一次：点空白、滚轮、主窗隐藏时统一收起浮层。"""
+    global _GLOBAL_BOUND
+    if _GLOBAL_BOUND:
+        return
+    _GLOBAL_BOUND = True
+    try:
+        root = entry.winfo_toplevel()
+        root.bind_all("<Button-1>", _on_global_click, add="+")
+        root.bind_all("<MouseWheel>", _on_global_wheel, add="+")
+        root.bind_all("<Button-4>", _on_global_wheel, add="+")
+        root.bind_all("<Button-5>", _on_global_wheel, add="+")
+        root.bind("<Unmap>", lambda _e: close_all(), add="+")
+        root.bind("<Destroy>", lambda _e: close_all(), add="+")
+        root.bind("<Configure>", _on_root_configure, add="+")
+    except Exception:
+        pass
+
+
+def _on_root_configure(_event):
+    # 主窗移动/缩放/最大化后，把还开着的浮层重新贴回输入框下面。
+    # 这里不能比较 event.widget 与 winfo_toplevel()：Tk 每次事件都会新建
+    # widget 包装对象，`is` 永远不成立，于是最大化后浮层停在旧坐标（截图里
+    # 左上角那块就是它）。Configure 只绑在主窗自身上，直接重排即可。
+    for box in list(_OPEN):
+        if not box._visible():
+            continue
+        try:
+            box._place(box.pop.winfo_width(), box.pop.winfo_height())
+        except Exception:
+            box.close()
 
 
 def attach(entry, on_commit=None, limit=8):
